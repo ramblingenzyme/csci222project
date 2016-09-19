@@ -11,3 +11,8 @@ std::string backend::echo(const std::string& text)
     return "Hi, " + text;
 }
 
+bool backend::authenticate(const std::string& username, const std::string& password) {
+    // to be replaced with checking username & pass against database
+    // e.g. SELECT id FROM users WHERE username=$USERNAME AND password=$PASSWORD
+    return true;
+}
