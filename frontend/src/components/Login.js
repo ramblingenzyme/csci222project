@@ -2,14 +2,30 @@ import React, { Component } from 'react';
 import Form from 'react-router-form';
 
 class Login extends Component {
-    componentWillUpdate(nextProps, nextState) {
+    constructor() {
+        super();
+        this.state = {
+            username: '',
+            password: ''
+        }
     }
 
     render() {
         return(
-            <Form method="post">
-                <input type="text" value={this.state.username} onChange={event => this.setState({username: event.target.username})} />
-                <input type="text" value={this.state.password} onChange={event => this.setState({password: event.target.password})} />
+            <Form method="post" to={`/test/${this.state.username}`}>
+                <input type="text"
+                    placeholder="Username"
+                    value={this.state.username}
+                    onChange={event => this.setState({username: event.target.value})}
+                />
+                <input
+                    type="text"
+                    placeholder="Password"
+                    onChange={event => this.setState({password: event.target.value})}
+                />
+                <input
+                    type="submit"
+                />
             </Form>
         )
     }

@@ -11,7 +11,6 @@ import routes from './routes'
 
 import './css/index.css';
 
-
 const store = createStore(
     baseReducer,
     applyMiddleware(

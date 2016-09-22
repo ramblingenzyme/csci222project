@@ -9,7 +9,7 @@ export default {
     },
     childRoutes: [
         {
-            path: 'test',
+            path: 'test/:username',
             component: Login
         }
     ]
