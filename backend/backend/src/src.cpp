@@ -14,12 +14,19 @@ std::string src::echo(const std::string& text)
 
 Rank src::login(const string& username, const string& password){
 	Reporter *user;
-	Rank result;
-	user = get_valid_user(username); //stub
-	if (user.get_password()!= password){
-		result = 0;
-	} else 
-		result = user.get_privilege_level();
+	Rank value;
+	string query = "SELECT FROM USERS * WHERE username='" + username+ "';"
+	result r = postgres_non_transaction(query);
 	
-	return result; 
+	result::const_iterator c = r.begin();
+	if (c == r.end()){
+		value = null;
+	} else {
+		Reporter user(c[0].as<string>,c[1].as<string>,c[2].as<string>, c[3].as<Rank>);
+		if (user.get_password()!= password){
+			value = null;
+		} else 
+			value = user.get_privilege_level();
+	}
+	return value; 
 }
