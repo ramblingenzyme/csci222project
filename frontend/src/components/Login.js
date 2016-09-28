@@ -1,33 +1,30 @@
-import React, { Component } from 'react';
-import Form from 'react-router-form';
+import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 class Login extends Component {
-    constructor() {
-        super();
-        this.state = {
-            username: '',
-            password: ''
-        }
+    render() {
+        let content = this._getContent();
+        return (
+            <div>
+                {content}
+            </div>
+        )
     }
 
-    render() {
-        return(
-            <Form method="post" to={`/test/${this.state.username}`}>
-                <input type="text"
-                    placeholder="Username"
-                    value={this.state.username}
-                    onChange={event => this.setState({username: event.target.value})}
-                />
-                <input
-                    type="text"
-                    placeholder="Password"
-                    onChange={event => this.setState({password: event.target.value})}
-                />
-                <input
-                    type="submit"
-                />
-            </Form>
-        )
+    _getContent() {
+        if (this.props.loggedIn) {
+            return (
+                <p>
+                    Hello {this.props.username}
+                </p>
+            )
+        } else {
+            return (
+                <p>
+                    <Link to="/login">Login</Link>
+                </p>
+            )
+        }
     }
 }
 
