@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Form from 'react-router-form';
+import { Field, reduxForm } from 'redux-form';
 
 class LoginPage extends Component {
     constructor() {
@@ -13,16 +13,24 @@ class LoginPage extends Component {
     render() {
         return(
             <Form method="post" to={`/test/${this.state.username}`}>
-                <input type="text"
-                    placeholder="Username"
-                    value={this.state.username}
-                    onChange={event => this.setState({username: event.target.value})}
-                />
-                <input
-                    type="text"
-                    placeholder="Password"
-                    onChange={event => this.setState({password: event.target.value})}
-                />
+                <div>
+                    <label htmlFor="username">
+                        Username
+                    </label>
+                    <input type="text"
+                        placeholder="Username"
+                        value={this.state.username}
+                        onChange={event => this.setState({username: event.target.value})}
+                    />
+                </div>
+                <div htmlFor="password">
+                    <label>
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        onChange={event => this.setState({password: event.target.value})}
+                    />
+                </div>
                 <input
                     type="submit"
                 />
