@@ -1,5 +1,6 @@
 import App from '../components/App.js';
 import Login from '../components/Login.js';
+import LoginPage from '../components/LoginPage.js';
 
 export default {
     path: '/',
@@ -9,8 +10,8 @@ export default {
     },
     childRoutes: [
         {
-            path: 'test/:username',
-            component: Login
+            path: 'login',
+            component: LoginPage
         }
     ]
 }
