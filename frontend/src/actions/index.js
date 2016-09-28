@@ -3,20 +3,20 @@ import {
     REQUEST
 } from '../const';
 
-import fetch from '../helpers/fetch'
+import fetch from '../helpers/fetch';
 
 export function requestData(requesting) {
     return {
         type: REQUEST,
         requesting
-    }
+    };
 }
 
 export function recieveAuthStatus(authStatus) {
     return {
         type: RECEIVE_AUTH_STATUS,
         authStatus
-    }
+    };
 }
 
 export function fetchAuthStatus(username, password, cb) {
@@ -31,6 +31,6 @@ export function fetchAuthStatus(username, password, cb) {
             if (cb) {
                 cb();
             }
-        })
-    }
+        });
+    };
 }
