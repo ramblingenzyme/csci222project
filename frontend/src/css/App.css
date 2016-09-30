@@ -47,6 +47,16 @@
     text-align: left;
 }
 
+.ProfileInfo div strong {
+    display: inline-block;
+    width: 80px;
+}
+
+.ProfileInfo div span {
+    display: inline-block;
+    width: 250px;
+}
+
 @keyframes App-bug-wiggle {
     from {transform: rotate(0deg); }
     to {transform: rotate(360deg); }
