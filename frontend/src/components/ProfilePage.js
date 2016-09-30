@@ -17,15 +17,13 @@ class ProfilePage extends Component {
                 <section className="ProfileInfo">
                     <div id="username">
                         <strong>Username:</strong>
-                        <span>{this.props.username}</span>
-                    </div>
-                    <div id="password">
-                        <strong>Password:</strong>
-                        <span>{this.props.password}</span>
+                        <span>James</span>
+                        /* <span>{this.props.username}</span> */
                     </div>
                     <div id="email">
                         <strong>Email:</strong>
-                        <span>{this.props.email}</span>
+                        <span>stub@gmail.com</span>
+                        /* <span>{this.props.email}</span> */
                     </div>
                 </section>
             )
