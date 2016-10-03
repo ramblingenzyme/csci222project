@@ -11,32 +11,28 @@ class LoginPage extends Component {
     }
 
     render() {
+        const handleSubmit = this.props.dispatch;
+
         return(
-            <Form method="post" to={`/test/${this.state.username}`}>
+            <form method="post" onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">
                         Username
                     </label>
-                    <input type="text"
-                        placeholder="Username"
-                        value={this.state.username}
-                        onChange={event => this.setState({username: event.target.value})}
-                    />
+                    <Field name="username" component="input" type="text" />
                 </div>
-                <div htmlFor="password">
-                    <label>
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        onChange={event => this.setState({password: event.target.value})}
-                    />
+                <div>
+                    <label htmlFor="password">Password</label>
+                    <Field name ="password" component="input" type="password" />
                 </div>
-                <input
-                    type="submit"
-                />
-            </Form>
+                <button type="submit">Submit</button>
+            </form>
         )
     }
 }
+
+LoginPage = reduxForm({
+    form: 'login'
+})(LoginPage)
 
 export default LoginPage;

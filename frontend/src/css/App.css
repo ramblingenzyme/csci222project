@@ -6,7 +6,6 @@
     position: absolute;
     left: 0;
     top: 0;
-    
 }
 .App-header {
     background: url("../assets/banner.jpg") no-repeat center center;
@@ -31,8 +30,8 @@
 
 .DisplayWindow {
     background-color: #73B1B7;
-    width: 81%; 
-    height: 600px; 
+    width: 81%;
+    height: 600px;
     float: right;
     position: relative;
     top: 110px;
@@ -40,7 +39,7 @@
 }
 
 .LoginContainer {
-    width: 30%; 
+    width: 30%;
     height: 20px;
     float: right;
     background-color: #4A777A;
@@ -58,10 +57,10 @@
     padding: 10px;
     width: 15%;
     height: 550px;
-    float: left; 
+    float: left;
     text-align: left;
     font-size: 1.2em;
-    position: absolute; 
+    position: absolute;
     left: 0px;
     top: 110px;
 }
@@ -72,12 +71,10 @@
     padding: 10px;
     text-align: right;
     width: 60%;
-    
-    position: relative; 
-    top: 250; 
 
-    margin-left: 0%; 
+    position: relative;
+    top: 250;
+
+    margin-left: 0%;
     height: 100;
 }
-
-
