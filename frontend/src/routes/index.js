@@ -4,6 +4,7 @@ import LoginPage from '../components/LoginPage.js';
 import SidebarSearch from '../components/SidebarSearch.js';
 import SidebarAnalysis from '../components/SidebarAnalysis.js';
 import SidebarAssign from '../components/SidebarAssign.js';
+import ProfilePage from '../components/ProfilePage.js';
 
 export default {
     path: '/',
@@ -57,7 +58,7 @@ export default {
         },
         {
             path: '/Profile/',
-            component: Login
+            component: ProfilePage
         }
     ]
 }
