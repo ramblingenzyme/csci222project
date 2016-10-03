@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:TODO:PORT",
+  "proxy": "http://localhost:9098",
   "devDependencies": {
     "react-scripts": "0.4.1"
   },
