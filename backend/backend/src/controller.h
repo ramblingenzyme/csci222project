@@ -4,10 +4,10 @@
 
 class ReporterController{
 	private:
-		Reporter* user; 
+		Reporter* user;
 	public:
 		Reporter* get_user();
 		void set_user(Reporter*);
-}
+};
 
 #endif
