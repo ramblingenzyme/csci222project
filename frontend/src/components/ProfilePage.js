@@ -17,14 +17,21 @@ class ProfilePage extends Component {
                 <section className="ProfileInfo">
                     <div id="username">
                         <strong>Username:</strong>
-                        <span>James</span>
-                        /* <span>{this.props.username}</span> */
+                        <span>{this.props.username}</span>
                     </div>
                     <div id="email">
-                        <strong>Email:</strong>
-                        <span>stub@gmail.com</span>
-                        /* <span>{this.props.email}</span> */
+                        <strong>Email: </strong>
+                        <span>{this.props.email}</span>
                     </div>
+                    <div id="dob">
+                        <strong>Date of Birth: </strong>
+                        <span>{this.props.dob}</span>
+                    </div>
+                    <div id="interests">
+                        <strong>Interests: </strong>
+                        <span>{this.props.interests}</span>
+                    </div>
+                    <div></div>
                 </section>
             )
         } else {
