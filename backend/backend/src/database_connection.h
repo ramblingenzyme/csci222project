@@ -45,6 +45,4 @@ class DatabaseConnection {
         static pqxx::connection db_connection_;
 };
 
-
-
 #endif
