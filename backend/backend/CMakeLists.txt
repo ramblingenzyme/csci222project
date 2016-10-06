@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 
 project (backend CXX)
 
-set(BACKEND_HEADERS backend.h)
+set(BACKEND_HEADERS backend.h database_connection.h return_types.h)
 
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(BACKEND_CODEGEN_DIR "${PROJECT_BINARY_DIR}/codegen")

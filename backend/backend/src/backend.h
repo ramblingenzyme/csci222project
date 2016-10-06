@@ -6,33 +6,17 @@
 
 #include <ngrest/common/Service.h>
 
-//! Dummy description for the service
-/*! Some detailed description of the service */
-// '*location' comment sets resource path for this service
-// *location: backend
+#include "return_types.h"
+#include "database_connection.h"
+
+// *interface.defaultInlineResult: true
 class backend: public ngrest::Service {
     public:
-        // Here is an example of service operation
-        //! Dummy description for the operation
-        /*! Some detailed description of the operation */
-        // To invoke this operation from browser open: http://localhost:9098/backend/World!
-        //
-        // '*location' metacomment sets path to operation relative to service operation.
-        // Default value is operation name.
-        // This will bind "echo" method to resource path: http://host:port/backend/{text}
-        // *location: /{text}
-        //
-        // '*method' metacomment sets HTTP method for the operation. GET is default method.
-        // *method: GET
-        //
-        std::string echo(const std::string& text);
+        backend()  {}
+        ~backend() {}
 
-        // *method: GET
-        bool authenticate(const std::string& username, const std::string& password);
+        // *method: POST
+        auth_response authenticate(const std::string& username, const std::string& password);
 };
 
-
 #endif // BACKEND_H
-
-
-
