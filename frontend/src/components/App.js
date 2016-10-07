@@ -12,7 +12,6 @@ class App extends Component {
             <div>
                 <div className="aui-header">
                     <div className="aui-header-primary">
-                        <h2>Bug Management System</h2>
                         <Menubar />
                     </div>
                     <div className="aui-header-secondary">
