@@ -46,9 +46,11 @@
     text-align: left;
 }
 
-.ReportContainer {
+.aui {
     padding: 1rem;
 }
+
+.
 
 @keyframes App-bug-wiggle {
     from {transform: rotate(0deg); }
