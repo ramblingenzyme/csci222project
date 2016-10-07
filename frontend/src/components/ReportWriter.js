@@ -21,31 +21,31 @@ class ReportWriter extends Component {
             <div id="details" className="ReportDetails">
                 <div className="field-group">
                     <label htmlFor="title">Title{req}</label>
-                    <Field className="text full-width-field" name="title" component="input" type="text" placeholder="Short title describing bug."/>
+                    <Field className="text large-width-field" name="title" component="input" type="text" placeholder="Short title describing bug."/>
                 </div>
                 <div className="field-group">
                     <label htmlFor="project">Project{req}</label>
-                    <Field className="text full-width-field" name="project" component="input" type="text" placeholder="Software project where bug found."/>
+                    <Field className="text large-width-field" name="project" component="input" type="text" placeholder="Software project where bug found."/>
                 </div>
                 <div className="field-group">
                     <label htmlFor="component">Component</label>
-                    <Field className="text full-width-field" name="component" component="input" type="text" placeholder="Bug source module."/>
+                    <Field className="text large-width-field" name="component" component="input" type="text" placeholder="Bug source module."/>
                 </div>
                 <div className="field-group">
                     <label htmlFor="os">OS</label>
-                    <Field className="text full-width-field" name="os" component="input" type="text" placeholder="Operating system showing bug."/>
+                    <Field className="text large-width-field" name="os" component="input" type="text" placeholder="Operating system with bug."/>
                 </div>
                 <div className="field-group">
                     <label htmlFor="milestone">Milestone{req}</label>
-                    <Field className="text full-width-field" name="milestone" component="input" type="text" placeholder="Goal resolution date"/>
+                    <Field className="text large-width-field" name="milestone" component="input" type="text" placeholder="Goal resolution date"/>
                 </div>
                 <div className="field-group">
                     <label htmlFor="flocation">Location</label>
-                    <Field className="text full-width-field" name="flocation" component="input" type="text" placeholder="Source file location"/>
+                    <Field className="text large-width-field" name="flocation" component="input" type="text" placeholder="Source file location"/>
                 </div>
                 <div className="field-group">
                     <label htmlFor="description">Description</label>
-                    <textarea className="textarea full-width-field" name="description" type="text" placeholder="Bug description"/>
+                    <textarea className="textarea large-width-field" name="description" type="text" placeholder="Bug description"/>
                 </div>
             </div>
         )
