@@ -5,6 +5,7 @@ import SidebarSearch from '../components/SidebarSearch.js';
 import SidebarAnalysis from '../components/SidebarAnalysis.js';
 import SidebarAssign from '../components/SidebarAssign.js';
 import ProfilePage from '../components/ProfilePage.js';
+import ReportPage from '../components/ReportPage.js';
 
 export default {
     path: '/',
@@ -29,7 +30,7 @@ export default {
         },
         {
             path: '/Report/',
-            component: Login,
+            component: ReportPage,
         },
         {
             path: '/Analysis/',
