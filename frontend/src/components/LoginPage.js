@@ -23,7 +23,7 @@ class LoginPage extends Component {
                 </div>
                 <div>
                     <label htmlFor="password">Password</label>
-                    <Field name ="password" component="input" type="password" />
+                    <Field name="password" component="input" type="password" />
                 </div>
                 <button type="submit">Submit</button>
             </form>

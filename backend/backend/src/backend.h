@@ -4,6 +4,8 @@
 #ifndef BACKEND_H
 #define BACKEND_H
 
+#include <list>
+
 #include <ngrest/common/Service.h>
 
 #include "return_types.h"
@@ -17,6 +19,12 @@ class backend: public ngrest::Service {
 
         // *method: POST
         auth_response authenticate(const std::string& username, const std::string& password);
+
+        // *method: POST
+        complete_bug_info get_bug_page(const int& id);
+
+        // *method: POST
+        std::list<bug_overview> get_normal_search(const std::string query);
 };
 
 #endif // BACKEND_H

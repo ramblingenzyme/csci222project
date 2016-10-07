@@ -16,3 +16,44 @@ auth_response backend::authenticate(const std::string& username, const std::stri
 
     return result;
 }
+
+complete_bug_info backend::get_bug_page(const int& id) {
+    complete_bug_info result;
+
+    result.bug_id = "1";
+    result.creation_time = "2015-03-25T12:00:00";
+    result.delta_time = "2015-03-25T12:00:00";
+    result.title = "Bug 1";
+    result.description = "Stub";
+    result.product = "Backend";
+    result.component = "bug page info";
+    result.version = "0.01";
+    result.operating_system = "OSX";
+    result.target_milestone = "0.02";
+    result.status = "open";
+    result.duplicate_id = "";
+    result.priority = "high";
+    result.severity = "low";
+    result.reporter = "Satvik";
+    result.assigned_to = "Ryan";
+    result.project_id = "1";
+    result.votes = "0";
+    result.cclist.push_back("Ryan");
+
+    return result;
+}
+
+std::list<bug_overview> backend::get_normal_search(const std::string query) {
+    std::list<bug_overview> result;
+    bug_overview first_result;
+    first_result.title = "Bug 1";
+    first_result.product = "Backend";
+    first_result.component = "bug page info";
+    first_result.version = "0.01";
+    first_result.priority = "high";
+    first_result.severity = "low";
+
+    result.push_back(first_result);
+
+    return result;
+}
