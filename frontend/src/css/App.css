@@ -46,14 +46,8 @@
     text-align: left;
 }
 
-.ProfileInfo div strong {
-    display: inline-block;
-    width: 80px;
-}
-
-.ProfileInfo div span {
-    display: inline-block;
-    width: 250px;
+.ReportContainer {
+    padding: 1rem;
 }
 
 @keyframes App-bug-wiggle {
