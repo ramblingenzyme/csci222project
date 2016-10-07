@@ -14,18 +14,22 @@ class LoginPage extends Component {
         const handleSubmit = this.props.dispatch;
 
         return(
-            <form method="post" onSubmit={handleSubmit}>
-                <div>
+            <form className="aui" method="post" onSubmit={handleSubmit}>
+                <div className="field-group">
                     <label htmlFor="username">
                         Username
                     </label>
-                    <Field name="username" component="input" type="text" />
+                    <Field name="username" className="text medium-field"  component="input" type="text" />
                 </div>
-                <div>
+                <div className="field-group">
                     <label htmlFor="password">Password</label>
-                    <Field name="password" component="input" type="password" />
+                    <Field name="password" className="text medium-field"  component="input" type="password" />
                 </div>
-                <button type="submit">Submit</button>
+                <div className="buttons-container">
+                    <div className="buttons">
+                        <button type="submit">Submit</button>
+                    </div>
+                </div>
             </form>
         )
     }
