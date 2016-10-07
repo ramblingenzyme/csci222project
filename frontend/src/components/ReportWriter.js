@@ -8,61 +8,46 @@ class ReportWriter extends Component {
         let fields = this.FormFields();
 
         return (
-            <div id="report-form" className="ReportContainer">
+            <div id="report-form">
                 <h3>Bug Details</h3>
-                <div id="details" className="ReportDetails">
-                    {fields}
-                </div>
-                <h3>Bug Notes</h3>
-                <div id="description">
-                    <TinyMCE
-                        content="<p>Please enter any further details of the bug here.</p>"
-                        config={{
-                            plugins: 'print preview fullscreen spellchecker code autosave',
-                            menubar: false,
-                            statusbar: false,
-                            toolbar_items_size: 'large',
-                            toolbar: 'newdocument | undo redo | bold italic | print preview fullscreen | spellchecker ',
-                            height: 300,
-                            width: "100%",
-                        }}
-                        onChange={this.handleEditorChange}
-                    />
-                </div>
+                {fields}
             </div>
         )
     }
 
     FormFields() {
-        const handleSubmit = this.props.dispatch;
-
+        let req = <span className="aui-icon icon-required">(required)</span>
         return (
-            <form className="aui" method="post" onSubmit={handleSubmit}>
+            <div id="details" className="ReportDetails">
                 <div className="field-group">
-                    <label htmlFor="title">Title<span class="aui-icon icon-required">(required)</span></label>
+                    <label htmlFor="title">Title{req}</label>
                     <Field className="text full-width-field" name="title" component="input" type="text" placeholder="Short title describing bug."/>
                 </div>
                 <div className="field-group">
-                    <label htmlFor="project">Project</label>
-                    <Field className="text full-width-field" name="project" component="input" type="text" placeholder="Software project where bug was found."/>
+                    <label htmlFor="project">Project{req}</label>
+                    <Field className="text full-width-field" name="project" component="input" type="text" placeholder="Software project where bug found."/>
                 </div>
                 <div className="field-group">
                     <label htmlFor="component">Component</label>
-                    <Field className="text full-width-field" name="component" component="input" type="text" placeholder="Module / component of project that the bug was found in."/>
+                    <Field className="text full-width-field" name="component" component="input" type="text" placeholder="Bug source module."/>
                 </div>
                 <div className="field-group">
                     <label htmlFor="os">OS</label>
-                    <Field className="text full-width-field" name="os" component="input" type="text" placeholder="Operating system(s) where bug has been found."/>
+                    <Field className="text full-width-field" name="os" component="input" type="text" placeholder="Operating system showing bug."/>
                 </div>
                 <div className="field-group">
-                    <label htmlFor="milestone">Milestone</label>
-                    <Field className="text full-width-field" name="milestone" component="input" type="text" placeholder="Milestone / version that bug is to be fixed by"/>
+                    <label htmlFor="milestone">Milestone{req}</label>
+                    <Field className="text full-width-field" name="milestone" component="input" type="text" placeholder="Goal resolution date"/>
                 </div>
                 <div className="field-group">
                     <label htmlFor="flocation">Location</label>
-                    <Field className="text full-width-field" name="flocation" component="input" type="text" placeholder="Location of bug"/>
+                    <Field className="text full-width-field" name="flocation" component="input" type="text" placeholder="Source file location"/>
                 </div>
-            </form>
+                <div className="field-group">
+                    <label htmlFor="description">Description</label>
+                    <textarea className="textarea full-width-field" name="description" type="text" placeholder="Bug description"/>
+                </div>
+            </div>
         )
     }
 
@@ -71,6 +56,22 @@ class ReportWriter extends Component {
     }
 }
 
+
+/* TODO Use for bug comments
+ <TinyMCE
+    content="<p>Please enter any further details of the bug here.</p>"
+    config={{
+        plugins: 'print preview fullscreen spellchecker code autosave',
+        menubar: false,
+        statusbar: false,
+        toolbar_items_size: 'large',
+        toolbar: 'newdocument | undo redo | bold italic | print preview fullscreen | spellchecker ',
+        height: 300,
+        width: "100%",
+    }}
+    onChange={this.handleEditorChange}
+ />
+ */
 
 export default ReportWriter = reduxForm({
     form: 'report-writer'

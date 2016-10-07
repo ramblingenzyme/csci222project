@@ -4,11 +4,17 @@ import ReportWriter from './ReportWriter.js'
 
 class ReportPage extends Component {
     render() {
-        return (
-            <div>
-                <ReportWriter />
+        const handleSubmit = this.props.dispatch;
 
-            </div>
+        return (
+            <form className="aui" method="post" onSubmit={handleSubmit}>
+                <ReportWriter />
+                <div className="buttons-container">
+                    <div className="buttons">
+                        <button type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
         )
     }
 
