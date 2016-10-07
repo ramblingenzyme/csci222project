@@ -26,7 +26,7 @@ class ReportWriter extends Component {
                             toolbar_items_size: 'large',
                             toolbar: 'newdocument | undo redo | bold italic | print preview fullscreen | spellchecker ',
                             height: 300,
-                            width: "50%",
+                            width: "100%",
                         }}
                         onChange={this.handleEditorChange}
                     />
