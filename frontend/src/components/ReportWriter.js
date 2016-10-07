@@ -9,8 +9,6 @@ class ReportWriter extends Component {
 
         return (
             <div id="report-form" className="ReportContainer">
-                <h2>Reporting Tool</h2>
-
                 <h3>Bug Details</h3>
                 <div id="details" className="ReportDetails">
                     {fields}
