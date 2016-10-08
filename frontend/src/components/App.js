@@ -20,7 +20,9 @@ class App extends Component {
                             <li>
                                 <Search fieldname="top-menu-search" field="bug-search-static" />
                             </li>
-                            <Login />
+                            <li>
+                                <Login />
+                            </li>
                         </ul>
                     </div>
                 </div>
