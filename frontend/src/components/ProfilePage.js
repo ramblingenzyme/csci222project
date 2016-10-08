@@ -31,7 +31,6 @@ class ProfilePage extends Component {
                         <strong>Interests: </strong>
                         <span>{this.props.interests}</span>
                     </div>
-                    <div></div>
                 </section>
             )
         } else {
