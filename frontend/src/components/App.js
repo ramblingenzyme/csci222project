@@ -4,6 +4,7 @@ import {Link} from 'react-router';
 import Login from "./Login.js";
 import Menubar from './Menubar.js';
 import '../css/App.css';
+import Search from './Search.js'
 
 // this is where the persistent UI will be defined. This will be wrapped in a Router to change the main page content shown
 class App extends Component {
@@ -16,6 +17,9 @@ class App extends Component {
                     </div>
                     <div className="aui-header-secondary">
                         <ul className="aui-nav">
+                            <li>
+                                <Search fieldname="top-menu-search" field="bug-search-static" />
+                            </li>
                             <Login />
                         </ul>
                     </div>
