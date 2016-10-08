@@ -14,15 +14,15 @@ class Login extends Component {
     _getContent() {
         if (this.props.loggedIn) {
             return (
-                <p>
+                <div>
                     Hello {this.props.username}
-                </p>
+                </div>
             )
         } else {
             return (
-                <p>
+                <div>
                     <Link to="/login">Login</Link>
-                </p>
+                </div>
             )
         }
     }
