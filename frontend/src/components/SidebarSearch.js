@@ -36,10 +36,12 @@ class SidebarSearch extends Component {
         ];
         return (
             <div className="aui-page-panel-nav">
-                <nav className="aui-navgroup-vertical">
-                    <div className="aui-nav-heading" title="bug-page-search">
+                <nav className="aui-navgroup aui-navgroup-vertical">
+                    <div className="aui-nav-heading">
                         <strong>Search Bugs In Project</strong>
                     </div>
+
+                    <InputField label="Keywords" id="search-sidebar-keywords" description="" />
 
                 </nav>
             </div>
