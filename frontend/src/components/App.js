@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 import Login from "./Login.js";
 import Menubar from './Menubar.js';
 import '../css/App.css';
-import Search from './Search.js'
+import Search from './Search.js';
 
 // this is where the persistent UI will be defined. This will be wrapped in a Router to change the main page content shown
 class App extends Component {
