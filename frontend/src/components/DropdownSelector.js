@@ -10,6 +10,7 @@ class DropdownSelector extends Component {
                         {this.props.title}
                     </label>
                     <select className="select" id={this.props.id} name={this.props.id}>
+                        <option>None Selected</option>
                         {this.props.options.map((result) => (
                             <option key={result.id}>{result.text}</option>
                         ))}
