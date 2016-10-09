@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Search from './Search.js'
 import { Field, reduxForm } from 'redux-form';
-import DropdownSelector from './AUIDropdown.js'
+import DropdownSelector from './DropdownSelector.js'
 
 import '../css/App.css';
 

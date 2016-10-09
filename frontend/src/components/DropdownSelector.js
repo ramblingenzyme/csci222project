@@ -1,7 +1,3 @@
-/**
- * Created by Kraft on 9/10/2016.
- */
-
 import React, { Component, PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
 
@@ -25,8 +21,7 @@ class DropdownSelector extends Component {
 }
 
 DropdownSelector.defaultProps = {
-    checked: "",
-    id: "radio-button"
+    id: "dropdown-selector"
 };
 
 export default DropdownSelector;
