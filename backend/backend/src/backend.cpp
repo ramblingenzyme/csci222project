@@ -5,14 +5,29 @@
 #include <pqxx/pqxx>
 #include <cppunit/extensions/HelperMacros.h>
 #include "backend.h"
+#include "controller.h"
 
 auth_response backend::authenticate(const std::string& username, const std::string& password) {
-    // to be replaced with checking username & pass against database
-    // e.g. SELECT id FROM users WHERE username=$USERNAME AND password=$PASSWORD
+    //SELECT * FROM USER WHERE USERNAME =$USERNAME - generalising
+    user_controller temp;
     auth_response result;
-    result.authed = true;
-    result.role = "superadmin";
-    result.username = username;
+
+    if (!temp.find_username(username)) {
+	result.authed = false;
+        result.role = "null";
+        result.username = username;
+
+    } else {
+	if (temp.authenticate(password)) {
+	    result.authed = true;
+	    result.role = temp.get_user_info().privilege_level;
+	    result.username = username;	
+	} else {
+            result.authed = false;
+            result.role = "null";
+       	    result.username = username;
+	}
+    }
 
     return result;
 }
