@@ -6,8 +6,8 @@ class Search extends Component {
     render() {
         return (
             <form className="aui-quicksearch" method="post">
-                <label className="assistive" htmlFor={this.props.name}>Search</label>
-                <Field className="text large-width-field" name={this.props.name} component="input" type="text" placeholder="Search Bugs"/>
+                <label className="assistive" htmlFor={this.props.field}>Search</label>
+                <Field className="text large-width-field" name={this.props.field} component="input" type="text" placeholder="Search Bugs"/>
             </form>
         )
     }
