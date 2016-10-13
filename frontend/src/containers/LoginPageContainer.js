@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import LoginPage from '../components/LoginPage.js';
+import { fetchAuthStatus } from '../actions';
 
 const mapStateToProps = state => ({});
 

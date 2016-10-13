@@ -23,7 +23,7 @@ export function fetchAuthStatus(username, password, cb) {
     return function(dispatch) {
         dispatch(requestData(true));
 
-        fetch(dispatch, `/authenticate?username=${username}&password=${password}`)
+        fetch(`/authenticate?username=${username}&password=${password}`, { method: "POST" })
         .then(response => {
             dispatch(recieveAuthStatus(response));
             dispatch(requestData(false));
