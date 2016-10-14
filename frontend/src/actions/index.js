@@ -3,7 +3,7 @@ import {
     REQUEST
 } from '../const';
 
-import fetch from '../helpers/fetch';
+import fetchFromBackend from '../helpers/fetch';
 
 export function requestData(requesting) {
     return {
@@ -19,18 +19,13 @@ export function recieveAuthStatus(authStatus) {
     };
 }
 
-export function fetchAuthStatus(username, password, cb) {
+export function fetchAuthStatus(username, password) {
     return function(dispatch) {
         dispatch(requestData(true));
 
-        fetch(`/authenticate?username=${username}&password=${password}`, { method: "POST" })
-        .then(response => {
+        return fetchFromBackend(`authenticate`).then(response => {
             dispatch(recieveAuthStatus(response));
-            dispatch(requestData(false));
-
-            if (cb) {
-                cb();
-            }
+            return dispatch(requestData(false));
         });
     };
 }

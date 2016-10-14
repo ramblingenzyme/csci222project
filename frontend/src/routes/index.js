@@ -1,11 +1,12 @@
 import App from '../components/App.js';
 import Login from '../components/Login.js';
-import LoginPage from '../components/LoginPage.js';
 import SidebarSearch from '../components/SidebarSearch.js';
 import SidebarAnalysis from '../components/SidebarAnalysis.js';
 import SidebarAssign from '../components/SidebarAssign.js';
 import ProfilePage from '../components/ProfilePage.js';
 import ReportPage from '../components/ReportPage.js';
+
+import LoginPageContainer from '../containers/LoginPageContainer.js';
 
 export default {
     path: '/',
@@ -19,7 +20,7 @@ export default {
     childRoutes: [
         {
             path: 'login',
-            component: LoginPage
+            component: LoginPageContainer
         },
         {
             path: 'test/:username',

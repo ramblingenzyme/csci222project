@@ -1,1 +1,2 @@
 export const RECEIVE_AUTH_STATUS = 'RECEIVE_AUTH_STATUS';
+export const REQUEST = 'REQUEST';
