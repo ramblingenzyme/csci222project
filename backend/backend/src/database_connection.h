@@ -1,7 +1,6 @@
 #ifndef DATABASE_CONNECTION_H
 #define DATABASE_CONNECTION_H
 #include <string>
-#include <libpq>
 #include <pqxx/pqxx>
 #include <iostream>
 

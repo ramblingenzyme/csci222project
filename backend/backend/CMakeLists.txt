@@ -29,4 +29,4 @@ set_target_properties(backend PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SERVICES_DIR}"
 )
 
-target_link_libraries(backend ngrestutils ngrestcommon ngrestjson ngrestengine $ENV{NGREST_EXT_LIBS})
+target_link_libraries(backend ngrestutils ngrestcommon ngrestjson ngrestengine pqxx $ENV{NGREST_EXT_LIBS})
