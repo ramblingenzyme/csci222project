@@ -13,6 +13,7 @@ class DatabaseConnection {
 		    delete db_connection_;
 		db_connection_ = new pqxx::connection(connection_details_); 
             }
+	
         };
 
         std::string connection_details_;
@@ -50,13 +51,20 @@ class DatabaseConnection {
 
         pqxx::result query(const std::string query) {
             // needs to be refactored to be more defensive
-            reconnect_if_needed();
+            try {
+		reconnect_if_needed();
 
-            pqxx::nontransaction N(*db_connection_);
+                pqxx::nontransaction N(*db_connection_);
+	   
+         	pqxx::result results( N.exec(query.c_str()) );
 
-            pqxx::result results( N.exec(query.c_str()) );
-
-            return results;
+            	return results;
+	    }catch(std::exception &e) {
+		
+		throw(e);
+		pqxx::result results;
+		return results;
+	    }
         };
 
 	bool transaction(const std::string query){ 

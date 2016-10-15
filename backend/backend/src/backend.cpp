@@ -4,6 +4,7 @@
 
 #include <pqxx/pqxx>
 #include <cppunit/extensions/HelperMacros.h>
+#include <ostream>
 #include "backend.h"
 #include "controller.h"
 
@@ -16,7 +17,6 @@ auth_response backend::authenticate(const std::string& username, const std::stri
 	result.authed = false;
         result.role = "null";
         result.username = username;
-
     } else {
 	if (temp.authenticate(password)) {
 	    result.authed = true;
@@ -33,31 +33,42 @@ auth_response backend::authenticate(const std::string& username, const std::stri
 }
 
 complete_bug_info backend::get_bug_page(const int& id) {
-    Bug_Controller result;
+    Bug_Controller bug;
+   
+    bug.find_bug_id(std::to_string(id));
+    if (!bug.isEmpty()){
+	return bug.get_bug_info();
+    } else {
+	complete_bug_info result;
+	result.bug_id = "0";
 
-    result.find_bug_id(std::to_string(id));
-
-    return result.get_bug_info();
+        return result;
+    }
 }
 
-std::list<bug_overview> backend::get_normal_search(const std::string query) {
+std::list<bug_overview> backend::get_normal_search(const std::string& query) {
+
     std::list<bug_overview> results;
-    bug_overview first_result;
     
     DatabaseConnection database;
-
+    
+    database.open_connection(CONNECTION_DETAILS);
+    
     std::string sqlQuery = "SELECT BUG_ID FROM BUGS WHERE TITLE LIKE '%"
 	    		   + query + "%'";
 
-    pqxx::result r = database.query(sqlQuery);
-
+  try {
+	    pqxx::result r = database.query(sqlQuery);
     for (pqxx::result::const_iterator c = r.begin(); c != r.end(); c++){
 	Bug_Controller temp;
 	
 	temp.find_bug_id(c[0].as<std::string>());
+	errorfile << temp.get_bug_overview().bug_id << std::endl;
 	results.push_back(temp.get_bug_overview()); 
     }
-
+  } catch (std::exception &e) {
+	return results; 
+  }
     return results;
 }
 

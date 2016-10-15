@@ -2,11 +2,12 @@
 #define CONTROLLER_H
 #include "return_types.h"
 #include "database_connection.h"
-#include <string> 
+#include <string>
 #include <list>
 
 //Bug_controller class
 
+const std::string CONNECTION_DETAILS="dbname=bugtracker user=postgres password=csci222password host=csci222-ass2.cy0af74vuu5h.ap-southeast-2.rds.amazonaws.com";
 class Bug_Controller {
 	private:
 		complete_bug_info *data;	//struct pointer; 
@@ -25,9 +26,9 @@ class Bug_Controller {
 		    DatabaseConnection database;
 		    try {
 
-			database.open_connection("dbname=bugtracker user=postgres password=csci222password host=csci222-ass2.cy0af74vuu5h.ap-southeast-2.rds.amazonaws.com");
+			database.open_connection(CONNECTION_DETAILS);
 	
-			std::string sqlQuery = "SELECT * FROM BUGS WHERE BUG_ID="""+ bugID +""";"; 
+			std::string sqlQuery = "SELECT * FROM BUGS WHERE BUG_ID="+ bugID +";"; 
 			pqxx::result results = database.query(sqlQuery.c_str());
 			pqxx::result::const_iterator c = results.begin();
 			
@@ -61,7 +62,7 @@ class Bug_Controller {
 			this->data->project_id = c[15].as<std::string>();
 			this->data->votes = c[16].as<std::string>(); 
 	
-			sqlQuery = "SELECT * FROM CCLIST WHERE BUG_ID="""+ bugID +""";"; 
+			sqlQuery = "SELECT * FROM CCLIST WHERE BUG_ID="+ bugID +";"; 
 			results = database.query(sqlQuery.c_str());
 			c = results.begin();
 	
@@ -70,7 +71,7 @@ class Bug_Controller {
 		            c++;
 			}
 			
-			sqlQuery = "SELECT * FROM KEYWORDS WHERE BUG_ID="""+ bugID +""";"; 
+			sqlQuery = "SELECT * FROM KEYWORDS WHERE BUG_ID="+ bugID +";"; 
 			results = database.query(sqlQuery.c_str());
 			c = results.begin();
 
@@ -79,7 +80,7 @@ class Bug_Controller {
 			    c++;
 			}
 
-			sqlQuery = "SELECT * FROM DEPENDENCIES WHERE BUG_ID="""+ bugID +""";"; 
+			sqlQuery = "SELECT * FROM DEPENDENCIES WHERE BUG_ID="+ bugID +";"; 
 			results = database.query(sqlQuery.c_str());
 			c = results.begin();
 
@@ -130,7 +131,7 @@ class Bug_Controller {
 			return false;
 		    
 		    DatabaseConnection database;
-		    database.open_connection("dbname=bugtracker user=postgres password=csci222password host=csci222-ass2.cy0af74vuu5h.ap-southeast-2.rds.amazonaws.com");
+		    database.open_connection(CONNECTION_DETAILS);
 
 		    //update bug
 		    std::string sqlquery = "UPDATE bugs set bug_id ="
@@ -155,16 +156,16 @@ class Bug_Controller {
 
 	 	    //if update fails, then start inserting else, update the rest
 		    if (database.transaction(sqlquery)){
-			 sqlquery = "delete from cclist where bug_id="""
-			    		+ this->data->bug_id + """;";
+			 sqlquery = "delete from cclist where bug_id="
+			    		+ this->data->bug_id + ";";
 		        database.transaction(sqlquery); 
 		    
-		   	sqlquery = "delete from dependencies where bug_id="""
-			    		+ this->data->bug_id + """;";
+		   	sqlquery = "delete from dependencies where bug_id="
+			    		+ this->data->bug_id + ";";
 		    	database.transaction(sqlquery);
 
-		    	sqlquery = "delete from keywords where bug_id="""
-			    		+ this->data->bug_id + """;";
+		    	sqlquery = "delete from keywords where bug_id="
+			    		+ this->data->bug_id + ";";
 		    	database.transaction(sqlquery);
 
 
@@ -263,6 +264,7 @@ class Bug_Controller {
 		    database.close_connection();
 		    
 		    return true;
+			return false;
 		};
 
 };
@@ -281,10 +283,9 @@ class user_controller {
 		//finds a user in the database according to a username, and if found it stores as a data member
 		bool find_username(std::string username) {
 	 	    DatabaseConnection database;
-			try {
-			database.open_connection("dbname=bugtracker user=postgres password=csci222password host=csci222-ass2.cy0af74vuu5h.ap-southeast-2.rds.amazonaws.com");
+			database.open_connection(CONNECTION_DETAILS);
 	
-			std::string sqlquery = "select * from users where username="""+ username+""";"; 
+			std::string sqlquery = "SELECT * FROM USERS WHERE username='"+ username+"';"; 
 			pqxx::result results = database.query(sqlquery.c_str());
 			pqxx::result::const_iterator c = results.begin();
 		
@@ -303,9 +304,8 @@ class user_controller {
 			this->data->privilege_level = c[3].as<std::string>(); 
 			
 			return true; 
-		    } catch (...) {
-			return false;
-		    }
+			
+		    
 		};
 		//Checks if empty
 		bool isEmpty() { 
@@ -335,7 +335,7 @@ class user_controller {
 			return false;
 		    
 		    DatabaseConnection database;
-		    database.open_connection("dbname=bugtracker user=postgres password=csci222password host=csci222-ass2.cy0af74vuu5h.ap-southeast-2.rds.amazonaws.com");
+		    database.open_connection(CONNECTION_DETAILS);
 		    std::string sqlquery = "UPDATE users set username ='"
 			       + this->data->username + "', password ='"
 			       + this->data->password + "', email ='"
@@ -373,9 +373,9 @@ class comment_controller {
 		bool find_comment_id(std::string comment_id) {
 	 	    DatabaseConnection database;
 			try {
-			database.open_connection("dbname=bugtracker user=postgres password=csci222password host=csci222-ass2.cy0af74vuu5h.ap-southeast-2.rds.amazonaws.com");
+			database.open_connection(CONNECTION_DETAILS);
 	
-			std::string sqlquery = "select * from COMMENT where comment_id="""+ comment_id+""";"; 
+			std::string sqlquery = "select * from COMMENT where comment_id="+ comment_id+";"; 
 			pqxx::result results = database.query(sqlquery.c_str());
 			pqxx::result::const_iterator c = results.begin();
 		
@@ -423,7 +423,7 @@ class comment_controller {
 			return false;
 		    
 		    DatabaseConnection database;
-		    database.open_connection("dbname=bugtracker user=postgres password=csci222password host=csci222-ass2.cy0af74vuu5h.ap-southeast-2.rds.amazonaws.com");
+		    database.open_connection(CONNECTION_DETAILS);
 		    std::string sqlquery = "UPDATE comment set comment_id ="
 			       + this->data->comment_id + ", username='"
 			       + this->data->username + "',bug_id ="
