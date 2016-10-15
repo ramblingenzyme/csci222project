@@ -33,16 +33,28 @@ auth_response backend::authenticate(const std::string& username, const std::stri
 }
 
 complete_bug_info backend::get_bug_page(const int& id) {
-    Bug_Controller bug;
+    Bug_Controller controller;
    
-    bug.find_bug_id(std::to_string(id));
-    if (!bug.isEmpty()){
-	return bug.get_bug_info();
+    controller.find_bug_id(std::to_string(id));
+    if (!controller.isEmpty()){
+	return controller.get_bug_info();
     } else {
 	complete_bug_info result;
 	result.bug_id = "0";
 
         return result;
+    }
+}
+
+user backend::get_user_page(const std::string& username){
+    user_controller controller;
+
+    controller.find_username(username);
+    if (!controller.isEmpty()){
+	return controller.get_user_info();
+    } else { 
+	user result;
+    	return result;
     }
 }
 

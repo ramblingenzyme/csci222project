@@ -23,6 +23,9 @@ class backend: public ngrest::Service {
         // *method: POST
         complete_bug_info get_bug_page(const int& id);
 
+	// *method: POST
+	user get_user_page(const std::string& username);
+
         // *method: POST
         std::list<bug_overview> get_normal_search(const std::string& query);
 
