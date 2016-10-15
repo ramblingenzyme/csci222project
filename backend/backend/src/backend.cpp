@@ -55,7 +55,7 @@ std::list<bug_overview> backend::get_normal_search(const std::string query) {
 	Bug_Controller temp;
 	
 	temp.find_bug_id(c[0].as<std::string>());
-	results.push_back(temp.get_bug_overview); 
+	results.push_back(temp.get_bug_overview()); 
     }
 
     return results;
