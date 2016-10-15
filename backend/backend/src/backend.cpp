@@ -63,7 +63,6 @@ std::list<bug_overview> backend::get_normal_search(const std::string& query) {
 	Bug_Controller temp;
 	
 	temp.find_bug_id(c[0].as<std::string>());
-	errorfile << temp.get_bug_overview().bug_id << std::endl;
 	results.push_back(temp.get_bug_overview()); 
     }
   } catch (std::exception &e) {
@@ -71,5 +70,37 @@ std::list<bug_overview> backend::get_normal_search(const std::string& query) {
   }
     return results;
 }
+
+bool backend::add_bug(const complete_bug_info& bug){
+    Bug_Controller controller;
+    controller.set_bug_info(bug);
+
+    if (controller.update_bug())
+	return true;
+    else 
+	return false;
+}
+
+bool backend::add_user(const user& user_info){
+    user_controller controller;
+    controller.set_user_info(user_info);
+
+    if (controller.update_user())
+	return true;
+    else 
+	return false;
+}
+
+bool backend::add_comment(const comment& comment_info){
+    comment_controller controller;
+    controller.set_comment(comment_info);
+
+    if (controller.update_comment())
+	return true;
+    else 
+	return false;
+}
+
+
 
 

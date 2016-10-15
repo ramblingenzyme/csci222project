@@ -25,6 +25,15 @@ class backend: public ngrest::Service {
 
         // *method: POST
         std::list<bug_overview> get_normal_search(const std::string& query);
+
+	// *method: POST
+	bool add_bug(const complete_bug_info& bug);
+
+	// *method: POST
+	bool add_user(const user& user_info);
+
+	// *method: POST
+	bool add_comment(const comment& comment_info);
 };
 
 #endif // BACKEND_H
