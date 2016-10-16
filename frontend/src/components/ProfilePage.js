@@ -8,7 +8,7 @@ class ProfilePage extends Component {
             <div>
                 {content}
             </div>
-        )
+        );
     }
 
     _getContent() {
@@ -32,13 +32,13 @@ class ProfilePage extends Component {
                         <span>{this.props.interests}</span>
                     </div>
                 </section>
-            )
+            );
         } else {
             return (
                 <p>
                     You must <Link to="/login">login</Link> to view this page
                 </p>
-            )
+            );
         }
     }
 }

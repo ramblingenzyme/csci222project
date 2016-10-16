@@ -5,6 +5,6 @@ export default function requesting(state = false, action) {
         case REQUEST:
             return action.requesting;
         default:
-            return state
+            return state;
     }
 }

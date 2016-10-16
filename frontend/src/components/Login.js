@@ -8,7 +8,7 @@ class Login extends Component {
             <div>
                 {content}
             </div>
-        )
+        );
     }
 
     _getContent() {
@@ -17,13 +17,13 @@ class Login extends Component {
                 <div>
                     Hello {this.props.username}
                 </div>
-            )
+            );
         } else {
             return (
                 <div>
                     <Link to="/login">Login</Link>
                 </div>
-            )
+            );
         }
     }
 }

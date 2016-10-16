@@ -9,7 +9,7 @@ class RadioField extends Component {
                        id={this.props.id} component="input"/>
                 <label htmlFor={this.props.id}>{this.props.title}</label>
             </div>
-        )
+        );
     }
 }
 

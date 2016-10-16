@@ -11,7 +11,7 @@ class InputField extends Component {
                     <div className="description">{this.props.description}</div>
                 </div>
             </form>
-        )
+        );
     }
 }
 

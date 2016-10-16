@@ -12,11 +12,11 @@ class ReportWriter extends Component {
                 <h3>Bug Details</h3>
                 {fields}
             </div>
-        )
+        );
     }
 
     FormFields() {
-        let req = <span className="aui-icon icon-required">(required)</span>
+        let req = <span className="aui-icon icon-required">(required)</span>;
         return (
             <div id="details" className="ReportDetails">
                 <div className="field-group">
@@ -48,7 +48,7 @@ class ReportWriter extends Component {
                     <textarea className="textarea large-width-field" name="description" type="text" placeholder="Bug description"/>
                 </div>
             </div>
-        )
+        );
     }
 
     handleEditorChange(e) {
@@ -75,4 +75,4 @@ class ReportWriter extends Component {
 
 export default ReportWriter = reduxForm({
     form: 'report-writer'
-})(ReportWriter)
+})(ReportWriter);

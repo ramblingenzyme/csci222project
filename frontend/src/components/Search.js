@@ -9,12 +9,12 @@ class Search extends Component {
                 <label className="assistive" htmlFor={this.props.field}>Search</label>
                 <Field className="text large-width-field" name={this.props.field} component="input" type="text" placeholder="Search Bugs"/>
             </form>
-        )
+        );
     }
 }
 
 Search = reduxForm({
     form: 'Search'
-})(Search)
+})(Search);
 
 export default Search;

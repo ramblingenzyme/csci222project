@@ -28,7 +28,7 @@ class Menubar extends Component {
                     </li>
                 </ul>
             </div>
-        )
+        );
     }
 }
 

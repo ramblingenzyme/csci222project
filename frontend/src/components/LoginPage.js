@@ -7,7 +7,7 @@ class LoginPage extends Component {
         this.state = {
             username: '',
             password: ''
-        }
+        };
     }
 
     render() {
@@ -31,12 +31,12 @@ class LoginPage extends Component {
                     </div>
                 </div>
             </form>
-        )
+        );
     }
 }
 
 LoginPage = reduxForm({
     form: 'login'
-})(LoginPage)
+})(LoginPage);
 
 export default LoginPage;

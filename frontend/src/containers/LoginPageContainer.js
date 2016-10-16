@@ -5,7 +5,7 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
     handleSubmit: (username, password) => {
-        dispatch(fetchAuthStatus(username, password))
+        dispatch(fetchAuthStatus(username, password));
     }
 });
 
@@ -14,4 +14,4 @@ const LoginPageContainer = connect(
     mapDispatchToProps
 )(LoginPage);
 
-export default LoginPageContainer
+export default LoginPageContainer;

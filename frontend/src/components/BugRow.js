@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 class BugRow extends Component {
     render() {
-        let keywords = this.props.keywords.map(keyword => <li>{keyword}</li>)
+        let keywords = this.props.keywords.map(keyword => <li>{keyword}</li>);
         return (
             <div className="bug">>
                 <ul>
@@ -18,7 +18,7 @@ class BugRow extends Component {
                     </li>
                 </ul>
             </div>
-        )
+        );
     }
 }
 

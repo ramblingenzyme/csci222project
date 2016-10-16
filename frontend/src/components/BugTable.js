@@ -13,11 +13,11 @@ class BugTable extends Component {
                 {bugs}
                 {navigation}
             </div>
-        )
+        );
     }
 
     _getBugs() {
-        return this.props.bugs.map(bug => <BugRow {... bug} />)
+        return this.props.bugs.map(bug => <BugRow {... bug} />);
     }
 
     _getNavigation() {
