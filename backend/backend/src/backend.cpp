@@ -14,19 +14,19 @@ auth_response backend::authenticate(const std::string& username, const std::stri
     auth_response result;
 
     if (!temp.find_username(username)) {
-	result.authed = false;
+        result.authed = false;
         result.role = "null";
         result.username = username;
     } else {
-	if (temp.authenticate(password)) {
-	    result.authed = true;
-	    result.role = temp.get_user_info().privilege_level;
-	    result.username = username;	
-	} else {
+        if (temp.authenticate(password)) {
+            result.authed = true;
+            result.role = temp.get_user_info().privilege_level;
+            result.username = username;     
+        } else {
             result.authed = false;
             result.role = "null";
-       	    result.username = username;
-	}
+            result.username = username;
+        }
     }
 
     return result;
@@ -37,10 +37,10 @@ complete_bug_info backend::get_bug_page(const int& id) {
    
     controller.find_bug_id(std::to_string(id));
     if (!controller.isEmpty()){
-	return controller.get_bug_info();
+        return controller.get_bug_info();
     } else {
-	complete_bug_info result;
-	result.bug_id = "0";
+        complete_bug_info result;
+        result.bug_id = "0";
 
         return result;
     }
@@ -51,10 +51,10 @@ user backend::get_user_page(const std::string& username){
 
     controller.find_username(username);
     if (!controller.isEmpty()){
-	return controller.get_user_info();
+        return controller.get_user_info();
     } else { 
-	user result;
-    	return result;
+        user result;
+        return result;
     }
 }
 
@@ -67,19 +67,19 @@ std::list<bug_overview> backend::get_normal_search(const std::string& query) {
     database.open_connection(CONNECTION_DETAILS);
     
     std::string sqlQuery = "SELECT BUG_ID FROM BUGS WHERE TITLE LIKE '%"
-	    		   + query + "%'";
+        + query + "%'";
 
-  try {
-	    pqxx::result r = database.query(sqlQuery);
-    for (pqxx::result::const_iterator c = r.begin(); c != r.end(); c++){
-	Bug_Controller temp;
-	
-	temp.find_bug_id(c[0].as<std::string>());
-	results.push_back(temp.get_bug_overview()); 
+    try {
+        pqxx::result r = database.query(sqlQuery);
+        for (pqxx::result::const_iterator c = r.begin(); c != r.end(); c++){
+            Bug_Controller temp;
+    
+            temp.find_bug_id(c[0].as<std::string>());
+            results.push_back(temp.get_bug_overview()); 
+        }
+    } catch (std::exception &e) {
+        return results; 
     }
-  } catch (std::exception &e) {
-	return results; 
-  }
     return results;
 }
 
@@ -88,9 +88,9 @@ bool backend::add_bug(const complete_bug_info& bug){
     controller.set_bug_info(bug);
 
     if (controller.update_bug())
-	return true;
+        return true;
     else 
-	return false;
+        return false;
 }
 
 bool backend::add_user(const user& user_info){
@@ -98,9 +98,9 @@ bool backend::add_user(const user& user_info){
     controller.set_user_info(user_info);
 
     if (controller.update_user())
-	return true;
+        return true;
     else 
-	return false;
+        return false;
 }
 
 bool backend::add_comment(const comment& comment_info){
@@ -108,9 +108,9 @@ bool backend::add_comment(const comment& comment_info){
     controller.set_comment(comment_info);
 
     if (controller.update_comment())
-	return true;
+        return true;
     else 
-	return false;
+        return false;
 }
 
 

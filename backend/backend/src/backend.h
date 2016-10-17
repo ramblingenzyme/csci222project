@@ -13,30 +13,30 @@
 
 // *interface.defaultInlineResult: true
 class backend: public ngrest::Service {
-    public:
-        backend()  {}
-        ~backend() {}
+public:
+    backend()  {}
+    ~backend() {}
 
-        // *method: POST
-        auth_response authenticate(const std::string& username, const std::string& password);
+    // *method: POST
+    auth_response authenticate(const std::string& username, const std::string& password);
 
-        // *method: POST
-        complete_bug_info get_bug_page(const int& id);
+    // *method: POST
+    complete_bug_info get_bug_page(const int& id);
 
-	// *method: POST
-	user get_user_page(const std::string& username);
+    // *method: POST
+    user get_user_page(const std::string& username);
 
-        // *method: POST
-        std::list<bug_overview> get_normal_search(const std::string& query);
+    // *method: POST
+    std::list<bug_overview> get_normal_search(const std::string& query);
 
-	// *method: POST
-	bool add_bug(const complete_bug_info& bug);
+    // *method: POST
+    bool add_bug(const complete_bug_info& bug);
 
-	// *method: POST
-	bool add_user(const user& user_info);
+    // *method: POST
+    bool add_user(const user& user_info);
 
-	// *method: POST
-	bool add_comment(const comment& comment_info);
+    // *method: POST
+    bool add_comment(const comment& comment_info);
 };
 
 #endif // BACKEND_H
