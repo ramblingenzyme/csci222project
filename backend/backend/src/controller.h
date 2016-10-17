@@ -123,7 +123,7 @@ public:
     };
         
     // is it empty tho?
-    bool isEmpty() { return data == NULL ? true : false;};
+    bool isEmpty() { return data == NULL;};
         
     //attempts to UPDATE the bug database entry, if it fails, it means it doesn't prexist in the database, so is inserted.
     bool update_bug(){
