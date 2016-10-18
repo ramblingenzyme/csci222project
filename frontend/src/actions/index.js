@@ -23,7 +23,16 @@ export function fetchAuthStatus(username, password) {
     return function(dispatch) {
         dispatch(requestData(true));
 
-        return fetchFromBackend(`authenticate`).then(response => {
+        return fetchFromBackend(`authenticate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: {
+                username,
+                password
+            }
+        }).then(response => {
             dispatch(recieveAuthStatus(response));
             return dispatch(requestData(false));
         });

@@ -1,9 +1,12 @@
 import fetch from 'isomorphic-fetch';
 
-export default function (url, params = { method: "GET", headers:{} }) {
+export default function (url, params = { method: "GET", headers: {} }) {
     if (!params.headers) {
         params.headers = {};
     }
+
+    console.log(`/backend/${url}`);
+    console.log(params);
 
     return fetch(`/backend/${url}`, params).then(response => {
         if (!response.ok) {
