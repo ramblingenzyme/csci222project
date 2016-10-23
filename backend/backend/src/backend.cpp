@@ -6,7 +6,9 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <ostream>
 #include "backend.h"
-#include "controller.h"
+#include "bug_controller.h"
+#include "user_controller.h"
+#include "comment_controller.h"
 
 auth_response backend::authenticate(const std::string& username, const std::string& password) {
     //SELECT * FROM USER WHERE USERNAME =$USERNAME - generalising
