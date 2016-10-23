@@ -10,6 +10,7 @@
 #include "user_controller.h"
 #include "comment_controller.h"
 #include "attachment_controller.h"
+#include "project_controller.h" 
 
 auth_response backend::authenticate(const std::string& username, const std::string& password) {
     //SELECT * FROM USER WHERE USERNAME =$USERNAME - generalising
