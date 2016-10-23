@@ -101,7 +101,7 @@ bool comment_controller::update_comment(){
         + this->data->comment_id + ",'"
         + this->data->username + "',"
         + this->data->bug_id + ",'"
-        + this->data->creation_ts + "',"
+        + this->data->creation_ts + "','"
         + this->data->body + "','"
         + this->data->attach_id + ");";
         
