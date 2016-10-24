@@ -19,7 +19,7 @@ class LoginPage extends Component {
                 </div>
                 <div className="field-group">
                     <label htmlFor="password">Password</label>
-                    <Control.text model="forms.user.password" id="password" />
+                    <Control.text type="password" model="forms.user.password" id="password" />
                 </div>
                 <div className="buttons-container">
                     <div className="buttons">
