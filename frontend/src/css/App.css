@@ -38,11 +38,8 @@
     padding: 10px;
 }
 
-.LoginContainer {
-    width: 30%;
-    height: 20px;
-    float: right;
-    background-color: #4A777A;
+.inputField {
+    padding-left: 1rem;
     text-align: left;
 }
 

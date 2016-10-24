@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
-import Search from './Search.js'
 import { Field, reduxForm } from 'redux-form';
-import DropdownSelector from './DropdownSelector.js'
+import DropdownIndividual from './DropdownIndividual.js'
 import InputField from './InputField.js'
 
 import '../css/App.css';
 
-// This is the default sidebar; for sort bugs
+// This is the default sidebar for searching bugs
 
-/* TODO: Fix Dropdown Selector Code
- <DropdownSelector id="bug-age" options={timeline_options} title="Age"/>
- <DropdownSelector id="bug-status" options={status_options} title="Status"/>
- <DropdownSelector id="bug-priority" options={magnitudal_options} title="Priority"/>
- <DropdownSelector id="bug-severity" options={magnitudal_options} title="Severity"/>
- */
 class SidebarSearch extends Component {
     render() {
         var timeline_options = [
@@ -36,11 +29,40 @@ class SidebarSearch extends Component {
         ];
         return (
             <div className="aui-page-panel-nav">
-                <nav className="aui-navgroup-vertical">
-                    <div className="aui-nav-heading" title="bug-page-search">
-                        <strong>Search Bugs In Project</strong>
+                <nav className="aui-navgroup aui-navgroup-vertical">
+                    <div className="aui-navgroup-inner">
+                        <div className="aui-nav-heading">
+                            Search Bugs In Project
+                        </div>
+                        <strong> </strong>
+                        <ul className="aui-nav field-group top-label inputField">
+                            <li>
+                                <InputField id="search-keywords" title="Keyword(s)" className="text long-field" />
+                            </li>
+                            <li>
+                                <InputField id="version-lower" title="Operating System(s)" placeholder="e.g. ios, mac" />
+                            </li>
+                            <li>
+                                <InputField id="version-lower" title="Version(s)" placeholder="e.g. 1.4.5 - 1.4.7" />
+                            </li>
+                            <li>
+                                <DropdownIndividual id="bug-age" options={timeline_options} title="Bug Age"
+                                                    auiClass="aui top-label" />
+                            </li>
+                            <li>
+                                <DropdownIndividual id="bug-status" options={status_options}title="Bug Status"
+                                                    auiClass="aui top-label" />
+                            </li>
+                            <li>
+                                <DropdownIndividual id="bug-priority" options={magnitudal_options} title="Bug Priority"
+                                                    auiClass="aui top-label" />
+                            </li>
+                            <li>
+                                <DropdownIndividual id="bug-severity" options={magnitudal_options} title="Bug Severity"
+                                                    auiClass="aui top-label" />
+                            </li>
+                        </ul>
                     </div>
-
                 </nav>
             </div>
         );

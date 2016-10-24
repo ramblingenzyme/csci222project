@@ -6,6 +6,7 @@ import SidebarAnalysis from '../components/SidebarAnalysis.js';
 import SidebarAssign from '../components/SidebarAssign.js';
 import ProfilePage from '../components/ProfilePage.js';
 import ReportPage from '../components/ReportPage.js';
+import SearchPage from '../components/SearchPage.js';
 
 export default {
     path: '/',
@@ -53,7 +54,7 @@ export default {
         {
             path: '/Search/',
             components: {
-                main: Login,
+                main: SearchPage,
                 sidebar: SidebarSearch
             }
         },
