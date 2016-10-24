@@ -1,9 +1,19 @@
 import {
+    REQUEST,
+    RECEIVE_BUG_INFO,
     RECEIVE_AUTH_STATUS,
-    REQUEST
+    RECEIVE_SEARCH_RESULTS,
 } from '../const';
 
 import fetchFromBackend from '../helpers/fetch';
+
+function genericApiRequest(dispatch, action, endpoint, params = { method: 'GET', headers: {} }) {
+    return fetchFromBackend(endpoint, params)
+        .then(response => {
+            dispatch(action(response));
+            return dispatch(requestData(false));
+        });
+}
 
 export function requestData(requesting) {
     return {
@@ -19,22 +29,58 @@ export function recieveAuthStatus(authStatus) {
     };
 }
 
+export function recieveBugInfo(bugInfo) {
+    return {
+        type: RECEIVE_BUG_INFO,
+        bugInfo
+    };
+}
+
+export function recieveSearchResults(searchResults) {
+    return {
+        type: RECEIVE_SEARCH_RESULTS,
+        searchResults
+    };
+}
+
 export function fetchAuthStatus(username, password) {
     return function(dispatch) {
-        dispatch(requestData(true));
+        let endpoint = 'authenticate';
+        let params = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Accept": 'application/json'
+            },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        };
+        genericApiRequest(dispatch, recieveAuthStatus, endpoint, params);
+    }
+}
 
-        return fetchFromBackend(`authenticate`, {
+export function fetchBugPage(id) {
+    return function(dispatch) {
+        let endpoint = `bugs/${id}`;
+        genericApiRequest(dispatch, recieveBugInfo, endpoint);
+    }
+
+}
+
+export function fetchSearchResults(query) {
+    return function (dispatch) {
+        console.log(query);
+        let endpoint = 'search';
+        let params = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: {
-                username,
-                password
-            }
-        }).then(response => {
-            dispatch(recieveAuthStatus(response));
-            return dispatch(requestData(false));
-        });
-    };
+            body: JSON.stringify(query)
+        }
+
+        genericApiRequest(dispatch, recieveSearchResults, endpoint, params);
+    }
 }
