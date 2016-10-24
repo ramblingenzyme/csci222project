@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 
 class DropdownIndividual extends Component {
     render() {

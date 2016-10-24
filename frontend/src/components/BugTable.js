@@ -43,7 +43,7 @@ class BugTable extends Component {
         let pageRangeStart = this.props.page - (this.props.page % 10) + 1;
 
         let pages = [];
-        for (i=pageRangeStart; i < pageRangeStart + 10; i++) {
+        for (let i=pageRangeStart; i < pageRangeStart + 10; i++) {
             pages.push(
                 <li className="">
                     <Link to={`bugs/page/${i}`}>

@@ -1,13 +1,16 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import LoginPage from '../components/LoginPage.js';
+
+import { fetchAuthStatus } from '../actions'
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = dispatch => ({
-    handleSubmit: (username, password) => {
-        dispatch(fetchAuthStatus(username, password));
-    }
-});
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+       fetchAuthStatus
+    }, dispatch);
+}
 
 const LoginPageContainer = connect(
     mapStateToProps,
