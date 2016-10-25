@@ -5,53 +5,49 @@
 #include "const.h"
 
 class Database_Utility {
+ 
 public:
-	std::string sqlQuery; 
-private:
-	database_utility() {};
-	~database_utility() {};
+	Database_Utility() {};
+	~Database_Utility() {};
 
 	bool create_database();
 	bool drop_database();
 	bool database_empty();
-}
+};
 
 bool Database_Utility::create_database() {
 	DatabaseConnection database;
 	database.open_connection(CONNECTION_DETAILS);
 
 	if (!database_empty()){
+		database.close_connection();	
 		return false;
 	}
-
-	if (database.transaction(CREATE_DATABASE))
-		return true;
-	else
-		return false;
+	bool flag = database.transaction(CREATE_DATABASE);
+	database.close_connection();
+	
+	return flag? true : false;
 }
 bool Database_Utility::drop_database(){
 	DatabaseConnection database;
 	database.open_connection(CONNECTION_DETAILS);
 
-	if(database.transaction(DROP_TABLES)
-		return true;
-	else
-		return false;
+	bool flag = database.transaction(DROP_TABLES);
+	database.close_connection();
+
+	return flag? true : false;
 }
-bool database_empty(){
+bool Database_Utility::database_empty(){
 	DatabaseConnection database;
 	database.open_connection(CONNECTION_DETAILS);
-	
+	//Checks if first table declared and last table declared are in the database
 	std::string sqlQuery ="Select * from pg_tables where tablename ='USERS';";
 	pqxx::result r = database.query(sqlQuery);
-
-	if (pqxx::result q == r)
-		return true;
-	
 	sqlQuery = "Select * from pg_tables where tablename ='TOPDEVELOPERS';";
-	r = database.query(sqlQuery);
-	if (pqxx:result q == r)
-		return true;
+	pqxx::result s = database.query(sqlQuery);
+	pqxx::result q; //empty result
+	database.close_connection();
 
+	if (q == r && q == s) return true;
 	return false;
 }

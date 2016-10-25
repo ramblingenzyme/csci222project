@@ -10,7 +10,8 @@
 #include "user_controller.h"
 #include "comment_controller.h"
 #include "attachment_controller.h"
-#include "project_controller.h" 
+#include "project_controller.h"
+#include "utilitycontrollers.h"
 
 auth_response backend::authenticate(const std::string& username, const std::string& password) {
     //SELECT * FROM USER WHERE USERNAME =$USERNAME - generalising
@@ -117,6 +118,17 @@ bool backend::add_comment(const comment& comment_info){
         return false;
 }
 
+bool backend::drop_database(){
+    Database_Utility util;
+
+    return util.drop_database();
+}
+
+bool backend::create_database(){
+    Database_Utility util;
+
+    return util.create_database();
+}
 
 
 
