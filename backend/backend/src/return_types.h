@@ -52,7 +52,7 @@ struct user {
     std::string privilege_level;
 };
 
-struct project { 
+struct project {
     std::string project_name;
     std::string project_id;
 };
@@ -64,11 +64,11 @@ struct attachment {
     std::string description;
     std::string filename;
     std::string filesize;
-    std::string file; 
+    std::string file;
     std::string attacher;
 };
 
-struct comment { 
+struct comment {
     std::string comment_id;
     std::string username;
     std::string bug_id;
@@ -81,8 +81,9 @@ struct statistics {
     std::string project_id;
     std::string num_of_bugs;
     std::string num_of_resolved_bugs;
-    std::string total_wait_time; 
+    std::string total_wait_time;
 };
+
 struct top_developer {
     std::string project_id;
     std::string username;
