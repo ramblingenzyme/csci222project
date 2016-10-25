@@ -52,9 +52,23 @@ struct user {
     std::string privilege_level;
 };
 
+struct top_developer {
+    std::string project_id;
+    std::string username;
+    std::string resolved_bugs;
+};
+
+struct statistics {
+    std::string project_id;
+    std::string num_of_bugs;
+    std::string num_of_resolved_bugs;
+    std::string total_wait_time;
+    std::list<top_developer> top_developers;
+};
 struct project {
     std::string project_name;
     std::string project_id;
+    statistics statistic;
 };
 
 struct attachment {
@@ -77,16 +91,6 @@ struct comment {
     std::string attach_id;
 };
 
-struct statistics {
-    std::string project_id;
-    std::string num_of_bugs;
-    std::string num_of_resolved_bugs;
-    std::string total_wait_time;
-};
 
-struct top_developer {
-    std::string project_id;
-    std::string username;
-    std::string resolved_bugs;
-};
+
 #endif
