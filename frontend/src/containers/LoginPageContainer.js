@@ -4,7 +4,9 @@ import LoginPage from '../components/LoginPage.js';
 
 import { fetchAuthStatus } from '../actions'
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+    authenticateUser: state.authenticateUser
+});
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({

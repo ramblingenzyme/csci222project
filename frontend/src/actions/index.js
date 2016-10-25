@@ -1,20 +1,14 @@
 import {
     REQUEST,
     RECEIVE_BUG_INFO,
+    RECEIVE_BUG_LIST,
     RECEIVE_AUTH_STATUS,
-    RECEIVE_SEARCH_RESULTS,
+    RECEIVE_PROFILE_INFO
 } from '../const';
 
-import fetchFromBackend from '../helpers/fetch';
+import genericApiRequest from './genericApiRequest';
 
-function genericApiRequest(dispatch, action, endpoint, params = { method: 'GET', headers: {} }) {
-    return fetchFromBackend(endpoint, params)
-        .then(response => {
-            dispatch(action(response));
-            return dispatch(requestData(false));
-        });
-}
-
+// PURE ACTIONS
 export function requestData(requesting) {
     return {
         type: REQUEST,
@@ -22,27 +16,35 @@ export function requestData(requesting) {
     };
 }
 
-export function recieveAuthStatus(authStatus) {
+export function receiveAuthStatus(authStatus) {
     return {
         type: RECEIVE_AUTH_STATUS,
         authStatus
     };
 }
 
-export function recieveBugInfo(bugInfo) {
+export function receiveBugInfo(bugInfo) {
     return {
         type: RECEIVE_BUG_INFO,
         bugInfo
     };
 }
 
-export function recieveSearchResults(searchResults) {
+export function receiveBugList(bugList) {
     return {
-        type: RECEIVE_SEARCH_RESULTS,
-        searchResults
+        type: RECEIVE_BUG_LIST,
+        bugList
     };
 }
 
+export function receiveProfileInfo(profileInfo) {
+    return {
+        type: RECEIVE_PROFILE_INFO,
+        profileInfo
+    }
+}
+
+// THUNKS
 export function fetchAuthStatus(username, password) {
     return function(dispatch) {
         let endpoint = 'authenticate';
@@ -57,21 +59,20 @@ export function fetchAuthStatus(username, password) {
                 password
             })
         };
-        genericApiRequest(dispatch, recieveAuthStatus, endpoint, params);
+        genericApiRequest(dispatch, receiveAuthStatus, endpoint, params);
     }
 }
 
 export function fetchBugPage(id) {
     return function(dispatch) {
         let endpoint = `bugs/${id}`;
-        genericApiRequest(dispatch, recieveBugInfo, endpoint);
+        genericApiRequest(dispatch, receiveBugInfo, endpoint);
     }
 
 }
 
 export function fetchSearchResults(query) {
     return function (dispatch) {
-        console.log(query);
         let endpoint = 'search';
         let params = {
             method: 'POST',
@@ -81,6 +82,22 @@ export function fetchSearchResults(query) {
             body: JSON.stringify(query)
         }
 
-        genericApiRequest(dispatch, recieveSearchResults, endpoint, params);
+        genericApiRequest(dispatch, receiveBugList, endpoint, params);
+    }
+}
+
+export function fetchBugtable(page) {
+    return function (dispatch) {
+        let endpoint = `bugpage/${page}`;
+
+        genericApiRequest(dispatch, receiveBugList, endpoint);
+    }
+}
+
+export function fetchProfile(id) {
+    return function (dispatch) {
+        let endpoint = `profile/${id}`
+
+        genericApiRequest(dispatch, receiveProfileInfo, endpoint);
     }
 }
