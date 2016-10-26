@@ -23,9 +23,11 @@ const store = createStore(
     )
 );
 
+let actualRoutes = routes(store);
+
 ReactDOM.render(
     <Provider store={store}>
-        <Router history={browserHistory} routes={routes} />
+        <Router history={browserHistory} routes={actualRoutes} />
     </Provider>,
     document.getElementById('root')
 );

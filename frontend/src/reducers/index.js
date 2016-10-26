@@ -9,10 +9,14 @@ import profile from './profile';
 import requesting from './requesting';
 import authenticateUser from './authenticateUser';
 
-const initialUser = {
+const user = {
     username: '',
     password: '',
 };
+
+const searchBox = {
+    searchTerm: ''
+}
 
 const baseReducer = combineReducers({
     bugList,
@@ -22,7 +26,8 @@ const baseReducer = combineReducers({
     authenticateUser,
     form: formReducer,
     forms: combineForms({
-        user: initialUser
+        user,
+        searchBox
     }, 'forms')
 });
 
