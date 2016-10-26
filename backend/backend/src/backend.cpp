@@ -108,6 +108,34 @@ bool backend::assign_developer(const std::string& bug_id, const std::string& dev
 	return bug.update_bug();
 }
 
+bool backend::set_priority(const std::string& bug_id, const std::string& triager_username,const std::string& priority){
+	user_controller triager;
+	Bug_Controller bug;
+
+	if (!triager.find_username(triager_username)||!bug.find_bug_id(bug_id)) return false;
+
+	if (triager.get_user_info().privilege_level != "Triager") return false;
+	complete_bug_info temp = bug.get_bug_info();
+	temp.priority = priority;
+	bug.set_bug_info(temp);
+	return bug.update_bug();
+
+}
+
+bool backend::set_status(const std::string& bug_id, const std::string& changer_username,const std::string& status){
+	user_controller changer;
+	Bug_Controller bug;
+
+	if (!changer.find_username(changer_username)||!bug.find_bug_id(bug_id)) return false;
+
+	if (changer.get_user_info().privilege_level != "Triager" && changer.get_user_info().privilege_level != "Reviewer") return false;
+	complete_bug_info temp = bug.get_bug_info();
+	temp.status = status;
+	bug.set_bug_info(temp);
+	return bug.update_bug();
+}
+
+
 bool backend::add_user(const user& user_info){
     user_controller controller;
     controller.set_user_info(user_info);

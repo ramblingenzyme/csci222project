@@ -42,6 +42,12 @@ public:
     bool assign_developer(const std::string& bug_id, const std::string& developer_username, const std::string& triager_username);
 
     // *method: POST
+    bool set_priority(const std::string& bug_id, const std::string& triager_username, const std::string& priority);
+
+    // *method: POST 
+    bool set_status(const std::string& bug_id, const std::string& changer_username, const std::string& status);
+
+    // *method: POST
     bool add_bug(const complete_bug_info& bug);
 
     // *method: POST
