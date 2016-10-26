@@ -44,6 +44,13 @@ export function receiveProfileInfo(profileInfo) {
     }
 }
 
+export function recieveProfileList(profileList) {
+    return {
+        type: RECEIVE_PROFILE_LIST,
+        profileList
+    }
+}
+
 // THUNKS
 export function fetchAuthStatus(username, password) {
     return function(dispatch) {
@@ -104,5 +111,13 @@ export function fetchProfile(id) {
         let endpoint = `profile/${id}`
 
         genericApiRequest(dispatch, receiveProfileInfo, endpoint);
+    }
+}
+
+export function fetchProfileList() {
+    return function (dispatch) {
+        let endpoint = `profiles`
+
+        genericApiRequest(dispatch, receiveProfileList, endpoint);
     }
 }
