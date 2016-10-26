@@ -86,6 +86,18 @@ bool backend::subscribe(const std::string& bug_id, const std::string& username) 
 
     return bug.update_bug();
 }
+
+bool backend::vote(const std::string& bug_id, const std::string & username, const int positiveornegativeone) {
+    Bug_Controller bug;
+    user_controller user;
+    if (!bug.find_bug_id(bug_id) || !user.find_username(username)) return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.votes += positiveornegativeone;
+    bug.set_bug_info(temp);
+
+    return bug.update_bug();
+
+}
 project backend::get_project(const std::string& project_id){
     project_controller controller;
 

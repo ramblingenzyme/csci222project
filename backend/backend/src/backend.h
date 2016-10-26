@@ -57,6 +57,9 @@ public:
     bool subscribe(const std::string& bug_id, const std::string& username);
 
     // *method: POST
+    bool vote(const std::string& bug_id, const std::string& username, const int positiveornegativeone);
+
+    // *method: POST
     bool add_attachment(const attachment& attachment_info);
 
     // *method: POST
