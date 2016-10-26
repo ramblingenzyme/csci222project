@@ -8,7 +8,7 @@ import '../css/App.css';
 // This is the default sidebar for searching bugs
 
 class SidebarSearch extends Component {
-    _handleSubmit(user) {
+    _handleSubmit(sideBar) {
 
     };
 
@@ -41,13 +41,13 @@ class SidebarSearch extends Component {
                         <strong> </strong>
                         <Form className="aui top-label padField" method="post" model="forms.user" onSubmit={(user) => this._handleSubmit(user)}>
                             <InputField id="search-keywords" title="Keyword(s)" placeholder="keyword1, keyword2"
-                                model = "forms.searchPageSidebar.keywording" className="text"/>
+                                model = "forms.searchPageSidebar.keyword" className="text"/>
 
                             <InputField id="operating-system" title="Operating System(s)" placeholder="e.g. ios, mac"
-                                model= "forms.searchPageSidebar.osing"/>
+                                model= "forms.searchPageSidebar.os"/>
 
                             <InputField id="version" title="Version" placeholder="e.g. 1.4.5 - 1.4.7"
-                                model= "forms.searchPageSidebar.versioning"/>
+                                model= "forms.searchPageSidebar.version"/>
 
                             <DropdownIndividual id="bug-age" options={timeline_options} title="Bug Age"
                                                 auiClass="aui top-label" model = "forms.searchPageSidebar.age" />
