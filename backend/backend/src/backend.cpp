@@ -102,13 +102,15 @@ bool backend::add_comment(const comment& comment_info){
         return false;
 }
 
-bool backend::drop_database(){
+bool backend::drop_database(const std::string password){
+    if (password != "satvik no") return false;
     Database_Utility util;
 
     return util.drop_database();
 }
 
-bool backend::create_database(){
+bool backend::create_database(const std::string password){
+    if (password != "satvik no") return false;
     Database_Utility util;
 
     return util.create_database();

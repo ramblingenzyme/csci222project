@@ -41,11 +41,11 @@ public:
     // *method: POST
     bool add_comment(const comment& comment_info);
 
-    // *method: GET
-    bool drop_database();
+    // *method: POST
+    bool drop_database(const std::string password);
 
-    // *method: GET
-    bool create_database();
+    // *method: POST
+    bool create_database(const std::string password);
 };
 
 #endif // BACKEND_H
