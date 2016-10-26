@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
-import { Control, Form } from 'react-redux-form';
+import { Control, Form, Errors } from 'react-redux-form';
 
 class LoginPage extends Component {
     _handleLogin(user) {
-        let invalid = [ '', ' ', null, undefined ]
-        if (invalid.includes(user.username)) {
-            return alert("Username can't be blank");
-        } else if (invalid.includes(user.password)) {
-            return alert("Password must be filled out");
-        }
-
         return this.props.fetchAuthStatus(user.username, user.password)
             .then(response => {
                 if (response.authed === false) {
-                    return alert("Login failed");
+                    return alert("Incorrect username/password");
                 } else {
                     return Promise.resolve(true);
                 }
@@ -29,6 +22,8 @@ class LoginPage extends Component {
             )
         }
 
+        const required = (val) => val && val.length;
+
         return (
             <div className="aui-group">
                 <div className="aui-item">
@@ -38,11 +33,40 @@ class LoginPage extends Component {
                             <label htmlFor="username">
                                 Username
                             </label>
-                            <Control.text model="forms.user.username" id="username" />
+                            <Control.text
+                                model="forms.user.username"
+                                id="username"
+                                validators={{
+                                    required
+                                }}
+                            />
+                            <Errors
+                                className="error"
+                                model="forms.user.username"
+                                show="touched"
+                                messages={{
+                                    required: 'Required'
+                                }}
+                            />
                         </div>
                         <div className="field-group">
                             <label htmlFor="password">Password</label>
-                            <Control.text type="password" model="forms.user.password" id="password" />
+                            <Control.text
+                                type="password"
+                                model="forms.user.password"
+                                id="password"
+                                validators={{
+                                    required
+                                }}
+                            />
+                            <Errors
+                                className="error"
+                                model="forms.user.password"
+                                show="touched"
+                                messages={{
+                                    required: 'Required'
+                                }}
+                            />
                         </div>
                         <div className="buttons-container">
                             <div className="buttons">
