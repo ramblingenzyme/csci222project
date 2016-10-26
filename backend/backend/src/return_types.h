@@ -9,6 +9,15 @@ struct auth_response {
     std::string username;
 };
 
+struct comment {
+    std::string comment_id;
+    std::string username;
+    std::string bug_id;
+    std::string creation_ts;
+    std::string body;
+    std::string attach_id;
+};
+
 struct bug_overview {
     std::string bug_id;
     std::string title;
@@ -43,6 +52,7 @@ struct complete_bug_info {
     std::list<std::string> cclist;
     std::list<std::string> keywords;
     std::list<std::string> dependencies;
+    std::list<comment> comments;
 };
 
 struct user {
@@ -52,9 +62,23 @@ struct user {
     std::string privilege_level;
 };
 
+struct top_developer {
+    std::string project_id;
+    std::string username;
+    std::string resolved_bugs;
+};
+
+struct statistics {
+    std::string project_id;
+    std::string num_of_bugs;
+    std::string num_of_resolved_bugs;
+    std::string total_wait_time;
+    std::list<top_developer> top_developers;
+};
 struct project {
     std::string project_name;
     std::string project_id;
+    statistics statistic;
 };
 
 struct attachment {
@@ -68,25 +92,7 @@ struct attachment {
     std::string attacher;
 };
 
-struct comment {
-    std::string comment_id;
-    std::string username;
-    std::string bug_id;
-    std::string creation_ts;
-    std::string body;
-    std::string attach_id;
-};
 
-struct statistics {
-    std::string project_id;
-    std::string num_of_bugs;
-    std::string num_of_resolved_bugs;
-    std::string total_wait_time;
-};
 
-struct top_developer {
-    std::string project_id;
-    std::string username;
-    std::string resolved_bugs;
-};
+
 #endif

@@ -3,6 +3,7 @@
 #include "return_types.h"
 #include "const.h" 
 #include "database_connection.h"
+#include "comment_controller.h"
 #include <string>
 #include <list>
 
@@ -22,9 +23,17 @@ public:
     }
 
     bool find_bug_id(std::string bugID);
+    std::string generate_find_bug_id_query(std::string bugID);
+
     bug_overview get_bug_overview();
     void set_bug_info(complete_bug_info a);
+
     bool update_bug();
+    std::string generate_update_bug_query();
+
+    std::string generate_insert_bug_query();
+
+    std::string generate_cc_list_query();
 
     //return the all info on the bug
     complete_bug_info get_bug_info(){ return *data;};
@@ -44,7 +53,8 @@ bool Bug_Controller::find_bug_id(std::string bugID) {
 
         database.open_connection(CONNECTION_DETAILS);
     
-        std::string sqlQuery = "SELECT * FROM BUGS WHERE BUG_ID="+ bugID +";"; 
+        //std::string sqlQuery = "SELECT * FROM BUGS WHERE BUG_ID="+ bugID +";";
+        std::string sqlQuery = generate_find_bug_id_query(bugID);
         pqxx::result results = database.query(sqlQuery.c_str());
         pqxx::result::const_iterator c = results.begin();
             
@@ -105,10 +115,27 @@ bool Bug_Controller::find_bug_id(std::string bugID) {
             c++;
         }
 
+	sqlQuery = "SELECT comment_id FROM COMMENTS WHERE BUG_ID=" + bugID +";";
+	results = database.query(sqlQuery.c_str());
+	c = results.begin();
+
+	database.close_connection();
+	while (c!= results.end()){
+	    comment_controller temp;
+	    temp.find_comment_id(c[0].as<std::string>());
+	    this->data->comments.push_back(temp.get_comment());
+	    c++;
+	}
+
         return true; 
     } catch (...) {
+	database.close_connection();
         return false;
     }   
+}
+
+std::string Bug_Controller::generate_find_bug_id_query(std::string bugID) {
+    return "SELECT * FROM BUGS WHERE BUG_ID=" + bugID + ";";
 }
 
 //return a summarised version of the info on the bug
@@ -144,25 +171,7 @@ bool Bug_Controller::update_bug(){
     database.open_connection(CONNECTION_DETAILS);
 
     //update bug
-    std::string sqlquery = "UPDATE bugs set bug_id ="
-        + this->data->bug_id + ", creation_ts ='"
-        + this->data->creation_time + "', delta_ts = '"
-        + this->data->delta_time + "', title = '"
-        + this->data->title + "', short_desc = '"
-        + this->data->description + "', component = '"
-        + this->data->component + "', version = '"
-        + this->data->version + "' , op_sys ='"
-        + this->data->operating_system + "', bug_status ='"
-        + this->data->status + "', dupl_id ='"
-        + this->data->duplicate_id + ", bug_file_loc ='"
-        + "NULL" + "', priority ="
-        + this->data->priority + ", severity ="
-        + this->data->severity + ", reporter ="
-        + this->data->reporter + ", assigned_to ="
-        + this->data->assigned_to + ", project_id ="
-        + this->data->project_id + ", votes ="
-        + this->data->votes + " where bug_id = "
-        + this->data->bug_id + ";";
+    std::string sqlquery = generate_update_bug_query();
 
     //if update fails, then start inserting else, update the rest
     if (database.transaction(sqlquery)){
@@ -177,7 +186,6 @@ bool Bug_Controller::update_bug(){
         sqlquery = "delete from keywords where bug_id="
             + this->data->bug_id + ";";
         database.transaction(sqlquery);
-
 
         //inserting cclist
         for (std::list<std::string>::iterator i= this->data->cclist.begin(); i != this->data->cclist.end(); i++) {
@@ -213,28 +221,7 @@ bool Bug_Controller::update_bug(){
     }
 
     //inserting bug
-    sqlquery = "insert into bugs (bug_id, creation_ts,"
-        "delta_ts, title, short_desc, component,"
-        "version, op_sys, bug_status, dupl_id,"
-        "bug_file_loc, priority, severity, reporter,"
-        "assigned_to, project_id, votes) values ("
-        + this->data->bug_id + ",'"
-        + this->data->creation_time + "','"
-        + this->data->delta_time + "','"
-        + this->data->title + "','"
-        + this->data->description + "','"
-        + this->data->component + "','"
-        + this->data->version + "','"
-        + this->data->operating_system + "',"
-        + this->data->status + ","
-        + this->data->duplicate_id + ","
-        + "NULL" + ","
-        + this->data->priority + ","
-        + this->data->reporter + ","
-        + this->data->severity + ","
-        + this->data->assigned_to + ","
-        + this->data->project_id + ","
-        + this->data->votes + ");";
+    sqlquery = generate_insert_bug_query();
         
     database.transaction(sqlquery);
 
@@ -274,6 +261,59 @@ bool Bug_Controller::update_bug(){
     return true;
 }
 
+std::string Bug_Controller::generate_update_bug_query() {
+    std::string query;
+    query = "UPDATE bugs set bug_id ="
+        + this->data->bug_id + ", creation_ts ='"
+        + this->data->creation_time + "', delta_ts = '"
+        + this->data->delta_time + "', title = '"
+        + this->data->title + "', short_desc = '"
+        + this->data->description + "', component = '"
+        + this->data->component + "', version = '"
+        + this->data->version + "' , op_sys ='"
+        + this->data->operating_system + "', bug_status ='"
+        + this->data->status + "', dupl_id ='"
+        + this->data->duplicate_id + ", bug_file_loc ='"
+        + "NULL" + "', priority ="
+        + this->data->priority + ", severity ="
+        + this->data->severity + ", reporter ="
+        + this->data->reporter + ", assigned_to ="
+        + this->data->assigned_to + ", project_id ="
+        + this->data->project_id + ", votes ="
+        + this->data->votes + " where bug_id = "
+        + this->data->bug_id + ";";
+
+    return query;
+}
+
+std::string Bug_Controller::generate_insert_bug_query() {
+    std::string query;
+
+    query = "insert into bugs (bug_id, creation_ts,"
+        "delta_ts, title, short_desc, component,"
+        "version, op_sys, bug_status, dupl_id,"
+        "bug_file_loc, priority, severity, reporter,"
+        "assigned_to, project_id, votes) values ("
+        + this->data->bug_id + ",'"
+        + this->data->creation_time + "','"
+        + this->data->delta_time + "','"
+        + this->data->title + "','"
+        + this->data->description + "','"
+        + this->data->component + "','"
+        + this->data->version + "','"
+        + this->data->operating_system + "',"
+        + this->data->status + ","
+        + this->data->duplicate_id + ","
+        + "NULL" + ","
+        + this->data->priority + ","
+        + this->data->reporter + ","
+        + this->data->severity + ","
+        + this->data->assigned_to + ","
+        + this->data->project_id + ","
+        + this->data->votes + ");";
+
+    return query;
+}
 
 #endif
 

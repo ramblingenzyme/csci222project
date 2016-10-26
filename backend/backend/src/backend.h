@@ -27,7 +27,16 @@ public:
     user get_user_page(const std::string& username);
 
     // *method: POST
-    std::list<bug_overview> get_normal_search(const std::string& query);
+    project get_project(const std::string& project_id);
+
+    // *method: POST
+    std::list<bug_overview> get_normal_search(const std::string& query, const int page);
+
+    // *method: POST
+    std::list<user> get_user_search(const std::string& query, const int page);
+
+    // *method: POST
+    std::list<user> get_developers();
 
     // *method: POST
     bool add_bug(const complete_bug_info& bug);
@@ -36,7 +45,19 @@ public:
     bool add_user(const user& user_info);
 
     // *method: POST
+    bool edit_user(const user& user_info, const user& user_editing);
+
+    // *method: POST
     bool add_comment(const comment& comment_info);
+
+    // *method: POST
+    bool add_project(const std::string project_name);
+
+    // *method: POST
+    bool drop_database(const std::string password);
+
+    // *method: POST
+    bool create_database(const std::string password);
 };
 
 #endif // BACKEND_H
