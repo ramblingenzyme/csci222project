@@ -4,18 +4,6 @@ import { Link } from 'react-router';
 import BugRow from './BugRow';
 
 class BugTable extends Component {
-    render() {
-        let bugs = this._getBugs();
-        let navigation = this._getNavigation();
-
-        return (
-            <div>
-                {bugs}
-                {navigation}
-            </div>
-        );
-    }
-
     _getBugs() {
         return this.props.bugs.map(bug => <BugRow {... bug} />);
     }
@@ -59,6 +47,27 @@ class BugTable extends Component {
                 {pages}
                 {next}
             </ul>
+        );
+    }
+
+    render() {
+        let bugs = this._getBugs();
+        let navigation = this._getNavigation();
+
+        return (
+            <div>
+                <table>
+                    <th>
+                        <tr>Bug ID</tr>
+                        <tr>Title</tr>
+                        <tr>Product</tr>
+                        <tr>Status</tr>
+                        <tr>Priority</tr>
+                    </th>
+                    {bugs}
+                </table>
+                {navigation}
+            </div>
         );
     }
 }

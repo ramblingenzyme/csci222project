@@ -1,7 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 
 class BugPage extends Component {
+    _getComments() {
+        return this.props.comments.map(comment => (
+            <div className="comment">
+                {comment.content}
+            </div>
+        ))
+    }
+
+    _getCcList() {
+        return this.props.cclist.map(email => (
+            <li>email</li>
+        ))
+    }
+
     render() {
+        let comments = this._getComments();
+        let cclist = this._getCcList();
+
         return (
             <div class="bugPage">
                 <h1>{this.props.id} - {this.props.title}</h1>
@@ -36,6 +53,12 @@ class BugPage extends Component {
                         <td>{this.props.component}</td>
                     </tr>
                 </table>
+                <h2>CC List</h2>
+                <ul>
+                    {cclist}
+                </ul>
+                <h2>Comments</h2>
+                {comments}
             </div>
         );
     }
