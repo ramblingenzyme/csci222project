@@ -7,6 +7,7 @@ import bugList from './bugList';
 import bugPage from './bugPage';
 import profile from './profile';
 import requesting from './requesting';
+import profileList from './profileList';
 import authenticateUser from './authenticateUser';
 
 const user = {
@@ -23,6 +24,7 @@ const baseReducer = combineReducers({
     bugPage,
     profile,
     requesting,
+    profileList,
     authenticateUser,
     form: formReducer,
     forms: combineForms({
