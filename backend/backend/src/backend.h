@@ -36,6 +36,9 @@ public:
     std::list<user> get_user_search(const std::string& query, const int page);
 
     // *method: POST
+    std::list<user> get_developers();
+
+    // *method: POST
     bool add_bug(const complete_bug_info& bug);
 
     // *method: POST

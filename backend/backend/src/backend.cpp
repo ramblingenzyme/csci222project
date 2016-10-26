@@ -90,7 +90,10 @@ bool backend::add_bug(const complete_bug_info& bug){
     else 
         return false;
 }
-
+std::list<user> backend::get_developers() {
+	Search_Controller search;
+	return search.developer_search();
+}
 bool backend::add_user(const user& user_info){
     user_controller controller;
     controller.set_user_info(user_info);
