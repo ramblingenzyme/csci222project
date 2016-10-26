@@ -1,21 +1,35 @@
 import { combineReducers } from 'redux';
 
-import requesting from './requesting.js';
 import { reducer as formReducer } from 'redux-form';
-import authenticateUser from './authenticateUser.js';
 import { combineForms } from 'react-redux-form'
 
-const initialUser = {
+import bugList from './bugList';
+import bugPage from './bugPage';
+import profile from './profile';
+import requesting from './requesting';
+import profileList from './profileList';
+import authenticateUser from './authenticateUser';
+
+const user = {
     username: '',
     password: '',
 };
 
+const searchBox = {
+    searchTerm: ''
+}
+
 const baseReducer = combineReducers({
+    bugList,
+    bugPage,
+    profile,
     requesting,
+    profileList,
     authenticateUser,
     form: formReducer,
     forms: combineForms({
-        user: initialUser
+        user,
+        searchBox
     }, 'forms')
 });
 
