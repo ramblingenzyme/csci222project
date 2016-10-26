@@ -126,4 +126,5 @@ std::string user_controller::generate_insert_user_query() {
     return query;
 }
 
+
 #endif 

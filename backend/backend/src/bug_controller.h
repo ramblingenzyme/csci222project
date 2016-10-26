@@ -39,6 +39,7 @@ public:
     complete_bug_info get_bug_info(){ return *data;};
         
     // is it empty tho?
+    void new_bug(const complete_bug_info&);
     bool isEmpty() { return data == NULL;};
 };
 
@@ -315,5 +316,23 @@ std::string Bug_Controller::generate_insert_bug_query() {
     return query;
 }
 
+void Bug_Controller::new_bug(const complete_bug_info& partial){
+    this->set_bug_info(partial);
+   
+    DatabaseConnection database;
+    database.open_connection(CONNECTION_DETAILS);
+
+    std::string sqlQuery = "Select bug_id FROM BUGS ORDER BY bug_id ASC;";
+    pqxx::result r = database.query(sqlQuery);
+    database.close_connection();
+    pqxx::result::const_iterator c = r.end();
+    c--;
+
+    std::string id_string = c[0].as<std::string>();
+    double id = atof(id_string.c_str());
+    id++;
+
+    this->data->bug_id = std::to_string(id);
+}
 #endif
 

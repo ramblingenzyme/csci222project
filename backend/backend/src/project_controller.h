@@ -137,9 +137,10 @@ void project_controller::new_project(const std::string project_name){
 	DatabaseConnection database;
 	database.open_connection(CONNECTION_DETAILS);
 
-	std::string sqlQuery = "Select project_id from PROJECTS ORDER BY project_id DESC;";
-	database.close_connection();
+	std::string sqlQuery = "Select project_id from PROJECTS ORDER BY project_id ASC;";
 	pqxx::result r = database.query(sqlQuery);
+	
+	database.close_connection();
 	pqxx::result::const_iterator c = r.end();
 	c--;
 

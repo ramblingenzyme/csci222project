@@ -141,9 +141,9 @@ void attachment_controller::new_attachment(const attachment& partial) {
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
 
-    std::string sqlQuery = "Select attach_id FROM ATTACHMENTS ORDER BY attach_id DESC;";
+    std::string sqlQuery = "Select attach_id FROM ATTACHMENTS ORDER BY attach_id ASC;";
+    pqxx::result r = database.query(sqlQuery); 
     database.close_connection();
-    pqxx::result r = database.query(sqlQuery);
     pqxx::result::const_iterator c = r.end();
     c--;
 

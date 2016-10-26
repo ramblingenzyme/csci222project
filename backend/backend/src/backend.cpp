@@ -83,12 +83,14 @@ std::list<user> backend::get_user_search(const std::string& query, const int pag
 }
 bool backend::add_bug(const complete_bug_info& bug){
     Bug_Controller controller;
-    controller.set_bug_info(bug);
+    if (bug.bug_id == ""){
 
-    if (controller.update_bug())
-        return true;
-    else 
-        return false;
+	controller.new_bug(bug);
+    } else 
+	controller.set_bug_info(bug);
+    
+    return controller.update_bug();
+
 }
 std::list<user> backend::get_developers() {
 	Search_Controller search;
@@ -139,11 +141,13 @@ bool backend::set_status(const std::string& bug_id, const std::string& changer_u
 bool backend::add_user(const user& user_info){
     user_controller controller;
     controller.set_user_info(user_info);
+    
+    user_controller test;
+    test.find_username(user_info.username);
+    if (test.isEmpty()) return false;
 
-    if (controller.update_user())
-        return true;
-    else 
-        return false;
+
+    return controller.update_user();
 }
 bool backend::edit_user(const user& user_info, const user& user_editing){
     user_controller edit;
@@ -163,12 +167,13 @@ bool backend::edit_user(const user& user_info, const user& user_editing){
 
 bool backend::add_comment(const comment& comment_info){
     comment_controller controller;
-    controller.set_comment(comment_info);
+    if (comment_info.comment_id == ""){
+	controller.new_comment(comment_info);
+    } else 
+	controller.set_comment(comment_info);
+    
+    return controller.update_comment();
 
-    if (controller.update_comment())
-        return true;
-    else 
-        return false;
 }
 bool backend::add_project(const project project_info){
     project_controller controller;

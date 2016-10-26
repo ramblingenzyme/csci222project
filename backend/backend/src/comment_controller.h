@@ -37,7 +37,7 @@ public:
         data = new comment;
         *data = a; 
     }
-
+    void new_comment(const comment& partial);
     bool update_comment();
     std::string generate_update_comment_query();
     std::string generate_insert_comment_query();
@@ -130,5 +130,22 @@ std::string comment_controller::generate_insert_comment_query() {
 
     return query;
 }
+void comment_controller::new_comment(const comment& partial){
+	this->set_comment(partial);
 
+	DatabaseConnection database;
+	database.open_connection(CONNECTION_DETAILS);
+
+	std::string sqlQuery = "Select comment_id FROM COMMENTS ORDER BY comment_id ASC;";
+	pqxx::result r = database.query(sqlQuery);
+	database.close_connection();
+	pqxx::result::const_iterator c = r.end();
+	c--;
+
+	std::string id_string = c[0].as<std::string>();
+	double id = atof(id_string.c_str());
+	id++;
+
+	this->data->comment_id = std::to_string(id);
+}
 #endif
