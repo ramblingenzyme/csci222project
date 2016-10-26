@@ -116,7 +116,21 @@ bool backend::add_comment(const comment& comment_info){
     else 
         return false;
 }
+bool backend::add_project(const std::string project_name){
+    project_controller controller;
+    controller.new_project(project_name);
 
+    bool succeeded = controller.update_project();
+
+    if (succeeded) {
+	statistics statistic;
+	controller.set_statistics(statistic);
+        controller.update_statistics();
+	return true;
+    }
+    
+    return false;
+}
 bool backend::drop_database(const std::string password){
     if (password != "satvik no") return false;
     Database_Utility util;

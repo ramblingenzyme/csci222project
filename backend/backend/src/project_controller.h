@@ -5,13 +5,14 @@
 #include "database_connection.h"
 #include <string>
 #include <list>
+#include <stdlib.h>
 
 class project_controller {
 private: 
     project *data;
     statistics *statistic;
 public:
-    project_controller() { this->data = NULL; }
+    project_controller() { this->data = NULL; this->statistic = NULL;}
         
     ~project_controller() { 
         if (!this->isEmpty())
@@ -38,10 +39,16 @@ public:
     void set_project(project a) {
         if (this->data != NULL) 
             delete data; 
-        data = new project ;
+        this->data = new project ;
         *data = a; 
     }
-
+    void set_statistics(statistics a) {
+	if (this->statistic != NULL)
+	    delete statistic;
+	this->statistic = new statistics;
+	*statistic = a;
+    }
+    void new_project(const std::string);
     bool update_project();
     std::string generate_update_project_query();
     std::string generate_insert_project_query();
@@ -126,7 +133,25 @@ bool project_controller::find_statistics() {
         return false;
     }
 }
+void project_controller::new_project(const std::string project_name){
+	DatabaseConnection database;
+	database.open_connection(CONNECTION_DETAILS);
 
+	std::string sqlQuery = "Select project_id from PROJECTS ORDER BY project_id DESC;";
+	database.close_connection();
+	pqxx::result r = database.query(sqlQuery);
+	pqxx::result::const_iterator c = r.end();
+	c--;
+
+	project new_project;
+	new_project.project_name = project_name;
+	std::string id_string = c[1].as<std::string>();
+	double id = atof(id_string.c_str());
+	id++;
+	new_project.project_id = std::to_string(id);
+
+	this->set_project(new_project);
+}
 //Attempts to update project
 bool project_controller::update_project(){
     if (this->isEmpty())

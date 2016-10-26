@@ -45,6 +45,9 @@ public:
     bool add_comment(const comment& comment_info);
 
     // *method: POST
+    bool add_project(const std::string project_name);
+
+    // *method: POST
     bool drop_database(const std::string password);
 
     // *method: POST
