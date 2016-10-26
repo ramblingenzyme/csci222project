@@ -17,31 +17,33 @@ public:
             delete data;
     }
 
-    bool find_comment_id(std::string comment_id);
-    std::string generate_find_comment_id_query(std::string comment_id);
+    inline bool find_comment_id(std::string comment_id);
+    inline std::string generate_find_comment_id_query(std::string comment_id);
 
     //is empty
-    bool isEmpty() { 
+    inline bool isEmpty() { 
         if (this->data == NULL) 
             return true;
         return false;
     }
 
     //returns the comment
-    comment get_comment() { return *data; };
+    inline comment get_comment() { return *data; };
         
     //sets the stored comment to a given comment struct
-    void set_comment(comment a) {
+    inline void set_comment(comment a) {
         if (this->data != NULL) 
             delete data; 
         data = new comment;
         *data = a; 
     }
 
-    bool update_comment();
-    std::string generate_update_comment_query();
-    std::string generate_insert_comment_query();
+    inline bool update_comment();
+    inline std::string generate_update_comment_query();
+    inline std::string generate_insert_comment_query();
 };
+
+#endif
 
 ///////////////////////////////////////
 // Definition of comment_controller //
