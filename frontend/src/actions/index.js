@@ -71,7 +71,7 @@ export function fetchBugPage(id) {
 
 }
 
-export function fetchSearchResults(query) {
+export function fetchSearchResults(query, cb) {
     return function (dispatch) {
         let endpoint = 'search';
         let params = {
@@ -82,11 +82,16 @@ export function fetchSearchResults(query) {
             body: JSON.stringify(query)
         }
 
-        genericApiRequest(dispatch, receiveBugList, endpoint, params);
+        genericApiRequest(dispatch, receiveBugList, endpoint, params)
+            .then(() => {
+                if (cb) {
+                    cb();
+                }
+            });
     }
 }
 
-export function fetchBugtable(page) {
+export function fetchBugTable(page) {
     return function (dispatch) {
         let endpoint = `bugpage/${page}`;
 

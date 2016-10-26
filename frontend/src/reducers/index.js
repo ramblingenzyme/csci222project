@@ -9,11 +9,10 @@ import profile from './profile';
 import requesting from './requesting';
 import authenticateUser from './authenticateUser';
 
-const initialUser = {
+const user = {
     username: '',
     password: '',
 };
-
 
 const searchPageSidebar = {
     keywording: '',
@@ -25,6 +24,10 @@ const searchPageSidebar = {
     severity: ' ',
 };
 
+const searchBox = {
+    searchTerm: ''
+}
+
 const baseReducer = combineReducers({
     bugList,
     bugPage,
@@ -35,6 +38,8 @@ const baseReducer = combineReducers({
     forms: combineForms({
         user: initialUser,
         searchPageSidebar
+        user,
+        searchBox
     }, 'forms')
 });
 

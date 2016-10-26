@@ -12,10 +12,10 @@ class Login extends Component {
     }
 
     _getContent() {
-        if (this.props.loggedIn) {
+        if (this.props.authenticateUser.authed) {
             return (
                 <div>
-                    Hello {this.props.username}
+                    Hello {this.props.authenticateUser.username}
                 </div>
             );
         } else {
