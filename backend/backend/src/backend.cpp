@@ -170,9 +170,11 @@ bool backend::add_comment(const comment& comment_info){
     else 
         return false;
 }
-bool backend::add_project(const std::string project_name){
+bool backend::add_project(const project project_info){
     project_controller controller;
-    controller.new_project(project_name);
+    if (project_info.project_id = ""){
+    	controller.new_project(project_name);
+    }
 
     bool succeeded = controller.update_project();
 

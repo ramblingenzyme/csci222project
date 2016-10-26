@@ -60,7 +60,7 @@ public:
     bool add_comment(const comment& comment_info);
 
     // *method: POST
-    bool add_project(const std::string project_name);
+    bool add_project(const project project_info);
 
     // *method: POST
     bool drop_database(const std::string password);
