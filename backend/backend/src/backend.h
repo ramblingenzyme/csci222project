@@ -20,13 +20,13 @@ public:
     // *method: POST
     auth_response authenticate(const std::string& username, const std::string& password);
 
-    // *method: POST
+    // *method: GET
     complete_bug_info get_bug_page(const int& id);
 
-    // *method: POST
+    // *method: GET
     user get_user_page(const std::string& username);
 
-    // *method: POST
+    // *method: GET
     project get_project(const std::string& project_id);
 
     // *method: POST
@@ -35,7 +35,7 @@ public:
     // *method: POST
     std::list<user> get_user_search(const std::string& query, const int page);
 
-    // *method: POST
+    // *method: GET
     std::list<user> get_developers();
 
     // *method: POST
@@ -44,7 +44,7 @@ public:
     // *method: POST
     bool set_priority(const std::string& bug_id, const std::string& triager_username, const std::string& priority);
 
-    // *method: POST 
+    // *method: POST
     bool set_status(const std::string& bug_id, const std::string& changer_username, const std::string& status);
 
     // *method: POST
@@ -56,7 +56,7 @@ public:
     // *method: POST
     bool subscribe(const std::string& bug_id, const std::string& username);
 
-    // *method: POST 
+    // *method: POST
     bool add_attachment(const attachment& attachment_info);
 
     // *method: POST

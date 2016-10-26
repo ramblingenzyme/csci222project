@@ -27,7 +27,7 @@ auth_response backend::authenticate(const std::string& username, const std::stri
         if (temp.authenticate(password)) {
             result.authed = true;
             result.role = temp.get_user_info().privilege_level;
-            result.username = username;     
+            result.username = username;
         } else {
             result.authed = false;
             result.role = "null";
@@ -40,7 +40,7 @@ auth_response backend::authenticate(const std::string& username, const std::stri
 
 complete_bug_info backend::get_bug_page(const int& id) {
     Bug_Controller controller;
-   
+
     controller.find_bug_id(std::to_string(id));
     if (!controller.isEmpty()){
         return controller.get_bug_info();
@@ -58,7 +58,7 @@ user backend::get_user_page(const std::string& username){
     controller.find_username(username);
     if (controller.find_username(username))
         return controller.get_user_info();
-     
+
     user result;
     return result;
 }
@@ -90,7 +90,7 @@ project backend::get_project(const std::string& project_id){
     project_controller controller;
 
     if (controller.find_project_id(project_id))
-	    return controller.get_project();
+    return controller.get_project();
     //failed, return empty
     project result;
     return result;
@@ -108,63 +108,63 @@ bool backend::add_bug(const complete_bug_info& bug){
     Bug_Controller controller;
     if (bug.bug_id == ""){
 
-	controller.new_bug(bug);
-    } else 
-	controller.set_bug_info(bug);
-    
+    controller.new_bug(bug);
+    } else
+    controller.set_bug_info(bug);
+
     return controller.update_bug();
 
 }
 std::list<user> backend::get_developers() {
-	Search_Controller search;
-	return search.developer_search();
+    Search_Controller search;
+    return search.developer_search();
 }
 bool backend::assign_developer(const std::string& bug_id, const std::string& developer_username, const std::string& triager_username){
-	user_controller dev, triager;
-	Bug_Controller bug;
+    user_controller dev, triager;
+    Bug_Controller bug;
 
-	if (!dev.find_username(developer_username)||!triager.find_username(triager_username)||!bug.find_bug_id(bug_id)) return false;
+    if (!dev.find_username(developer_username)||!triager.find_username(triager_username)||!bug.find_bug_id(bug_id)) return false;
 
-	if (triager.get_user_info().privilege_level != "Triager") return false;
-	if (dev.get_user_info().privilege_level != "Developer") return false;
-	complete_bug_info temp = bug.get_bug_info();
-	temp.assigned_to = dev.get_user_info().username;
-	bug.set_bug_info(temp);
-	return bug.update_bug();
+    if (triager.get_user_info().privilege_level != "Triager") return false;
+    if (dev.get_user_info().privilege_level != "Developer") return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.assigned_to = dev.get_user_info().username;
+    bug.set_bug_info(temp);
+    return bug.update_bug();
 }
 
 bool backend::set_priority(const std::string& bug_id, const std::string& triager_username,const std::string& priority){
-	user_controller triager;
-	Bug_Controller bug;
+    user_controller triager;
+    Bug_Controller bug;
 
-	if (!triager.find_username(triager_username)||!bug.find_bug_id(bug_id)) return false;
+    if (!triager.find_username(triager_username)||!bug.find_bug_id(bug_id)) return false;
 
-	if (triager.get_user_info().privilege_level != "Triager") return false;
-	complete_bug_info temp = bug.get_bug_info();
-	temp.priority = priority;
-	bug.set_bug_info(temp);
-	return bug.update_bug();
+    if (triager.get_user_info().privilege_level != "Triager") return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.priority = priority;
+    bug.set_bug_info(temp);
+    return bug.update_bug();
 
 }
 
 bool backend::set_status(const std::string& bug_id, const std::string& changer_username,const std::string& status){
-	user_controller changer;
-	Bug_Controller bug;
+    user_controller changer;
+    Bug_Controller bug;
 
-	if (!changer.find_username(changer_username)||!bug.find_bug_id(bug_id)) return false;
+    if (!changer.find_username(changer_username)||!bug.find_bug_id(bug_id)) return false;
 
-	if (changer.get_user_info().privilege_level != "Triager" && changer.get_user_info().privilege_level != "Reviewer") return false;
-	complete_bug_info temp = bug.get_bug_info();
-	temp.status = status;
-	bug.set_bug_info(temp);
-	return bug.update_bug();
+    if (changer.get_user_info().privilege_level != "Triager" && changer.get_user_info().privilege_level != "Reviewer") return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.status = status;
+    bug.set_bug_info(temp);
+    return bug.update_bug();
 }
 
 
 bool backend::add_user(const user& user_info){
     user_controller controller;
     controller.set_user_info(user_info);
-    
+
     user_controller test;
     test.find_username(user_info.username);
     if (test.isEmpty()) return false;
@@ -179,51 +179,51 @@ bool backend::edit_user(const user& user_info, const user& user_editing){
     if (!edit.find_username(user_info.username)||!user.find_username(user_editing.username)) return false;
     edit.set_user_info(user_info);
     if (user.get_user_info().username == edit.get_user_info().username){
-	edit.update_user();
-	return true;
+    edit.update_user();
+    return true;
     } else if (user.get_user_info().privilege_level == "Superadmin"){
-	edit.update_user();
-	return true;
-    } else 
-	return false;
+    edit.update_user();
+    return true;
+    } else
+    return false;
 }
 
 bool backend::add_comment(const comment& comment_info){
     comment_controller controller;
     if (comment_info.comment_id == ""){
-	controller.new_comment(comment_info);
-    } else 
-	controller.set_comment(comment_info);
-    
+    controller.new_comment(comment_info);
+    } else
+    controller.set_comment(comment_info);
+
     return controller.update_comment();
 
 }
 bool backend::add_project(const project project_info){
     project_controller controller;
     if (project_info.project_id == ""){
-    	controller.new_project(project_info.project_name);
-    } else 
-	controller.set_project(project_info);
+        controller.new_project(project_info.project_name);
+    } else
+    controller.set_project(project_info);
 
     bool succeeded = controller.update_project();
 
     if (succeeded) {
-	statistics statistic;
-	controller.set_statistics(statistic);
+    statistics statistic;
+    controller.set_statistics(statistic);
         controller.update_statistics();
-	return true;
+    return true;
     }
-    
+
     return false;
 }
 
 bool backend::add_attachment(const attachment& attachment_info){
     attachment_controller controller;
     if (attachment_info.attach_id == ""){
-	controller.new_attachment(attachment_info);
-    } else 
-	controller.set_attachment(attachment_info);
-    
+    controller.new_attachment(attachment_info);
+    } else
+    controller.set_attachment(attachment_info);
+
     return controller.update_attachment();
 }
 
