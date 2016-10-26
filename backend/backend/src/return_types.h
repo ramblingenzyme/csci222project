@@ -9,6 +9,15 @@ struct auth_response {
     std::string username;
 };
 
+struct comment {
+    std::string comment_id;
+    std::string username;
+    std::string bug_id;
+    std::string creation_ts;
+    std::string body;
+    std::string attach_id;
+};
+
 struct bug_overview {
     std::string bug_id;
     std::string title;
@@ -43,6 +52,7 @@ struct complete_bug_info {
     std::list<std::string> cclist;
     std::list<std::string> keywords;
     std::list<std::string> dependencies;
+    std::list<comment> comments;
 };
 
 struct user {
@@ -82,14 +92,6 @@ struct attachment {
     std::string attacher;
 };
 
-struct comment {
-    std::string comment_id;
-    std::string username;
-    std::string bug_id;
-    std::string creation_ts;
-    std::string body;
-    std::string attach_id;
-};
 
 
 

@@ -3,6 +3,7 @@
 #include "return_types.h"
 #include "const.h" 
 #include "database_connection.h"
+#include "comment_controller.h"
 #include <string>
 #include <list>
 
@@ -105,8 +106,21 @@ bool Bug_Controller::find_bug_id(std::string bugID) {
             c++;
         }
 
+	sqlQuery = "SELECT comment_id FROM COMMENTS WHERE BUG_ID=" + bugID +";";
+	results = database.query(sqlQuery.c_str());
+	c = results.begin();
+
+	database.close_connection();
+	while (c!= results.end()){
+	    comment_controller temp;
+	    temp.find_comment_id(c[0].as<std::string>());
+	    this->data->comments.push_back(temp.get_comment());
+	    c++;
+	}
+
         return true; 
     } catch (...) {
+	database.close_connection();
         return false;
     }   
 }
