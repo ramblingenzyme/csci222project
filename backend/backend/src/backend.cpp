@@ -91,6 +91,21 @@ bool backend::add_user(const user& user_info){
     else 
         return false;
 }
+bool backend::edit_user(const user& user_info, const user& user_editing){
+    user_controller edit;
+    user_controller user;
+
+    if (!edit.find_username(user_info.username)||!user.find_username(user_editing.username)) return false;
+    edit.set_user_info(user_info);
+    if (user.get_user_info().username == edit.get_user_info().username){
+	edit.update_user();
+	return true;
+    } else if (user.get_user_info().privilege_level == "Superadmin"){
+	edit.update_user();
+	return true;
+    } else 
+	return false;
+}
 
 bool backend::add_comment(const comment& comment_info){
     comment_controller controller;

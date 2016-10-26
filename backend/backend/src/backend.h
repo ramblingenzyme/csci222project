@@ -39,6 +39,9 @@ public:
     bool add_user(const user& user_info);
 
     // *method: POST
+    bool edit_user(const user& user_info, const user& user_editing);
+
+    // *method: POST
     bool add_comment(const comment& comment_info);
 
     // *method: POST
