@@ -6,6 +6,8 @@ import ProfilePage from '../components/ProfilePage.js';
 import ReportPage from '../components/ReportPage.js';
 import SearchPage from '../components/SearchPage.js';
 
+import BugTable from '../components/BugTable.js';
+
 import LoginContainer from '../containers/LoginContainer'
 import LoginPageContainer from '../containers/LoginPageContainer';
 
@@ -70,6 +72,10 @@ export default function routes(store) {
                 path: '/profile/',
                 component: ProfilePage
             },
+            {
+                path: '/bugs',
+                component: BugTable
+            }
         ]
     }
 }

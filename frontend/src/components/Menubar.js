@@ -9,22 +9,25 @@ class Menubar extends Component {
                 </h1>
                 <ul className="aui-nav">
                     <li>
-                        <Link to={'/report/'}>Report </Link>
+                        <Link to={'/bugs'}>Bugs</Link>
                     </li>
                     <li>
-                        <Link to={'/analysis/'}>Analysis </Link>
+                        <Link to={'/report/'}>Report</Link>
                     </li>
                     <li>
-                        <Link to={'/assign/'}>Assign </Link>
+                        <Link to={'/analysis/'}>Analysis</Link>
                     </li>
                     <li>
-                        <Link to={'/review/'}>Review </Link>
+                        <Link to={'/assign/'}>Assign</Link>
                     </li>
                     <li>
-                        <Link to={'/search/'}>Search </Link>
+                        <Link to={'/review/'}>Review</Link>
                     </li>
                     <li>
-                        <Link to={'/profile/'}>Profile </Link>
+                        <Link to={'/search/'}>Search</Link>
+                    </li>
+                    <li>
+                        <Link to={'/profile/'}>Profile</Link>
                     </li>
                 </ul>
             </div>
