@@ -90,7 +90,7 @@ void bug_test::test_update_bug() {
     bc.set_bug_info(bug2);
     query2 = bc.generate_update_bug_query();
 
-    //Now the should be equal
+    //Now they should be equal
     CPPUNIT_ASSERT(string_is_equal(query, query2));
 }
 
