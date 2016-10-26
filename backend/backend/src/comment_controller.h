@@ -18,6 +18,7 @@ public:
     }
 
     bool find_comment_id(std::string comment_id);
+    std::string generate_find_comment_id_query(std::string comment_id);
 
     //is empty
     bool isEmpty() { 
@@ -38,6 +39,8 @@ public:
     }
 
     bool update_comment();
+    std::string generate_update_comment_query();
+    std::string generate_insert_comment_query();
 };
 
 ///////////////////////////////////////
@@ -50,7 +53,7 @@ bool comment_controller::find_comment_id(std::string comment_id) {
     try {
         database.open_connection(CONNECTION_DETAILS);
     
-        std::string sqlquery = "select * from COMMENT where comment_id="+ comment_id+";"; 
+        std::string sqlquery = generate_find_comment_id_query(comment_id); 
         pqxx::result results = database.query(sqlquery.c_str());
         pqxx::result::const_iterator c = results.begin();
         
@@ -76,6 +79,10 @@ bool comment_controller::find_comment_id(std::string comment_id) {
     }
 }
 
+std::string comment_controller::generate_find_comment_id_query(std::string comment_id) {
+    return "select * from COMMENT where comment_id=" + comment_id + ";"; 
+}
+
 //Attempts to update a comment (I don't it'll ever need to be updated), if fails, then inserts 
 bool comment_controller::update_comment(){
     if (this->isEmpty())
@@ -83,7 +90,21 @@ bool comment_controller::update_comment(){
             
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
-    std::string sqlquery = "UPDATE comment set comment_id ="
+    std::string sqlquery = generate_update_comment_query();
+
+    if (database.transaction(sqlquery))
+        return true;
+            
+    sqlquery = generate_insert_comment_query();
+        
+    database.transaction(sqlquery);
+    database.close_connection();
+    return true;
+}
+
+std::string comment_controller::generate_update_comment_query() {
+    std::string query;
+    query = "UPDATE comment set comment_id ="
         + this->data->comment_id + ", username='"
         + this->data->username + "',bug_id ="
         + this->data->bug_id + ", creation_ts ='"
@@ -93,10 +114,12 @@ bool comment_controller::update_comment(){
         + this->data->comment_id + " AND bug_id = "
         + this->data->bug_id + ";";
 
-    if (database.transaction(sqlquery))
-        return true;
-            
-    sqlquery = "insert into comment (comment_id, username,"
+    return query;
+}
+
+std::string comment_controller::generate_insert_comment_query() {
+    std::string query;
+    query =  "insert into comment (comment_id, username,"
         "bug_id, creation_ts, body, attach_id) values ("
         + this->data->comment_id + ",'"
         + this->data->username + "',"
@@ -104,13 +127,8 @@ bool comment_controller::update_comment(){
         + this->data->creation_ts + "','"
         + this->data->body + "','"
         + this->data->attach_id + ");";
-        
-    database.transaction(sqlquery);
-    database.close_connection();
-    return true;
+
+    return query;
 }
-
-
-     
 
 #endif
