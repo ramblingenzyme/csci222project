@@ -27,6 +27,9 @@ public:
     user get_user_page(const std::string& username);
 
     // *method: POST
+    project get_project(const std::string& project_id);
+
+    // *method: POST
     std::list<bug_overview> get_normal_search(const std::string& query, const int page);
 
     // *method: POST

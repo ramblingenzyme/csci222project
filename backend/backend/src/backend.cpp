@@ -56,12 +56,21 @@ user backend::get_user_page(const std::string& username){
     user_controller controller;
 
     controller.find_username(username);
-    if (!controller.isEmpty()){
+    if (controller.find_username(username))
         return controller.get_user_info();
-    } else { 
-        user result;
-        return result;
-    }
+     
+    user result;
+    return result;
+}
+
+project backend::get_project(const std::string& project_id){
+    project_controller controller;
+
+    if (controller.find_project_id(project_id))
+	    return controller.get_project();
+    //failed, return empty
+    project result;
+    return result;
 }
 
 std::list<bug_overview> backend::get_normal_search(const std::string& query, const int page){
@@ -131,6 +140,8 @@ bool backend::add_project(const std::string project_name){
     
     return false;
 }
+
+
 bool backend::drop_database(const std::string password){
     if (password != "satvik no") return false;
     Database_Utility util;
