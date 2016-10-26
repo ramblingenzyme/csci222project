@@ -56,6 +56,8 @@ public:
     bool update_statistics();
 };
 
+#endif
+
 ///////////////////////////////////////
 // Definition of project_controller //
 ///////////////////////////////////////
@@ -224,4 +226,3 @@ bool project_controller::update_statistics(){
     return true;
 }
 
-#endif

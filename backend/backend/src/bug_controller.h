@@ -42,6 +42,8 @@ public:
     bool isEmpty() { return data == NULL;};
 };
 
+#endif
+
 //////////////////////////////////
 // Definition of Bug_Controller //
 //////////////////////////////////
@@ -315,5 +317,4 @@ std::string Bug_Controller::generate_insert_bug_query() {
     return query;
 }
 
-#endif
 

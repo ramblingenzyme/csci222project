@@ -1,3 +1,5 @@
+#ifndef SEARCH_CONTROLLER_H
+#define SEARCH_CONTROLLER_H
 #include "return_types.h" 
 #include "database_connection.h"
 #include "const.h"
@@ -10,7 +12,7 @@
 class Search_Controller {
 	private: 
 	public: 
-		Search_Controller() { };
+		Search_Controller() {};
 		~Search_Controller() {};
 		std::list<bug_overview> bug_search(const std::string&, int);
 		std::list<user> user_search(const std::string&, int);
@@ -18,6 +20,8 @@ class Search_Controller {
 		std::list<bug_overview> project_search(const std::string&, int);
 		std::list<user> developer_search();
 };
+
+#endif
 
 std::list<bug_overview> Search_Controller::bug_search(const std::string& query, int page) {
 	std::list<bug_overview> result;

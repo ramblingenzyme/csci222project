@@ -133,4 +133,3 @@ std::string comment_controller::generate_insert_comment_query() {
     return query;
 }
 
-#endif
