@@ -50,6 +50,12 @@ public:
     // *method: POST
     bool add_bug(const complete_bug_info& bug);
 
+    // *method: POST
+    bool add_dependencies(const std::string& bug_id, const std::string& dependency_id, const std::string& username);
+
+    // *method: POST
+    bool subscribe(const std::string& bug_id, const std::string& username);
+
     // *method: POST 
     bool add_attachment(const attachment& attachment_info);
 

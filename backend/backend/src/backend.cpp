@@ -62,7 +62,30 @@ user backend::get_user_page(const std::string& username){
     user result;
     return result;
 }
+bool backend::add_dependencies(const std::string& bug_id, const std::string& dependency_id, const std::string& username) {
+    Bug_Controller bug, depends;
+    user_controller user;
+    if (!bug.find_bug_id(bug_id)||!user.find_username(username) || !depends.find_bug_id(dependency_id)) return false;
 
+    if (user.get_user_info().privilege_level != "Triager" && user.get_user_info().privilege_level != "Reviewer") return false;
+
+    complete_bug_info temp = bug.get_bug_info();
+    temp.dependencies.push_back(depends.get_bug_info().bug_id);
+    bug.set_bug_info(temp);
+
+    return bug.update_bug();
+}
+
+bool backend::subscribe(const std::string& bug_id, const std::string& username) {
+    Bug_Controller bug;
+    user_controller user;
+    if (!bug.find_bug_id(bug_id) || !user.find_username(username)) return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.cclist.push_back(user.get_user_info().username);
+    bug.set_bug_info(temp);
+
+    return bug.update_bug();
+}
 project backend::get_project(const std::string& project_id){
     project_controller controller;
 
