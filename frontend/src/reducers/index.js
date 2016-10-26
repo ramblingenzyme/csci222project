@@ -27,9 +27,7 @@ const searchPageSidebar = {
 
 const searchBox = {
     searchTerm: ''
-}
-
-const initialUser = {}
+};
 
 const baseReducer = combineReducers({
     bugList,
@@ -40,9 +38,8 @@ const baseReducer = combineReducers({
     authenticateUser,
     form: formReducer,
     forms: combineForms({
-        user: initialUser,
+        user: user,
         searchPageSidebar,
-        user,
         searchBox
     }, 'forms')
 });
