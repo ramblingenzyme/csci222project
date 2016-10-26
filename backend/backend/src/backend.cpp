@@ -64,11 +64,14 @@ user backend::get_user_page(const std::string& username){
     }
 }
 
-std::list<bug_overview> backend::get_normal_search(const std::string& query, const int page)
+std::list<bug_overview> backend::get_normal_search(const std::string& query, const int page){
     Search_Controller search;
-    return search(query,page);
+    return search.bug_search(query,page);
 }
-
+std::list<user> backend::get_user_search(const std::string& query, const int page) {
+    Search_Controller search;
+    return search.user_search(query, page);
+}
 bool backend::add_bug(const complete_bug_info& bug){
     Bug_Controller controller;
     controller.set_bug_info(bug);

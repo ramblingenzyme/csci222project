@@ -10,7 +10,7 @@
 class Search_Controller {
 	private: 
 	public: 
-		Search_Controller(std::string details) { };
+		Search_Controller() { };
 		~Search_Controller() {};
 		std::list<bug_overview> bug_search(const std::string&, int);
 		std::list<user> user_search(const std::string&, int);

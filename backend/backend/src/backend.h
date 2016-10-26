@@ -27,7 +27,10 @@ public:
     user get_user_page(const std::string& username);
 
     // *method: POST
-    std::list<bug_overview> get_normal_search(const std::string& query);
+    std::list<bug_overview> get_normal_search(const std::string& query, const int page);
+
+    // *method: POST
+    std::list<user> get_user_search(const std::string& query, const int page);
 
     // *method: POST
     bool add_bug(const complete_bug_info& bug);
