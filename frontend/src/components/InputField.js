@@ -1,35 +1,35 @@
 import React, { Component, PropTypes } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Control } from 'react-redux-form';
 
 class InputField extends Component {
     render() {
         let input_field = this._getContent();
 
         return (
-            <form className={this.props.auiClass}>
-                <div className={this.props.auiClass}>
-                    <label htmlFor={this.props.id}>
-                        {this.props.title}
-                    </label>
+            <div className="aui field-group top-label">
+                <label htmlFor={this.props.id}>
+                    {this.props.title}
+                </label>
+                <div className="field-group">
                     {input_field}
-                    <div className="description">
-                        {this.props.description}
-                    </div>
                 </div>
-            </form>
+                <div className="description">
+                    {this.props.description}
+                </div>
+            </div>
         );
     }
 
     _getContent() {
         if (this.props.disabled) {
             return (
-                <Field className={this.props.className} type={this.props.type}
+                <Control.text className="text" model={this.props.model} type={this.props.type}
                        id={this.props.id} name={this.props.id}
                        placeholder={this.props.placeholder} component="input" disabled />
             )
         } else {
             return (
-                <Field className={this.props.className} type={this.props.type}
+                <Control.text className="text" model={this.props.model} type={this.props.type}
                        id={this.props.id} name={this.props.id}
                        placeholder={this.props.placeholder} component="input" />
             )
@@ -40,12 +40,10 @@ class InputField extends Component {
 InputField.defaultProps = {
     title: "Input",
     type: "text",
-    className: "text medium-field",
     disabled: false,
     description: "",
     id: "input-field" ,
     placeholder: "",
-    auiClass: "aui"
 };
 
 export default InputField;
