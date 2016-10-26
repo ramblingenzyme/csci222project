@@ -18,6 +18,7 @@ public:
     }
 
     bool find_project_id(std::string project_id);
+    std::string generate_find_project_id_query(std::string project_id);
 
     //is empty
     bool isEmpty() { 
@@ -38,6 +39,8 @@ public:
     }
 
     bool update_project();
+    std::string generate_update_project_query();
+    std::string generate_insert_project_query();
 };
 
 ///////////////////////////////////////
@@ -50,7 +53,7 @@ bool project_controller::find_project_id(std::string project_id) {
     try {
         database.open_connection(CONNECTION_DETAILS);
     
-        std::string sqlquery = "select * from PROJECT where project_id="+ project_id+";"; 
+        std::string sqlquery = generate_find_project_id_query(project_id);
         pqxx::result results = database.query(sqlquery.c_str());
         pqxx::result::const_iterator c = results.begin();
         
@@ -72,6 +75,10 @@ bool project_controller::find_project_id(std::string project_id) {
     }
 }
 
+std::string project_controller::generate_find_project_id_query(std::string project_id) {
+    return "select * from PROJECT where project_id="+ project_id+";"; 
+}
+
 //Attempts to update project
 bool project_controller::update_project(){
     if (this->isEmpty())
@@ -79,21 +86,35 @@ bool project_controller::update_project(){
             
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
-    std::string sqlquery = "UPDATE PROJECT set project_name ='"
-        + this->data->project_name + "', project_id="
-        + this->data->project_id + "' where project_id ="
-        + this->data->project_id + ";";
+    std::string sqlquery = generate_update_project_query();
 
     if (database.transaction(sqlquery))
         return true;
             
-    sqlquery = "insert into PROJECT (project_name, project_id) values ('"
-        + this->data->project_name + "',"
-        + this->data->project_id + ");";
+    sqlquery = generate_insert_project_query();
         
     database.transaction(sqlquery);
     database.close_connection();
     return true;
+}
+
+std::string project_controller::generate_update_project_query() {
+    std::string query;
+    query = "UPDATE PROJECT set project_name ='"
+        + this->data->project_name + "', project_id="
+        + this->data->project_id + "' where project_id ="
+        + this->data->project_id + ";";
+
+    return query;
+}
+
+std::string project_controller::generate_insert_project_query() {
+    std::string query;
+    query = "insert into PROJECT (project_name, project_id) values ('"
+        + this->data->project_name + "',"
+        + this->data->project_id + ");";
+
+    return query;
 }
 
 
