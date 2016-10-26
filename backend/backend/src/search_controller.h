@@ -16,7 +16,7 @@ class Search_Controller {
 		std::list<user> user_search(const std::string&, int);
 
 		std::list<bug_overview> project_search(const std::string&, int);
-
+		std::list<user> developer_search();
 };
 
 std::list<bug_overview> Search_Controller::bug_search(const std::string& query, int page) {
@@ -92,3 +92,25 @@ std::list<bug_overview> Search_Controller::project_search(const std::string &que
 	}
 	return result;
 }
+
+std::list<user> Search_Controller::developer_search() {
+	std::list<user> result;
+	DatabaseConnection database;
+	database.open_connection(CONNECTION_DETAILS);
+
+	std::string sqlQuery = 	"SELECT * FROM (SELECT username FROM USERS"
+		" WHERE privilege_level ='Developer';";
+	try {
+		pqxx::result r = database.query(sqlQuery);
+		database.close_connection();
+		for (pqxx::result::const_iterator c = r.begin(); c!= r.end(); c++){
+		    user_controller temp;
+		    temp.find_username(c[0].as<std::string>());
+		    result.push_back(temp.get_user_info());
+		}
+	} catch (std::exception &e) {
+	    return result;
+	}
+	return result;
+}
+
