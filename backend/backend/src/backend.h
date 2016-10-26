@@ -39,6 +39,9 @@ public:
     std::list<user> get_developers();
 
     // *method: POST
+    bool assign_developer(const std::string& bug_id, const std::string& developer_username, const std::string& triager_username);
+
+    // *method: POST
     bool add_bug(const complete_bug_info& bug);
 
     // *method: POST

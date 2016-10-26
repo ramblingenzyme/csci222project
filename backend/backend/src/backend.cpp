@@ -94,6 +94,20 @@ std::list<user> backend::get_developers() {
 	Search_Controller search;
 	return search.developer_search();
 }
+bool backend::assign_developer(const std::string& bug_id, const std::string& developer_username, const std::string& triager_username){
+	user_controller dev, triager;
+	Bug_Controller bug;
+
+	if (!dev.find_username(developer_username)||!triager.find_username(triager_username)||!bug.find_bug_id(bug_id)) return false;
+
+	if (triager.get_user_info().privilege_level != "Triager") return false;
+	if (dev.get_user_info().privilege_level != "Developer") return false;
+	complete_bug_info temp = bug.get_bug_info();
+	temp.assigned_to = dev.get_user_info().username;
+	bug.set_bug_info(temp);
+	return bug.update_bug();
+}
+
 bool backend::add_user(const user& user_info){
     user_controller controller;
     controller.set_user_info(user_info);
