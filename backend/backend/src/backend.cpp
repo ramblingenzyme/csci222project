@@ -4,56 +4,119 @@
 
 #include <pqxx/pqxx>
 #include <cppunit/extensions/HelperMacros.h>
+#include <ostream>
 #include "backend.h"
+#include "bug_controller.h"
+#include "user_controller.h"
+#include "comment_controller.h"
+#include "attachment_controller.h"
+#include "project_controller.h" 
 
 auth_response backend::authenticate(const std::string& username, const std::string& password) {
-    // to be replaced with checking username & pass against database
-    // e.g. SELECT id FROM users WHERE username=$USERNAME AND password=$PASSWORD
+    //SELECT * FROM USER WHERE USERNAME =$USERNAME - generalising
+    user_controller temp;
     auth_response result;
-    result.authed = true;
-    result.role = "superadmin";
-    result.username = username;
+
+    if (!temp.find_username(username)) {
+        result.authed = false;
+        result.role = "null";
+        result.username = username;
+    } else {
+        if (temp.authenticate(password)) {
+            result.authed = true;
+            result.role = temp.get_user_info().privilege_level;
+            result.username = username;     
+        } else {
+            result.authed = false;
+            result.role = "null";
+            result.username = username;
+        }
+    }
 
     return result;
 }
 
 complete_bug_info backend::get_bug_page(const int& id) {
-    complete_bug_info result;
+    Bug_Controller controller;
+   
+    controller.find_bug_id(std::to_string(id));
+    if (!controller.isEmpty()){
+        return controller.get_bug_info();
+    } else {
+        complete_bug_info result;
+        result.bug_id = "0";
 
-    result.bug_id = "1";
-    result.creation_time = "2015-03-25T12:00:00";
-    result.delta_time = "2015-03-25T12:00:00";
-    result.title = "Bug 1";
-    result.description = "Stub";
-    result.product = "Backend";
-    result.component = "bug page info";
-    result.version = "0.01";
-    result.operating_system = "OSX";
-    result.target_milestone = "0.02";
-    result.status = "open";
-    result.duplicate_id = "";
-    result.priority = "high";
-    result.severity = "low";
-    result.reporter = "Satvik";
-    result.assigned_to = "Ryan";
-    result.project_id = "1";
-    result.votes = "0";
-    result.cclist.push_back("Ryan");
-
-    return result;
+        return result;
+    }
 }
 
-std::list<bug_overview> backend::get_normal_search(const std::string query) {
-    std::list<bug_overview> result;
-    bug_overview first_result;
-    first_result.title = "Bug 1";
-    first_result.product = "Backend";
-    first_result.component = "bug page info";
-    first_result.version = "0.01";
-    first_result.priority = "high";
-    first_result.severity = "low";
+user backend::get_user_page(const std::string& username){
+    user_controller controller;
 
-    result.push_back(first_result);
-
-    return result;
+    controller.find_username(username);
+    if (!controller.isEmpty()){
+        return controller.get_user_info();
+    } else { 
+        user result;
+        return result;
+    }
 }
+
+std::list<bug_overview> backend::get_normal_search(const std::string& query) {
+
+    std::list<bug_overview> results;
+    
+    DatabaseConnection database;
+    
+    database.open_connection(CONNECTION_DETAILS);
+    
+    std::string sqlQuery = "SELECT BUG_ID FROM BUGS WHERE TITLE LIKE '%"
+        + query + "%'";
+
+    try {
+        pqxx::result r = database.query(sqlQuery);
+        for (pqxx::result::const_iterator c = r.begin(); c != r.end(); c++){
+            Bug_Controller temp;
+    
+            temp.find_bug_id(c[0].as<std::string>());
+            results.push_back(temp.get_bug_overview()); 
+        }
+    } catch (std::exception &e) {
+        return results; 
+    }
+    return results;
+}
+
+bool backend::add_bug(const complete_bug_info& bug){
+    Bug_Controller controller;
+    controller.set_bug_info(bug);
+
+    if (controller.update_bug())
+        return true;
+    else 
+        return false;
+}
+
+bool backend::add_user(const user& user_info){
+    user_controller controller;
+    controller.set_user_info(user_info);
+
+    if (controller.update_user())
+        return true;
+    else 
+        return false;
+}
+
+bool backend::add_comment(const comment& comment_info){
+    comment_controller controller;
+    controller.set_comment(comment_info);
+
+    if (controller.update_comment())
+        return true;
+    else 
+        return false;
+}
+
+
+
+
