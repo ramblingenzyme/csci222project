@@ -106,14 +106,14 @@ bool comment_controller::update_comment(){
 
 std::string comment_controller::generate_update_comment_query() {
     std::string query;
-    query = "UPDATE comment set comment_id ="
+    query = "UPDATE comment set comment_id="
         + this->data->comment_id + ", username='"
-        + this->data->username + "',bug_id ="
-        + this->data->bug_id + ", creation_ts ='"
-        + this->data->creation_ts + "', body = '"
+        + this->data->username + "', bug_id="
+        + this->data->bug_id + ", creation_ts='"
+        + this->data->creation_ts + "', body='"
         + this->data->body + "', attach_id="
-        + this->data->attach_id + " where comment_id ="
-        + this->data->comment_id + " AND bug_id = "
+        + this->data->attach_id + " where comment_id="
+        + this->data->comment_id + " AND bug_id="
         + this->data->bug_id + ";";
 
     return query;
