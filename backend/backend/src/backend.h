@@ -50,6 +50,9 @@ public:
     // *method: POST
     bool add_bug(const complete_bug_info& bug);
 
+    // *method: POST 
+    bool add_attachment(const attachment& attachment_info);
+
     // *method: POST
     bool add_user(const user& user_info);
 

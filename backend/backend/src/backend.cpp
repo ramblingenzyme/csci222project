@@ -172,9 +172,10 @@ bool backend::add_comment(const comment& comment_info){
 }
 bool backend::add_project(const project project_info){
     project_controller controller;
-    if (project_info.project_id = ""){
-    	controller.new_project(project_name);
-    }
+    if (project_info.project_id == ""){
+    	controller.new_project(project_info.project_name);
+    } else 
+	controller.set_project(project_info);
 
     bool succeeded = controller.update_project();
 
@@ -188,6 +189,15 @@ bool backend::add_project(const project project_info){
     return false;
 }
 
+bool backend::add_attachment(const attachment& attachment_info){
+    attachment_controller controller;
+    if (attachment_info.attach_id == ""){
+	controller.new_attachment(attachment_info);
+    } else 
+	controller.set_attachment(attachment_info);
+    
+    return controller.update_attachment();
+}
 
 bool backend::drop_database(const std::string password){
     if (password != "satvik no") return false;
