@@ -44,7 +44,7 @@ export function receiveProfileInfo(profileInfo) {
     }
 }
 
-export function recieveProfileList(profileList) {
+export function receiveProfileList(profileList) {
     return {
         type: RECEIVE_PROFILE_LIST,
         profileList
@@ -66,14 +66,14 @@ export function fetchAuthStatus(username, password) {
                 password
             })
         };
-        genericApiRequest(dispatch, receiveAuthStatus, endpoint, params);
+        return genericApiRequest(dispatch, receiveAuthStatus, endpoint, params);
     }
 }
 
 export function fetchBugPage(id) {
     return function(dispatch) {
         let endpoint = `bugs/${id}`;
-        genericApiRequest(dispatch, receiveBugInfo, endpoint);
+        return genericApiRequest(dispatch, receiveBugInfo, endpoint);
     }
 
 }
@@ -102,15 +102,15 @@ export function fetchBugTable(page) {
     return function (dispatch) {
         let endpoint = `bugpage/${page}`;
 
-        genericApiRequest(dispatch, receiveBugList, endpoint);
+        return genericApiRequest(dispatch, receiveBugList, endpoint)
     }
 }
 
-export function fetchProfile(id) {
+export function fetchProfile(username) {
     return function (dispatch) {
-        let endpoint = `profile/${id}`
+        let endpoint = `profile/${username}`
 
-        genericApiRequest(dispatch, receiveProfileInfo, endpoint);
+        return genericApiRequest(dispatch, receiveProfileInfo, endpoint);
     }
 }
 
@@ -118,6 +118,6 @@ export function fetchProfileList() {
     return function (dispatch) {
         let endpoint = `profiles`
 
-        genericApiRequest(dispatch, receiveProfileList, endpoint);
+        return genericApiRequest(dispatch, receiveProfileList, endpoint);
     }
 }
