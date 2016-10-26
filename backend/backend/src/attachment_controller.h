@@ -41,6 +41,16 @@ public:
     bool update_attachment();
     std::string generate_update_attachment_query();
     std::string generate_insert_attachment_query();
+
+
+
+    ////////////////////////
+    // unit testing only  //
+    ////////////////////////
+    
+    bool attachment_id_is_equal(std::string attach_id) {
+        return data->attach_id == attach_id;
+    }
 };
 
 ///////////////////////////////////////
@@ -135,7 +145,5 @@ std::string attachment_controller::generate_insert_attachment_query() {
     return query;
 }
 
-
-     
 
 #endif
