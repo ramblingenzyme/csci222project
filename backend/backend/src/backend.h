@@ -37,6 +37,12 @@ public:
 
     // *method: POST
     bool add_comment(const comment& comment_info);
+
+    // *method: GET
+    bool drop_database();
+
+    // *method: GET
+    bool create_database();
 };
 
 #endif // BACKEND_H
