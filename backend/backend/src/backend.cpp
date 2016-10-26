@@ -64,29 +64,9 @@ user backend::get_user_page(const std::string& username){
     }
 }
 
-std::list<bug_overview> backend::get_normal_search(const std::string& query) {
-
-    std::list<bug_overview> results;
-    
-    DatabaseConnection database;
-    
-    database.open_connection(CONNECTION_DETAILS);
-    
-    std::string sqlQuery = "SELECT BUG_ID FROM BUGS WHERE TITLE LIKE '%"
-        + query + "%'";
-
-    try {
-        pqxx::result r = database.query(sqlQuery);
-        for (pqxx::result::const_iterator c = r.begin(); c != r.end(); c++){
-            Bug_Controller temp;
-    
-            temp.find_bug_id(c[0].as<std::string>());
-            results.push_back(temp.get_bug_overview()); 
-        }
-    } catch (std::exception &e) {
-        return results; 
-    }
-    return results;
+std::list<bug_overview> backend::get_normal_search(const std::string& query, const int page)
+    Search_Controller search;
+    return search(query,page);
 }
 
 bool backend::add_bug(const complete_bug_info& bug){
