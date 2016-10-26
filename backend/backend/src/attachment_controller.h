@@ -16,8 +16,9 @@ public:
         if (!this->isEmpty())
             delete data;
     }
-
+    
     bool find_attach_id(std::string attach_id);
+    std::string generate_find_attach_id_query(std::string attach_id);
 
     //is empty
     bool isEmpty() { 
@@ -26,18 +27,20 @@ public:
         return false;
     }
 
-    //returns the comment
+    //returns the attachment
     attachment get_attachment() { return *data; };
         
-    //sets the stored comment to a given comment struct
+    //sets the stored attachment to a given attachment struct
     void set_attachment(attachment a) {
         if (this->data != NULL) 
             delete data; 
         data = new attachment;
         *data = a; 
     }
-
+    void new_attachment(const attachment&);
     bool update_attachment();
+    std::string generate_update_attachment_query();
+    std::string generate_insert_attachment_query();
 };
 
 ///////////////////////////////////////
@@ -50,7 +53,7 @@ bool attachment_controller::find_attach_id(std::string attach_id) {
     try {
         database.open_connection(CONNECTION_DETAILS);
     
-        std::string sqlquery = "select * from ATTACHMENT where attach_id="+ attach_id+";"; 
+        std::string sqlquery = generate_find_attach_id_query(attach_id);
         pqxx::result results = database.query(sqlquery.c_str());
         pqxx::result::const_iterator c = results.begin();
         
@@ -69,13 +72,17 @@ bool attachment_controller::find_attach_id(std::string attach_id) {
         this->data->description = c[3].as<std::string>();
         this->data->filename = c[4].as<std::string>();
         this->data->filesize = c[5].as<std::string>();
-	this->data->file = c[6].as<std::string>();
-	this->data->attacher = c[6].as<std::string>();
+        this->data->file = c[6].as<std::string>();
+        this->data->attacher = c[6].as<std::string>();
 
         return true; 
     } catch (...) {
         return false;
     }
+}
+
+std::string attachment_controller::generate_find_attach_id_query(std::string attach_id) {
+    return "select * from ATTACHMENT where attach_id=" + attach_id + ";"; 
 }
 
 //Attempts to update attachement
@@ -85,21 +92,37 @@ bool attachment_controller::update_attachment(){
             
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
-    std::string sqlquery = "UPDATE ATTACHMENT set attach_id ="
+    std::string sqlquery = generate_update_attachment_query();
+
+    if (database.transaction(sqlquery))
+        return true;
+            
+    sqlquery = generate_insert_attachment_query();
+        
+    database.transaction(sqlquery);
+    database.close_connection();
+    return true;
+}
+
+std::string attachment_controller::generate_update_attachment_query() {
+    std::string query;
+    query = "UPDATE ATTACHMENT set attach_id ="
         + this->data->attach_id + ", creation_ts='"
         + this->data->creation_ts + "',delta_ts ='"
         + this->data->delta_ts + ", description ='"
         + this->data->description + "', filename ='"
         + this->data->filename + "', filesize="
         + this->data->filesize +", file='"
-	+ this->data->file +"', attacher="
-	+ this->data->attacher + " where comment_id ="
+        + this->data->file +"', attacher="
+        + this->data->attacher + " where comment_id ="
         + this->data->attach_id + ";";
 
-    if (database.transaction(sqlquery))
-        return true;
-            
-    sqlquery = "insert into ATTACHMENT (attach_id, creation_ts,"
+    return query;
+}
+
+std::string attachment_controller::generate_insert_attachment_query() {
+    std::string query;
+    query = "insert into ATTACHMENT (attach_id, creation_ts,"
         "delta_ts, description, filename, filesize, file, attacher) values ("
         + this->data->attach_id + ",'"
         + this->data->creation_ts + "',"
@@ -107,14 +130,27 @@ bool attachment_controller::update_attachment(){
         + this->data->filename + "',"
         + this->data->filesize + ",'"
         + this->data->file + "',"
-	+ this->data->attacher + ");";
-        
-    database.transaction(sqlquery);
-    database.close_connection();
-    return true;
+        + this->data->attacher + ");";
+
+    return query;
 }
 
+void attachment_controller::new_attachment(const attachment& partial) {
+    this->set_attachment(partial);
+    
+    DatabaseConnection database;
+    database.open_connection(CONNECTION_DETAILS);
 
-     
+    std::string sqlQuery = "Select attach_id FROM ATTACHMENTS ORDER BY attach_id ASC;";
+    pqxx::result r = database.query(sqlQuery); 
+    database.close_connection();
+    pqxx::result::const_iterator c = r.end();
+    c--;
 
+    std::string id_string = c[0].as<std::string>();
+    double id = atof(id_string.c_str());
+    id++;
+    
+    this->data->attach_id = std::to_string(id);
+}
 #endif

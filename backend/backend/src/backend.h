@@ -26,23 +26,56 @@ public:
     // *method: GET
     user profile(const std::string& username);
 
+    // *method: GET
+    project get_project(const std::string& project_id);
+
     // *method: POST
-    std::list<bug_overview> search(const std::string& query);
+    std::list<bug_overview> get_normal_search(const std::string& query, const int page);
+
+    // *method: POST
+    std::list<user> get_user_search(const std::string& query, const int page);
+
+    // *method: GET
+    std::list<user> get_developers();
+
+    // *method: POST
+    bool assign_developer(const std::string& bug_id, const std::string& developer_username, const std::string& triager_username);
+
+    // *method: POST
+    bool set_priority(const std::string& bug_id, const std::string& triager_username, const std::string& priority);
+
+    // *method: POST
+    bool set_status(const std::string& bug_id, const std::string& changer_username, const std::string& status);
 
     // *method: POST
     bool add_bug(const complete_bug_info& bug);
 
     // *method: POST
+    bool add_dependencies(const std::string& bug_id, const std::string& dependency_id, const std::string& username);
+
+    // *method: POST
+    bool subscribe(const std::string& bug_id, const std::string& username);
+
+    // *method: POST
+    bool add_attachment(const attachment& attachment_info);
+
+    // *method: POST
     bool add_user(const user& user_info);
+
+    // *method: POST
+    bool edit_user(const user& user_info, const user& user_editing);
 
     // *method: POST
     bool add_comment(const comment& comment_info);
 
-    // *method: GET
-    bool drop_database();
+    // *method: POST
+    bool add_project(const project project_info);
 
-    // *method: GET
-    bool create_database();
+    // *method: POST
+    bool drop_database(const std::string password);
+
+    // *method: POST
+    bool create_database(const std::string password);
 };
 
 #endif // BACKEND_H

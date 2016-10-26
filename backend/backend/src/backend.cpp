@@ -11,6 +11,7 @@
 #include "attachment_controller.h"
 #include "project_controller.h"
 #include "utilitycontrollers.h"
+#include "search_controller.h"
 
 auth_response backend::authenticate(const std::string& username, const std::string& password) {
     //SELECT * FROM USER WHERE USERNAME =$USERNAME - generalising
@@ -54,76 +55,188 @@ user backend::profile(const std::string& username){
     user_controller controller;
 
     controller.find_username(username);
-    if (!controller.isEmpty()){
+    if (controller.find_username(username))
         return controller.get_user_info();
-    } else {
-        user result;
-        return result;
-    }
+
+    user result;
+    return result;
 }
 
-std::list<bug_overview> backend::search(const std::string& query) {
+bool backend::add_dependencies(const std::string& bug_id, const std::string& dependency_id, const std::string& username) {
+    Bug_Controller bug, depends;
+    user_controller user;
+    if (!bug.find_bug_id(bug_id)||!user.find_username(username) || !depends.find_bug_id(dependency_id)) return false;
 
-    std::list<bug_overview> results;
+    if (user.get_user_info().privilege_level != "Triager" && user.get_user_info().privilege_level != "Reviewer") return false;
 
-    DatabaseConnection database;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.dependencies.push_back(depends.get_bug_info().bug_id);
+    bug.set_bug_info(temp);
 
-    database.open_connection(CONNECTION_DETAILS);
-
-    std::string sqlQuery = "SELECT BUG_ID FROM BUGS WHERE TITLE LIKE '%"
-        + query + "%'";
-
-    try {
-        pqxx::result r = database.query(sqlQuery);
-        for (pqxx::result::const_iterator c = r.begin(); c != r.end(); c++){
-            Bug_Controller temp;
-
-            temp.find_bug_id(c[0].as<std::string>());
-            results.push_back(temp.get_bug_overview());
-        }
-    } catch (std::exception &e) {
-        return results;
-    }
-    return results;
+    return bug.update_bug();
 }
 
+bool backend::subscribe(const std::string& bug_id, const std::string& username) {
+    Bug_Controller bug;
+    user_controller user;
+    if (!bug.find_bug_id(bug_id) || !user.find_username(username)) return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.cclist.push_back(user.get_user_info().username);
+    bug.set_bug_info(temp);
+
+    return bug.update_bug();
+}
+project backend::get_project(const std::string& project_id){
+    project_controller controller;
+
+    if (controller.find_project_id(project_id))
+    return controller.get_project();
+    //failed, return empty
+    project result;
+    return result;
+}
+
+std::list<bug_overview> backend::get_normal_search(const std::string& query, const int page){
+    Search_Controller search;
+    return search.bug_search(query,page);
+}
+std::list<user> backend::get_user_search(const std::string& query, const int page) {
+    Search_Controller search;
+    return search.user_search(query, page);
+}
 bool backend::add_bug(const complete_bug_info& bug){
     Bug_Controller controller;
+    if (bug.bug_id == ""){
+
+    controller.new_bug(bug);
+    } else
     controller.set_bug_info(bug);
 
-    if (controller.update_bug())
-        return true;
-    else
-        return false;
+    return controller.update_bug();
+
 }
+std::list<user> backend::get_developers() {
+    Search_Controller search;
+    return search.developer_search();
+}
+
+bool backend::assign_developer(const std::string& bug_id, const std::string& developer_username, const std::string& triager_username){
+    user_controller dev, triager;
+    Bug_Controller bug;
+
+    if (!dev.find_username(developer_username)||!triager.find_username(triager_username)||!bug.find_bug_id(bug_id)) return false;
+
+    if (triager.get_user_info().privilege_level != "Triager") return false;
+    if (dev.get_user_info().privilege_level != "Developer") return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.assigned_to = dev.get_user_info().username;
+    bug.set_bug_info(temp);
+    return bug.update_bug();
+}
+
+bool backend::set_priority(const std::string& bug_id, const std::string& triager_username,const std::string& priority){
+    user_controller triager;
+    Bug_Controller bug;
+
+    if (!triager.find_username(triager_username)||!bug.find_bug_id(bug_id)) return false;
+
+    if (triager.get_user_info().privilege_level != "Triager") return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.priority = priority;
+    bug.set_bug_info(temp);
+    return bug.update_bug();
+
+}
+
+bool backend::set_status(const std::string& bug_id, const std::string& changer_username,const std::string& status){
+    user_controller changer;
+    Bug_Controller bug;
+
+    if (!changer.find_username(changer_username)||!bug.find_bug_id(bug_id)) return false;
+
+    if (changer.get_user_info().privilege_level != "Triager" && changer.get_user_info().privilege_level != "Reviewer") return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.status = status;
+    bug.set_bug_info(temp);
+    return bug.update_bug();
+}
+
 
 bool backend::add_user(const user& user_info){
     user_controller controller;
     controller.set_user_info(user_info);
 
-    if (controller.update_user())
-        return true;
-    else
-        return false;
+    user_controller test;
+    test.find_username(user_info.username);
+    if (test.isEmpty()) return false;
+
+
+    return controller.update_user();
+}
+bool backend::edit_user(const user& user_info, const user& user_editing){
+    user_controller edit;
+    user_controller user;
+
+    if (!edit.find_username(user_info.username)||!user.find_username(user_editing.username)) return false;
+    edit.set_user_info(user_info);
+    if (user.get_user_info().username == edit.get_user_info().username){
+    edit.update_user();
+    return true;
+    } else if (user.get_user_info().privilege_level == "Superadmin"){
+    edit.update_user();
+    return true;
+    } else
+    return false;
 }
 
 bool backend::add_comment(const comment& comment_info){
     comment_controller controller;
+    if (comment_info.comment_id == ""){
+    controller.new_comment(comment_info);
+    } else
     controller.set_comment(comment_info);
 
-    if (controller.update_comment())
+    return controller.update_comment();
+
+}
+bool backend::add_project(const project project_info){
+    project_controller controller;
+    if (project_info.project_id == ""){
+        controller.new_project(project_info.project_name);
+    } else
+    controller.set_project(project_info);
+
+    bool succeeded = controller.update_project();
+
+    if (succeeded) {
+        statistics statistic;
+        controller.set_statistics(statistic);
+        controller.update_statistics();
         return true;
-    else
-        return false;
+    }
+
+    return false;
 }
 
-bool backend::drop_database(){
+bool backend::add_attachment(const attachment& attachment_info){
+    attachment_controller controller;
+    if (attachment_info.attach_id == ""){
+    controller.new_attachment(attachment_info);
+    } else
+    controller.set_attachment(attachment_info);
+
+    return controller.update_attachment();
+}
+
+bool backend::drop_database(const std::string password){
+    if (password != "satvik no") return false;
     Database_Utility util;
 
     return util.drop_database();
 }
 
-bool backend::create_database(){
+bool backend::create_database(const std::string password){
+    if (password != "satvik no") return false;
     Database_Utility util;
 
     return util.create_database();
