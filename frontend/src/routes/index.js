@@ -7,6 +7,7 @@ import ReportPage from '../components/ReportPage.js';
 import SearchPage from '../components/SearchPage.js';
 
 import BugTable from '../components/BugTable.js';
+import BugPage from '../components/BugPage.js'
 
 import LoginContainer from '../containers/LoginContainer'
 import LoginPageContainer from '../containers/LoginPageContainer';
@@ -33,48 +34,66 @@ export default function routes(store) {
                 component: LoginPageContainer
             },
             {
-                path: 'test/:username',
-                components: {
-                    main: LoginContainer,
-                    sidebar: SidebarSearch
-                }
-            },
-            {
-                path: '/report/',
+                path: 'report',
                 component: ReportPage,
             },
             {
-                path: '/analysis/',
+                path: 'analysis',
                 components: {
                     main: LoginContainer,
                     sidebar: SidebarAnalysis
                 }
             },
             {
-                path: '/assign/',
+                path: 'assign',
                 components: {
                     main: LoginContainer,
                     sidebar: SidebarAssign
                 }
             },
             {
-                path: '/review/',
+                path: 'review',
                 component: LoginContainer,
             },
             {
-                path: '/search/',
-                components: {
-                    main: SearchPage,
-                    sidebar: SidebarSearch
+                path: 'search',
+                indexRoute: {
+                    components: {
+                        main: SearchPage,
+                        sidebar: SidebarSearch
+                    }
                 },
+                childRoutes: [
+                    {
+                        path: 'page',
+                        component: BugTable
+                    }
+                ]
             },
             {
-                path: '/profile/',
-                component: ProfilePage
+                path: 'profile',
+                indexRoute: {
+                    component: ProfilePage
+                },
+                childRoutes: [
+                    {
+                        path: 'id/:id',
+                        component: ProfilePage
+                    }
+                ]
+
             },
             {
-                path: '/bugs',
-                component: BugTable
+                path: 'bugs',
+                indexRoute: {
+                    component: BugTable
+                },
+                childRoutes: [
+                    {
+                        path: 'id/:id',
+                        component: BugPage
+                    }
+                ]
             }
         ]
     }

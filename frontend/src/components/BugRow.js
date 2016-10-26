@@ -17,11 +17,11 @@ class BugRow extends Component {
 
 
 BugRow.propTypes = {
-    id: PropTypes.integer.isRequired,
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     product: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    priority: PropTypes.integer.isRequired,
+    priority: PropTypes.number.isRequired,
 }
 
 export default BugRow;

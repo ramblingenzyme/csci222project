@@ -65,7 +65,7 @@ class BugPage extends Component {
 }
 
 BugPage.propTypes = {
-    bug_id:           PropTypes.integer.isRequired,
+    bug_id:           PropTypes.number.isRequired,
     creation_time:    PropTypes.string.isRequired,
     delta_time:       PropTypes.string.isRequired,
     title:            PropTypes.string.isRequired,
@@ -76,8 +76,8 @@ BugPage.propTypes = {
     operating_system: PropTypes.string.isRequired,
     target_milestone: PropTypes.string.isRequired,
     status:           PropTypes.string.isRequired,
-    priority:         PropTypes.integer.isRequired,
-    severity:         PropTypes.integer.isRequired,
+    priority:         PropTypes.number.isRequired,
+    severity:         PropTypes.number.isRequired,
     reporter:         PropTypes.string.isRequired,
     assigned_to:      PropTypes.string.isRequired,
     project_id:       PropTypes.string.isRequired,
