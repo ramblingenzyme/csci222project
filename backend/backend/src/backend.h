@@ -20,14 +20,14 @@ public:
     // *method: POST
     auth_response authenticate(const std::string& username, const std::string& password);
 
-    // *method: POST
-    complete_bug_info get_bug_page(const int& id);
+    // *method: GET
+    complete_bug_info bug(const int& id);
+
+    // *method: GET
+    user profile(const std::string& username);
 
     // *method: POST
-    user get_user_page(const std::string& username);
-
-    // *method: POST
-    std::list<bug_overview> get_normal_search(const std::string& query);
+    std::list<bug_overview> search(const std::string& query);
 
     // *method: POST
     bool add_bug(const complete_bug_info& bug);
