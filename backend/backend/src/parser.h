@@ -31,10 +31,10 @@ void bug_xml::read_comment(ptree::value_type &v, std::string bug_id){
             temp.bug_id = bug_id;
             temp.creation_ts = f.second.get<std::string>("bug_when");
             temp.body = f.second.get<std::string>("thetext");
+
+            print_comment(temp);
         }
     }
-
-    print_comment(temp);
 }
 
 void bug_xml::print_comment(comment& c) {
