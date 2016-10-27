@@ -26,6 +26,7 @@ struct bug_input {
     std::string component;
     std::string operating_system;
     std::string description;
+    std::string reporter;
 };
 
 struct bug_overview {

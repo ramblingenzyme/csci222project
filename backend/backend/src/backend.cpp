@@ -163,13 +163,14 @@ std::list<bug_overview> backend::get_unassigned_bugs(const int page){
     return search.unassigned_bugs_search(page);
 }
 bool backend::add_bug(const bug_input& bug){
-    Bug_Controller controller;	
+    Bug_Controller controller;
     complete_bug_info bug_info;
     bug_info.title = bug.title;
     bug_info.project_id = bug.project;
     bug_info.component = bug.component;
     bug_info.operating_system = bug.operating_system;
-    bug_info.description = bug_info.description;
+    bug_info.description = bug.description;
+    bug_info.reporter = bug.reporter;
 
     controller.new_bug(bug_info);
 
