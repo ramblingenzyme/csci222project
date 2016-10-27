@@ -26,6 +26,8 @@ std::list<bug_overview> Search_Controller::bug_search(const std::string& query, 
 	std::list<bug_overview> result;
 	DatabaseConnection database;
 	database.open_connection(CONNECTION_DETAILS);
+	bug_overview temp;
+	result.push_back(temp);
 
 	std::string sqlQuery = 	"SELECT * FROM (SELECT BUG_ID FROM BUGS WHERE title LIKE "
 				"'%" + query +"%'" 
@@ -36,19 +38,31 @@ std::list<bug_overview> Search_Controller::bug_search(const std::string& query, 
 				"SELECT BUG_ID FROM BUGS WHERE short_desc LIKE "
 				"'%" + query + "%') LIMIT " + std::to_string(PAGE_LIMIT) +
 				" OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
+	if (query == ""){
+		sqlQuery = "SELECT * FROM BUG_ID LIMIT "+std::to_string(PAGE_LIMIT) +
+			   " OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
+	}
 	try {
 		pqxx::result r = database.query(sqlQuery);
 		database.close_connection();
-
+		pqxx::result empty;
+		if (r == empty) {
+		    bug_overview temp;
+		    temp.title = "EMPTY";
+		    result.push_back(temp);
+		}
 		for (pqxx::result::const_iterator c = r.begin(); c!= r.end(); c++){
 		    Bug_Controller temp;
 		    temp.find_bug_id(c[0].as<std::string>());
 		    result.push_back(temp.get_bug_overview());
 		}
 	} catch (std::exception &e) {
+	    bug_overview temp;
+	    temp.product = e.what();
+	    result.push_back(temp);
 	    return result;
 	}
-	return result;
+	return &result;
 }
 
 std::list<user> Search_Controller::user_search(const std::string& query, int page) {
@@ -59,6 +73,10 @@ std::list<user> Search_Controller::user_search(const std::string& query, int pag
 	std::string sqlQuery = 	"SELECT * FROM (SELECT username FROM USERS WHERE username LIKE "
 				"'%" + query +"%') LIMIT " + std::to_string(PAGE_LIMIT) +
 				" OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
+	if (query == ""){
+		sqlQuery = "SELECT * FROM USERS LIMIT " +std::to_string(PAGE_LIMIT) +
+			   " OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
+	}
 	try {
 		pqxx::result r = database.query(sqlQuery);
 		database.close_connection();
@@ -78,7 +96,11 @@ std::list<bug_overview> Search_Controller::project_search(const std::string &que
 	DatabaseConnection database;
 	database.open_connection(CONNECTION_DETAILS);
 
-	std::string sqlQuery = 	"SELECT * FROM (SELECT BUG_ID FROM BUGS WHERE project_id ="
+	bug_overview temp;
+
+	result.push_back(temp);
+
+	std::string sqlQuery = 	"SELECT * FROM (SELECT project_id FROM PROJECTS WHERE project_id ="
 				+ query + ") LIMIT " + std::to_string(PAGE_LIMIT) +
 				" OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
 	try {

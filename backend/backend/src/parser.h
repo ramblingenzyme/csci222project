@@ -104,13 +104,17 @@ void bug_xml::read_bug(ptree::value_type &v){
     temp.severity = bugtree.get<std::string>("bug_severity");
     temp.reporter = bugtree.get<std::string>("reporter", "0");
     temp.assigned_to = bugtree.get<std::string>("assigned_to", "0");
-    temp.project_id = "000000"; 
+    temp.project_id = "0"; 
     temp.votes = bugtree.get<std::string>("votes");
     temp.keywords.push_back(bugtree.get<std::string>("keywords"));
+    
+    Bug_Controller b_controller;
+    b_controller.set_bug_info(temp);
+
+    std::cout << "Added bug: " << b_controller.update_bug() << std::endl;
 
     read_bug_cclist(v, temp);
 
-    Bug_Controller b_controller;
     b_controller.set_bug_info(temp);
     std::cout << "Added bug: " << b_controller.update_bug() << std::endl;;
 
@@ -124,6 +128,12 @@ void bug_xml::read_bug(ptree::value_type &v){
 void bug_xml::read_bug_cclist(ptree::value_type& v, complete_bug_info& temp) {
     BOOST_FOREACH(ptree::value_type const& f, v.second) {
         if(f.first == "cc") {
+	    user_controller u_controller;
+	    user u;
+	    u.username = f.second.data();
+	    u_controller.set_user_info(u);
+	    u_controller.update_user();
+
             temp.cclist.push_back(f.second.data());
         }
     }

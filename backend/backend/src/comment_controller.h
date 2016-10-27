@@ -126,7 +126,7 @@ std::string comment_controller::generate_insert_comment_query() {
         + this->data->username + "',"
         + this->data->bug_id + ",'"
         + this->data->creation_ts + "','"
-        + this->data->body + "','"
+        + this->data->body + "',"
         + this->data->attach_id + ");";
 
     return query;

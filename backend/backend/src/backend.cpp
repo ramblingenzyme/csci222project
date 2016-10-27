@@ -16,17 +16,9 @@
 #include "time_utility.h"
 #include <ctime>
 #include "parser.h"
+#include <exception>
+#include <fstream>
 
-bool backend::import_database(){
-	try{ 
-	bug_xml reader;
-	std::string filename = "BugReports.xml";
-	reader.load(filename);
-	return true;
-	} catch (...) { 
-	return false;
-	}
-}
 
 std::string backend::get_current_time(){
 	time_t rawtime;
@@ -122,14 +114,12 @@ bool backend::subscribe(const std::string& bug_id, const std::string& username) 
     return bug.update_bug();
 }
 bool backend::test(){
-	user_controller controller;
-	user temp;
-	if (controller.find_username("JIM")) 
-	temp.username = "JIM"; 
-	controller.set_user_info(temp);
+	project_controller controller;
+	project temp; 
+	controller.set_project(temp);
 	
 
-	return controller.update_user();
+	return controller.update_project();
 }
 bool backend::vote(const std::string& bug_id, const std::string & username, const int positiveornegativeone) {
     Bug_Controller bug;
