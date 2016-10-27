@@ -338,11 +338,10 @@ void Bug_Controller::new_bug(const complete_bug_info& partial){
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
 
-    std::string sqlQuery = "Select bug_id FROM BUGS ORDER BY bug_id ASC;";
+    std::string sqlQuery = "Select bug_id FROM BUGS ORDER BY bug_id DESC LIMIT 1;";
     pqxx::result r = database.query(sqlQuery);
     database.close_connection();
-    pqxx::result::const_iterator c = r.end();
-    c--;
+    pqxx::result::const_iterator c = r.begin();
 
     std::string id_string = c[0].as<std::string>();
     double id = atof(id_string.c_str());
