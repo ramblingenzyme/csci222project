@@ -1,9 +1,15 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 #include <string>
 #include "return_types.h"
 #include <iostream>
+#include "bug_controller.h"
+#include "comment_controller.h"
+#include "user_controller.h"
 
 
 using boost::property_tree::ptree;
@@ -26,13 +32,26 @@ void bug_xml::read_comment(ptree::value_type &v, std::string bug_id){
 
     BOOST_FOREACH(ptree::value_type const& f, v.second) {
         if(f.first == "long_desc") {
+	    //add user here, check if exists, if does, forget, if don't eh
+	    user u;
+	    u.username = f.second.get<std::string>("who");
+	    user_controller u_controller;
+	    if (!u_controller.find_username(u.username)){
+		u_controller.set_user_info(u);
+		std::cout << "added user: " <<u_controller.update_user() << std::endl;
+	    }
+
+
             temp.comment_id  = f.second.get<std::string>("commentid");
             temp.username = f.second.get<std::string>("who");
             temp.bug_id = bug_id;
             temp.creation_ts = f.second.get<std::string>("bug_when");
             temp.body = f.second.get<std::string>("thetext");
 
-            print_comment(temp);
+            comment_controller c_controller;
+	    c_controller.set_comment(temp);
+	    std::cout << "added comment: " << c_controller.update_comment() << std::endl;
+	    //print_comment(temp);
         }
     }
 }
@@ -49,13 +68,20 @@ void bug_xml::read_user(ptree::value_type &v){
     user u;
     ptree bugtree = (ptree) v.second;
     u.username = bugtree.get<std::string>("assigned_to","");
-    u.privilege_level = "developer";
+    u.privilege_level = "Developer";
 
     //TODO: Push/queue above user to database
+    user_controller a_controller;
+    a_controller.set_user_info(u);
+    std::cout << "added/updated user: " << a_controller.update_user() << std::endl;
 
-    u.privilege_level = "reporter";
+    
+    u.privilege_level = "Reporter";
     u.username = bugtree.get<std::string>("reporter","");
-
+    if (!a_controller.find_username(u.username)) {
+	a_controller.set_user_info(u);
+	std::cout << "added/updated user: " << a_controller.update_user() << std::endl;;
+    }
     //TODO: Push/queue above user to database
 }
 
@@ -84,9 +110,13 @@ void bug_xml::read_bug(ptree::value_type &v){
 
     read_bug_cclist(v, temp);
 
+    Bug_Controller b_controller;
+    b_controller.set_bug_info(temp);
+    std::cout << "Added bug: " << b_controller.update_bug() << std::endl;;
+
     read_comment(v, temp.bug_id);
 
-    print_bug(temp);
+    //print_bug(temp);
 
     //TODO: Insert push bug functionality
 }
@@ -141,4 +171,4 @@ void bug_xml::load(const std::string &filename)
     }
 }
 
-
+#endif

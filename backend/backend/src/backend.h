@@ -18,6 +18,9 @@ public:
     ~backend() {}
 
     // *method: GET
+    bool import_database();
+
+    // *method: GET
     std::string get_current_time();
 
     // *method: POST
