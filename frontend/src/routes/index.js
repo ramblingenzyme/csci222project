@@ -2,9 +2,9 @@ import App from '../components/App.js';
 import SidebarSearch from '../components/SidebarSearch.js';
 import SidebarAnalysis from '../components/SidebarAnalysis.js';
 import SidebarAssign from '../components/SidebarAssign.js';
-import ReportPage from '../components/ReportPage.js';
 import SearchPage from '../components/SearchPage.js';
 
+import ReportPageContainer from '../containers/ReportPageContainer';
 import ProfilePageContainer from '../containers/ProfilePageContainer';
 import BugTableContainer from '../containers/BugTableContainer';
 import BugPageContainer from '../containers/BugPageContainer';
@@ -16,7 +16,7 @@ import { fetchSearchResults, fetchBugPage, fetchBugTable, fetchProfile } from '.
 
 export default function routes(store) {
     const getSearchResults = (nextState, replace, callback) => {
-        let searchTerm = '';
+        // need to change this to be a get...or handle both.
 
         store.dispatch(fetchSearchResults({
             query: nextState.location.state.body.search,
@@ -52,7 +52,7 @@ export default function routes(store) {
             },
             {
                 path: 'report',
-                component: ReportPage,
+                component: ReportPageContainer,
             },
             {
                 path: 'analysis',
