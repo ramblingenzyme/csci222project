@@ -217,6 +217,12 @@ bool Bug_Controller::update_bug(){
             database.transaction(sqlquery);
         }
 
+        for (std::list<comment>::iterator i  = this->data->comments.begin(); i != this->data->comments.end();i++) {
+            comment_controller controller;
+            controller.set_comment(*i);
+            controller.update_comment();
+        }
+
         return true;
     }
 
@@ -258,6 +264,12 @@ bool Bug_Controller::update_bug(){
     //after a hard days work, closing the connection
     database.close_connection();
 
+    for (std::list<comment>::iterator i  = this->data->comments.begin(); i != this->data->comments.end();i++) {
+            comment_controller controller;
+            controller.set_comment(*i);
+            controller.update_comment();
+    }
+
     return true;
 }
 
@@ -275,9 +287,9 @@ std::string Bug_Controller::generate_update_bug_query() {
         + this->data->status + "', dupl_id ='"
         + this->data->duplicate_id + ", bug_file_loc ='"
         + "NULL" + "', priority ="
-        + this->data->priority + ", severity ="
-        + this->data->severity + ", reporter ="
-        + this->data->reporter + ", assigned_to ="
+        + this->data->priority + ", severity ='"
+        + this->data->severity + "', reporter ='"
+        + this->data->reporter + "', assigned_to ="
         + this->data->assigned_to + ", project_id ="
         + this->data->project_id + ", votes ="
         + this->data->votes + " where bug_id = "
@@ -304,10 +316,10 @@ std::string Bug_Controller::generate_insert_bug_query() {
         + this->data->operating_system + "',"
         + this->data->status + ","
         + this->data->duplicate_id + ","
-        + "NULL" + ","
-        + this->data->priority + ","
-        + this->data->reporter + ","
-        + this->data->severity + ","
+        + "NULL" + ",'"
+        + this->data->priority + "',"
+        + this->data->reporter + ",'"
+        + this->data->severity + "',"
         + this->data->assigned_to + ","
         + this->data->project_id + ","
         + this->data->votes + ");";
