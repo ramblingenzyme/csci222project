@@ -34,9 +34,9 @@ void bug_xml::read_user(ptree::value_type &v){
 	ptree bugtree = (ptree) v.second;
 	temp.username = bugtree.get<std::string>("assigned_to","");
 	std::cout << "USER - username = " << temp.username << std::endl;
-	temp.privilege_level = "2";
+	temp.privilege_level = "developer";
 	
-	temp.privilege_level = "1";
+	temp.privilege_level = "reporter";
 	temp.username = bugtree.get<std::string>("reporter","");
 	std::cout << "USER - username = " << temp.username << std::endl;
 	try { BOOST_FOREACH(ptree::value_type &f, bugtree.get_child("cc")){
