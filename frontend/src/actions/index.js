@@ -52,6 +52,16 @@ export function receiveProfileList(profileList) {
     }
 }
 
+export function logout() {
+    return {
+        type: LOGOUT,
+        authStatus: {
+            authed: false,
+            role: "guest"
+        }
+    }
+}
+
 // THUNKS
 export function fetchAuthStatus(username, password) {
     return function(dispatch) {
@@ -104,11 +114,23 @@ export function fetchSearchResults(query, cb) {
     }
 }
 
-export function fetchBugTable(page) {
+export function fetchBugTable(page, cb) {
     return function (dispatch) {
-        let endpoint = `get_normal_search?page=${page}`;
+        let endpoint = `get_normal_search`;
+        let params = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ page, query: '' })
+        }
 
-        return genericApiRequest(dispatch, receiveBugList, endpoint)
+        return genericApiRequest(dispatch, receiveBugList, endpoint, params)
+            .then(() => {
+                if (cb) {
+                    cb();
+                }
+            });
     }
 }
 

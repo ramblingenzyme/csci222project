@@ -225,12 +225,11 @@ bool Bug_Controller::update_bug(){
             database.transaction(sqlquery);
         }
 
-	for (std::list<comment>::iterator i  = this->data->comments.begin(); i != this->data->comments.end();i++) {
-	    comment_controller controller;
-	    controller.set_comment(*i);
-	    controller.update_comment();
-	}
-                
+        for (std::list<comment>::iterator i  = this->data->comments.begin(); i != this->data->comments.end();i++) {
+            comment_controller controller;
+            controller.set_comment(*i);
+            controller.update_comment();
+        }
 
         return true;
     }
@@ -269,12 +268,11 @@ bool Bug_Controller::update_bug(){
     database.close_connection();
 
     for (std::list<comment>::iterator i  = this->data->comments.begin(); i != this->data->comments.end();i++) {
-	    comment_controller controller;
-	    controller.set_comment(*i);
-	    controller.update_comment();
+            comment_controller controller;
+            controller.set_comment(*i);
+            controller.update_comment();
     }
 
-            
     return true;
 }
 

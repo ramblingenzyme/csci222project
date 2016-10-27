@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Control, Form, Errors } from 'react-redux-form';
+import Fetch from '../helpers/fetch.js'
 
 class RegisterForm extends Component {
     _passwordsMatch({ password, confirmPassword }) {
@@ -11,20 +12,30 @@ class RegisterForm extends Component {
     }
 
     _handleRegister(user) {
-        return fetch('/add_user', {
+        return Fetch('add_user', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: user.username,
-                email: user.email,
-                password: user.password,
-                privilege_level: "Reporter"
+                user_info: {
+                    username: user.username,
+                    email: user.email,
+                    password: user.password,
+                    privilege_level: "Reporter"
+                }
             })
         }).then(response => {
             if (response) {
-                return alert("You have been registered");
+                 alert("You have been registered");
+                 return this.props.fetchAuthStatus(user.username, user.password)
+                     .then(response => {
+                         if (response.authed === false) {
+                             return alert ("Somehow we couldn't log you in, try again.")
+                         } else {
+                             return Promise.resolve(true);
+                         }
+                     });
             } else {
                 alert("Error, could not register, PEBKAC probably.")
                 return false;
@@ -49,6 +60,7 @@ class RegisterForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -69,6 +81,7 @@ class RegisterForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -88,6 +101,7 @@ class RegisterForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -107,6 +121,7 @@ class RegisterForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -118,9 +133,7 @@ class RegisterForm extends Component {
                     />
                 </div>
                 <div className="buttons-container">
-                    <div className="buttons">
-                        <button type="submit">Register</button>
-                    </div>
+                    <button type="submit">Register</button>
                 </div>
             </Form>
         )

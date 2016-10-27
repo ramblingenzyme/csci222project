@@ -1,11 +1,18 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import LoginPage from '../components/LoginPage.js';
+
+import { logout } from '../actions';
 
 const mapStateToProps = state => ({
     authenticateUser: state.authenticateUser
 });
 
-const mapDispatchToProps = dispatch => ({});
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+       logout
+    }, dispatch);
+}
 
 const LoginPageContainer = connect(
     mapStateToProps,
