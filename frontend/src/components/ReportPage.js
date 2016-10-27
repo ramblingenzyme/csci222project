@@ -10,11 +10,11 @@ class ReportPage extends Component {
             <div id="Reporting" className="aui">
                 <h3>Bug Report Submission</h3>
                 <Form className="aui top-label padField" method="post" model="forms.reportWriter">
-                    <InputField id="report-writer-title" title="Title" model = "forms.reportWriter.title" />
-                    <InputField id="report-writer-project" title="Project" model = "forms.reportWriter.project"/>
+                    <InputField id="report-writer-title" title="Title" model = "forms.reportWriter.title" require />
+                    <InputField id="report-writer-project" title="Project" model = "forms.reportWriter.project" require/>
                     <InputField id="report-writer-component" title="Component" model = "forms.reportWriter.component" />
                     <InputField id="report-writer-os" title="Operating System" model = "forms.reportWriter.os" />
-                    <InputField id="report-writer-description" title="Description" model = "forms.reportWriter.description" />
+                    <InputField id="report-writer-description" title="Description" model = "forms.reportWriter.description" require />
                     <div className="buttons-container">
                         <button type="submit">Submit</button>
                     </div>
