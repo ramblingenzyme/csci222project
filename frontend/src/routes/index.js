@@ -23,11 +23,11 @@ export default function routes(store) {
     };
 
     const getBugPage = (nextState, replace, callback) => {
-        store.dispatch(fetchBugPage(nextState.params.id, callback))
+        store.dispatch(fetchBugPage(nextState.params.id, callback));
     }
 
     const getBugTable = (nextState, replace, callback) => {
-        store.dispatch(fetchBugTable(nextState.params.page))
+        store.dispatch(fetchBugTable(nextState.params.page || 0, callback));
     }
 
     return {
