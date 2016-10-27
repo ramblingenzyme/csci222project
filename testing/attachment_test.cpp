@@ -58,12 +58,12 @@ void attachment_test::test_set_attachment() {
     attachment a2;
 
     //Attachment id of first object should not match that of the second
-    CPPUNIT_ASSERT(!ac.attachment_id_is_equal(a2.attach_id));
+    CPPUNIT_ASSERT(!string_is_equal(a1.attach_id, a2.attach_id));
 
     a2 = ac.get_attachment();
 
     //Now it should
-    CPPUNIT_ASSERT(ac.attachment_id_is_equal(a1.attach_id));
+    CPPUNIT_ASSERT(string_is_equal(a1.attach_id, a2.attach_id));
 }
 
 void attachment_test::test_update_attachment() {
