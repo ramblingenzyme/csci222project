@@ -90,7 +90,7 @@ bool backend::subscribe(const std::string& bug_id, const std::string& username) 
 bool backend::test(){
 	user_controller controller;
 	user temp;
-	if (controller.find_username("JIM")) return false;
+	if (controller.find_username("JIM")) 
 	temp.username = "JIM"; 
 	controller.set_user_info(temp);
 	
@@ -143,13 +143,16 @@ std::list<bug_overview> backend::get_unassigned_bugs(const int page){
     Search_Controller search;
     return search.unassigned_bugs_search(page);
 }
-bool backend::add_bug(const complete_bug_info& bug){
-    Bug_Controller controller;
-    if (bug.bug_id == ""){
+bool backend::add_bug(const bug_input& bug){
+    Bug_Controller controller;	
+    complete_bug_info bug_info;
+    bug_info.title = bug.title;
+    bug_info.project_id = bug.project;
+    bug_info.component = bug.component;
+    bug_info.operating_system = bug.operating_system;
+    bug_info.description = bug_info.description;
 
-    controller.new_bug(bug);
-    } else
-    controller.set_bug_info(bug);
+    controller.new_bug(bug_info);
 
     return controller.update_bug();
 

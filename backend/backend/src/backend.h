@@ -59,7 +59,7 @@ public:
     bool set_status(const std::string& bug_id, const std::string& changer_username, const std::string& status);
 
     // *method: POST
-    bool add_bug(const complete_bug_info& bug);
+    bool add_bug(const bug_input& bug);
 
     // *method: POST
     bool add_dependencies(const std::string& bug_id, const std::string& dependency_id, const std::string& username);

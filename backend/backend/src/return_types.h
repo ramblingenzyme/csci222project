@@ -21,6 +21,14 @@ struct comment {
     comment() : comment_id("0000000"), username("Default"), bug_id("000000") ,creation_ts("0"), body("NULL"), attach_id("0000000") { };
 };
 
+struct bug_input {
+    std::string title;
+    std::string project;
+    std::string component;
+    std::string operating_system;
+    std::string description;
+};
+
 struct bug_overview {
     std::string bug_id;
     std::string title;
