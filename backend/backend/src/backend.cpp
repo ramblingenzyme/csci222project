@@ -116,6 +116,11 @@ std::list<user> backend::get_user_search(const std::string& query, const int pag
     Search_Controller search;
     return search.user_search(query, page);
 }
+
+std::list<bug_overview> backend::get_unassigned_bugs(const int page){
+    Search_Controller search;
+    return search.unassigned_bugs_search(page);
+}
 bool backend::add_bug(const complete_bug_info& bug){
     Bug_Controller controller;
     if (bug.bug_id == ""){

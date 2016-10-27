@@ -35,6 +35,8 @@ public:
     // *method: POST
     std::list<user> get_user_search(const std::string& query, const int page);
 
+    // *method: POST
+    std::list<bug_overview> get_unassigned_bugs(const int page);
     // *method: GET
     std::list<user> get_developers();
 
