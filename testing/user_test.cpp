@@ -1,4 +1,5 @@
 #include "user_test.h"
+#include <iostream>
 
 CPPUNIT_TEST_SUITE_REGISTRATION(user_test);
 
@@ -13,63 +14,65 @@ void user_test::tearDown() {
 
 void user_test::test_find_username() {
     std::string test_id = "666";
+    std::string query1 = "SELECT * FROM USERS WHERE username='666';";
+    std::string query2;
 
-    uc.find_username(test_id);
+    CPPUNIT_ASSERT(!string_is_equal(query1, query2));
 
-    CPPUNIT_ASSERT(uc.username_is_equal(test_id));
+    query2 = uc.generate_find_username_query(test_id);
 
-    //TODO: insert more asserts
+    CPPUNIT_ASSERT(string_is_equal(query1, query2));
 }
 
-void user_test::test_get_user_info() {
-    //user c = bc.create_test_user(): //TODO: Implement parent function
+void user_test::test_get_and_set_user_info() {
+    user user1 = create_test_user();
+    user user2;
 
-//No stored bug to compare to, so should not match yet
-    //CPPUNIT_ASSERT(!cc.complete_bug_info_is_equal(c));
+    CPPUNIT_ASSERT(!user_is_equal(user1, user2));
 
-    //Should return test data that matches the above
-    // cc.find_user_id(c.user_id);
-    // CPPUNIT_ASSERT(cc.user_is_equal(c)); //TODO: Implement parent function
-}
+    uc.set_user_info(user1);
 
-void user_test::test_set_user_info() {
-    //stub
+    user2 = uc.get_user_info();
 
-    // user c = cc.create_test_user(); //TODO: Implement parent
-
-    //Stored user should be still empty, so they should not match
-    //CPPUNIT_ASSERT(!cc.user_is_equal(c));
-
-    // cc.set_user(c);
-
-    // //Now the stored user and generated user should match
-    // CPPUNIT_ASSERT(cc.complete_bug_info_is_equal(c));
+    CPPUNIT_ASSERT(user_is_equal(user1, user2));
 }
 
 void user_test::test_update_user() {
-    //stub
+    user u = create_test_user();
+
+    std::string query1 = "UPDATE users set username ='joey', password ='hunter2', email ='hunter2@hunter2.com', privilege_level ='0' where username ='joey';";
+    std::string query2;
+    
+    CPPUNIT_ASSERT(!string_is_equal(query1, query2));
+
+    uc.set_user_info(u);
+
+    query2 = uc.generate_update_user_query();
+
+    CPPUNIT_ASSERT(string_is_equal(query1, query2));
 }
 
-// void void_test::test_set_bug_info() {
-//     complete_bug_info bug = bc.create_test_complete_bug();
+bool user_test::string_is_equal(std::string s1, std::string s2) {
+        return s1 == s2;
+}
 
-//     //Stored bug should be still empty, so they should not match
-//     CPPUNIT_ASSERT(!bc.complete_bug_info_is_equal(bug));
+user user_test::create_test_user() {
+    user u;
+    u.username = "joey";
+    u.password = "hunter2";
+    u.email = "hunter2@hunter2.com";
+    u.privilege_level = "0";
 
-//     bc.set_bug_info(bug);
+    return u;
+}
 
-//     //Now the stored bug and generated bug should match
-//     CPPUNIT_ASSERT(bc.complete_bug_info_is_equal(bug));
-// }
+ bool user_test::user_is_equal(user& u1, user& u2) {
+     if(u1.username != u2.username) return false;
+     if(u1.password != u2.password) return false;
+     if(u1.email != u2.email) return false;
+     if(u1.privilege_level != u2.privilege_level) return false;
 
-// void bug_test::test_get_complete_bug_info() {
-//     complete_bug_info bug = bc.create_test_complete_bug();
+     return true;
+ }
 
-//     //No stored bug to compare to, so should not match yet
-//     CPPUNIT_ASSERT(!bc.complete_bug_info_is_equal(bug));
-
-//     //Should return test data that matches the above
-//     bc.find_bug_id(bug.bug_id);
-//     CPPUNIT_ASSERT(bc.complete_bug_info_is_equal(bug));
-// }
 

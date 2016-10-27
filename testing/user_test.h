@@ -9,9 +9,9 @@ class user_test : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(user_test);
 
-    // CPPUNIT_TEST(test_find_user_id);
-    // CPPUNIT_TEST(test_get_user);
-    // CPPUNIT_TEST(test_set_user);
+    CPPUNIT_TEST(test_find_username);
+    CPPUNIT_TEST(test_get_and_set_user_info);
+    CPPUNIT_TEST(test_update_user);
     
     CPPUNIT_TEST_SUITE_END();
 private:
@@ -21,18 +21,12 @@ public:
     void tearDown();
 protected:
     void test_find_username();
-    void test_authenticate();
-    void test_get_user_info();
-    void test_set_user_info();
+    void test_get_and_set_user_info();
     void test_update_user();
-        
-    // void test_empty();
-    // void test_find_bug_id();
-    // void test_get_bug_overview();
-    // void test_get_complete_bug_info();
-    // void test_set_bug_info();
-    // void test_update_bug(); //stub
-    //TODO : An implementation of test equals functions could be useful
+
+    bool string_is_equal(std::string s1, std::string s2);
+    user create_test_user();
+    bool user_is_equal(user& u1, user& u2);
 };
 
 #endif
