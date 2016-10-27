@@ -9,9 +9,8 @@ class attachment_test : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(attachment_test);
 
-    CPPUNIT_TEST(test_empty);
-    CPPUNIT_TEST(test_get_and_set_attachment);
     CPPUNIT_TEST(test_find_attach_id);
+    CPPUNIT_TEST(test_get_and_set_attachment);
     CPPUNIT_TEST(test_update_attachment); 
 
     CPPUNIT_TEST_SUITE_END();
