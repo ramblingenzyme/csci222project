@@ -41,6 +41,7 @@ public:
     bool update_attachment();
     std::string generate_update_attachment_query();
     std::string generate_insert_attachment_query();
+
 };
 
 ///////////////////////////////////////

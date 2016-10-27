@@ -17,30 +17,32 @@ public:
             delete data;
     }
 
-    bool find_comment_id(std::string comment_id);
-    std::string generate_find_comment_id_query(std::string comment_id);
+    inline bool find_comment_id(std::string comment_id);
+    inline std::string generate_find_comment_id_query(std::string comment_id);
 
     //is empty
-    bool isEmpty() { 
+    inline bool isEmpty() { 
         if (this->data == NULL) 
             return true;
         return false;
     }
 
     //returns the comment
-    comment get_comment() { return *data; };
+    inline comment get_comment() { return *data; };
         
     //sets the stored comment to a given comment struct
-    void set_comment(comment a) {
+    inline void set_comment(comment a) {
         if (this->data != NULL) 
             delete data; 
         data = new comment;
         *data = a; 
     }
-    void new_comment(const comment& partial);
-    bool update_comment();
-    std::string generate_update_comment_query();
-    std::string generate_insert_comment_query();
+
+    inline void new_comment(const comment& partial);
+
+    inline bool update_comment();
+    inline std::string generate_update_comment_query();
+    inline std::string generate_insert_comment_query();
 };
 
 ///////////////////////////////////////
@@ -104,14 +106,14 @@ bool comment_controller::update_comment(){
 
 std::string comment_controller::generate_update_comment_query() {
     std::string query;
-    query = "UPDATE comment set comment_id ="
+    query = "UPDATE comment set comment_id="
         + this->data->comment_id + ", username='"
-        + this->data->username + "',bug_id ="
-        + this->data->bug_id + ", creation_ts ='"
-        + this->data->creation_ts + "', body = '"
+        + this->data->username + "', bug_id="
+        + this->data->bug_id + ", creation_ts='"
+        + this->data->creation_ts + "', body='"
         + this->data->body + "', attach_id="
-        + this->data->attach_id + " where comment_id ="
-        + this->data->comment_id + " AND bug_id = "
+        + this->data->attach_id + " where comment_id="
+        + this->data->comment_id + " AND bug_id="
         + this->data->bug_id + ";";
 
     return query;
@@ -130,6 +132,7 @@ std::string comment_controller::generate_insert_comment_query() {
 
     return query;
 }
+
 void comment_controller::new_comment(const comment& partial){
 	this->set_comment(partial);
 
@@ -148,4 +151,6 @@ void comment_controller::new_comment(const comment& partial){
 
 	this->data->comment_id = std::to_string(id);
 }
+
 #endif
+
