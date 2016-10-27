@@ -5,6 +5,8 @@ export default function genericApiRequest(dispatch, action, endpoint, params = {
     return fetchFromBackend(endpoint, params)
         .then(response => {
             dispatch(action(response));
-            return dispatch(requestData(false));
+            dispatch(requestData(false));
+
+            return response;
         });
 }

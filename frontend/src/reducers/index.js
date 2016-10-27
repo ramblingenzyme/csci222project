@@ -15,9 +15,26 @@ const user = {
     password: '',
 };
 
+const register = {
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+}
+
+const searchPageSidebar = {
+    keywording: '',
+    osing: '',
+    versioning: '',
+    age: ' ',
+    status: ' ',
+    priority: ' ',
+    severity: ' ',
+};
+
 const searchBox = {
     searchTerm: ''
-}
+};
 
 const baseReducer = combineReducers({
     bugList,
@@ -29,8 +46,11 @@ const baseReducer = combineReducers({
     form: formReducer,
     forms: combineForms({
         user,
+        register,
+        searchPageSidebar,
         searchBox
     }, 'forms')
 });
+
 
 export default baseReducer;

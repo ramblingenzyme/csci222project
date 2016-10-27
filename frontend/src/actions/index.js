@@ -3,7 +3,8 @@ import {
     RECEIVE_BUG_INFO,
     RECEIVE_BUG_LIST,
     RECEIVE_AUTH_STATUS,
-    RECEIVE_PROFILE_INFO
+    RECEIVE_PROFILE_INFO,
+    RECEIVE_PROFILE_LIST
 } from '../const';
 
 import genericApiRequest from './genericApiRequest';
@@ -44,7 +45,7 @@ export function receiveProfileInfo(profileInfo) {
     }
 }
 
-export function recieveProfileList(profileList) {
+export function receiveProfileList(profileList) {
     return {
         type: RECEIVE_PROFILE_LIST,
         profileList
@@ -66,14 +67,19 @@ export function fetchAuthStatus(username, password) {
                 password
             })
         };
-        genericApiRequest(dispatch, receiveAuthStatus, endpoint, params);
+        return genericApiRequest(dispatch, receiveAuthStatus, endpoint, params);
     }
 }
 
-export function fetchBugPage(id) {
+export function fetchBugPage(id, cb) {
     return function(dispatch) {
-        let endpoint = `bugs/${id}`;
-        genericApiRequest(dispatch, receiveBugInfo, endpoint);
+        let endpoint = `bug?id=${id}`;
+        return genericApiRequest(dispatch, receiveBugInfo, endpoint)
+            .then(() => {
+                if (cb) {
+                    cb();
+                }
+            })
     }
 
 }
@@ -100,17 +106,17 @@ export function fetchSearchResults(query, cb) {
 
 export function fetchBugTable(page) {
     return function (dispatch) {
-        let endpoint = `bugpage/${page}`;
+        let endpoint = `get_normal_search?page=${page}`;
 
-        genericApiRequest(dispatch, receiveBugList, endpoint);
+        return genericApiRequest(dispatch, receiveBugList, endpoint)
     }
 }
 
-export function fetchProfile(id) {
+export function fetchProfile(username) {
     return function (dispatch) {
-        let endpoint = `profile/${id}`
+        let endpoint = `profile/${username}`
 
-        genericApiRequest(dispatch, receiveProfileInfo, endpoint);
+        return genericApiRequest(dispatch, receiveProfileInfo, endpoint);
     }
 }
 
@@ -118,6 +124,6 @@ export function fetchProfileList() {
     return function (dispatch) {
         let endpoint = `profiles`
 
-        genericApiRequest(dispatch, receiveProfileList, endpoint);
+        return genericApiRequest(dispatch, receiveProfileList, endpoint);
     }
 }

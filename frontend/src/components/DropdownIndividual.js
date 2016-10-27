@@ -1,22 +1,21 @@
 import React, { Component, PropTypes } from 'react';
-import { reduxForm } from 'redux-form';
+import { Control } from 'react-redux-form';
 
 class DropdownIndividual extends Component {
     render() {
         return (
-            <form key={this.props.title} className={this.props.auiClass}>
-                <div className={this.props.className}>
-                    <label htmlFor={this.props.id}>
-                        {this.props.title}
-                    </label>
-                    <select className="select" id={this.props.id} name={this.props.id}>
-                        <option>{this.props.defaultOption}</option>
-                        {this.props.options.map((result) => (
-                            <option key={result}>{result}</option>
-                        ))}
-                    </select>
-                </div>
-            </form>
+            <div className={this.props.className}>
+                <label htmlFor={this.props.id}>
+                    {this.props.title}
+                </label>
+                <Control.select className="select" component="select" id={this.props.id} name={this.props.id}
+                    model={this.props.model}>
+                    <option>{this.props.defaultOption}</option>
+                    {this.props.options.map((result) => (
+                        <option key={result}>{result}</option>
+                    ))}
+                </Control.select>
+            </div>
         )
     }
 }

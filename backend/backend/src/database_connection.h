@@ -2,47 +2,85 @@
 #define DATABASE_CONNECTION_H
 #include <string>
 #include <pqxx/pqxx>
+#include <iostream>
 
 /* This may need to become a singleton instead */
 class DatabaseConnection {
-    public:
-        DatabaseConnection() {
-            /* if connection isn't open and there are details reconnect */
+private:
+    void reconnect_if_needed() {
+        if (!db_connection_->is_open()) {
+            if (db_connection_ != NULL)
+                delete db_connection_;
+            db_connection_ = new pqxx::connection(connection_details_);
         }
 
-        ~DatabaseConnection() {
-            /* Should be nothing, I think. */
-        }
+    };
 
-        void open_connection(const std::string connection_details) {
-            connection_details_ = connection_details;
-            /* open connection */
+    std::string connection_details_;
+    pqxx::connection *db_connection_;
+public:
+    DatabaseConnection() {
+        if (!connection_details_.empty()) {
+            db_connection_ = new pqxx::connection(connection_details_);
+        } else {
+            db_connection_ = NULL;
         }
+    };
 
-        void close_connection() {
-            /* close connection */
+    ~DatabaseConnection() {
+        if (db_connection_->is_open()){
+            close_connection();
         }
+        if (db_connection_ != NULL)
+            delete db_connection_;
+    };
 
-        pqxx::result query(const std::string query) {
-            // needs to be refactored to be more defensive
+    void open_connection(const std::string connection_details) {
+        connection_details_ = connection_details;
+        if (db_connection_ != NULL)
+            delete db_connection_;
+
+        db_connection_ = new pqxx::connection(connection_details_);
+    };
+
+    void close_connection() {
+        if (db_connection_->is_open()) {
+            db_connection_->disconnect();
+        }
+    };
+
+    pqxx::result query(const std::string query) {
+        // needs to be refactored to be more defensive
+        try {
             reconnect_if_needed();
 
-            pqxx::nontransaction N(db_connection_);
+            pqxx::nontransaction N(*db_connection_);
 
             pqxx::result results( N.exec(query.c_str()) );
 
             return results;
-        }
+        }catch(std::exception &e) {
 
-    private:
-        void reconnect_if_needed() {
-            if (!db_connection_.is_open()) {
-                /* reopen db connection */
-            }
+            throw(e);
+            pqxx::result results;
+            return results;
         }
+    };
 
-        static std::string connection_details_;
-        static pqxx::connection db_connection_;
+    bool transaction(const std::string query){
+        try{
+            reconnect_if_needed();
+
+            pqxx::work W(*db_connection_);
+            W.exec(query.c_str());
+            W.commit();
+            return true;
+        } catch (std::exception &e) {
+            std::cout << e.what() << std::endl;
+            return false;
+        }
+    }
+
 };
 
 #endif
