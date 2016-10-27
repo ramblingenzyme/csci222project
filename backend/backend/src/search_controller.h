@@ -26,30 +26,26 @@ std::list<bug_overview> Search_Controller::bug_search(const std::string& query, 
 	std::list<bug_overview> result;
 	DatabaseConnection database;
 	database.open_connection(CONNECTION_DETAILS);
-	bug_overview temp;
-	result.push_back(temp);
 
-	std::string sqlQuery = 	"SELECT * FROM (SELECT BUG_ID FROM BUGS WHERE title LIKE "
+	std::string sqlQuery = 	"SELECT * FROM (SELECT bug_id FROM BUGS WHERE title LIKE "
 				"'%" + query +"%'" 
 				" UNION "
-				"SELECT BUG_ID FROM KEYWORDS WHERE word LIKE "
+				"SELECT bug_id FROM KEYWORDS WHERE word LIKE "
 				"'%" + query +"%'"
 				" UNION "
-				"SELECT BUG_ID FROM BUGS WHERE short_desc LIKE "
-				"'%" + query + "%') LIMIT " + std::to_string(PAGE_LIMIT) +
-				" OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
+				"SELECT bug_id FROM BUGS WHERE short_desc LIKE "
+				"'%" + query + "%') ss LIMIT " + std::to_string(PAGE_LIMIT) +
+				" OFFSET " + std::to_string(PAGE_LIMIT * (page - 1)) + ";";
 	if (query == ""){
-		sqlQuery = "SELECT * FROM BUG_ID LIMIT "+std::to_string(PAGE_LIMIT) +
-			   " OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
+		sqlQuery = "SELECT bug_id FROM BUGS LIMIT "+std::to_string(PAGE_LIMIT) +
+			   " OFFSET " + std::to_string(PAGE_LIMIT * (page - 1)) + ";";
 	}
 	try {
 		pqxx::result r = database.query(sqlQuery);
 		database.close_connection();
 		pqxx::result empty;
 		if (r == empty) {
-		    bug_overview temp;
-		    temp.title = "EMPTY";
-		    result.push_back(temp);
+		    return result;
 		}
 		for (pqxx::result::const_iterator c = r.begin(); c!= r.end(); c++){
 		    Bug_Controller temp;
@@ -57,10 +53,7 @@ std::list<bug_overview> Search_Controller::bug_search(const std::string& query, 
 		    result.push_back(temp.get_bug_overview());
 		}
 	} catch (std::exception &e) {
-	    bug_overview temp;
-	    temp.product = e.what();
-	    result.push_back(temp);
-	    return result;
+            return result;
 	}
 	return result;
 }
@@ -71,11 +64,11 @@ std::list<user> Search_Controller::user_search(const std::string& query, int pag
 	database.open_connection(CONNECTION_DETAILS);
 
 	std::string sqlQuery = 	"SELECT * FROM (SELECT username FROM USERS WHERE username LIKE "
-				"'%" + query +"%') LIMIT " + std::to_string(PAGE_LIMIT) +
-				" OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
+				"'%" + query +"%') ss LIMIT " + std::to_string(PAGE_LIMIT) +
+				" OFFSET " + std::to_string(PAGE_LIMIT * (page -1)) + ";";
 	if (query == ""){
 		sqlQuery = "SELECT * FROM USERS LIMIT " +std::to_string(PAGE_LIMIT) +
-			   " OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
+			   " OFFSET " + std::to_string(PAGE_LIMIT * (page - 1)) + ";";
 	}
 	try {
 		pqxx::result r = database.query(sqlQuery);
@@ -102,7 +95,7 @@ std::list<bug_overview> Search_Controller::project_search(const std::string &que
 
 	std::string sqlQuery = 	"SELECT * FROM (SELECT project_id FROM PROJECTS WHERE project_id ="
 				+ query + ") LIMIT " + std::to_string(PAGE_LIMIT) +
-				" OFFSET " + std::to_string(PAGE_LIMIT * page) + ";";
+				" OFFSET " + std::to_string(PAGE_LIMIT * (page - 1)) + ";";
 	try {
 		pqxx::result r = database.query(sqlQuery);
 		database.close_connection();
@@ -124,7 +117,7 @@ std::list<user> Search_Controller::developer_search() {
 	database.open_connection(CONNECTION_DETAILS);
 
 	std::string sqlQuery = 	"SELECT * FROM (SELECT username FROM USERS"
-		" WHERE privilege_level ='Developer';";
+		" WHERE privilege_level ='Developer') ss;";
 	try {
 		pqxx::result r = database.query(sqlQuery);
 		database.close_connection();
@@ -144,8 +137,8 @@ std::list<bug_overview> Search_Controller::unassigned_bugs_search(const int page
 	database.open_connection(CONNECTION_DETAILS);
 
 	std::string sqlQuery = "SELECT * FROM (SELECT bug_id FROM BUGS"
-			"WHERE assigned_to IS NULL) LIMIT " + std::to_string(PAGE_LIMIT)
-			+ " OFFSET " + std::to_string(PAGE_LIMIT*page) + ";";
+			"WHERE assigned_to IS NULL) ss LIMIT " + std::to_string(PAGE_LIMIT)
+			+ " OFFSET " + std::to_string(PAGE_LIMIT*(page -1)) + ";";
 	try {
 		pqxx::result r = database.query(sqlQuery);
 		database.close_connection();
@@ -166,8 +159,8 @@ std::list<bug_overview> Search_Controller::get_assigned_bugs(const std::string& 
 	database.open_connection(CONNECTION_DETAILS);
 
 	std::string sqlQuery = "SELECT * FROM (SELECT bug_id FROM BUGS"
-			"WHERE assigned_to='"+ query +"') LIMIT " + std::to_string(PAGE_LIMIT)
-			+ " OFFSET " + std::to_string(PAGE_LIMIT*page) + ";";
+			"WHERE assigned_to='"+ query +"') ss LIMIT " + std::to_string(PAGE_LIMIT)
+			+ " OFFSET " + std::to_string(PAGE_LIMIT*(page-1)) + ";";
 	try {
 		pqxx::result r = database.query(sqlQuery);
 		database.close_connection();
