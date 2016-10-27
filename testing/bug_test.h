@@ -8,9 +8,11 @@
 class bug_test : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(bug_test);
+
     CPPUNIT_TEST(test_empty);
     CPPUNIT_TEST(test_find_bug_id);
     CPPUNIT_TEST(test_get_bug_overview);
+
     CPPUNIT_TEST_SUITE_END();
 private:
     Bug_Controller bc;

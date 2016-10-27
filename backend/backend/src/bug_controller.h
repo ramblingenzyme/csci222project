@@ -43,8 +43,6 @@ public:
     bool isEmpty() { return data == NULL;};
 };
 
-#endif
-
 //////////////////////////////////
 // Definition of Bug_Controller //
 //////////////////////////////////
@@ -336,4 +334,4 @@ void Bug_Controller::new_bug(const complete_bug_info& partial){
     this->data->bug_id = std::to_string(id);
 }
 
-
+#endif

@@ -45,8 +45,6 @@ public:
     inline std::string generate_insert_comment_query();
 };
 
-#endif
-
 ///////////////////////////////////////
 // Definition of comment_controller //
 ///////////////////////////////////////
@@ -153,3 +151,6 @@ void comment_controller::new_comment(const comment& partial){
 
 	this->data->comment_id = std::to_string(id);
 }
+
+#endif
+
