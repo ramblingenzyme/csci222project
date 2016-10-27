@@ -70,7 +70,7 @@ void bug_xml::read_bug(ptree::value_type &v){
 	     << "creation_ts: " << temp.creation_time << "\n"
 	     << "delta_ts: "<< temp.delta_time << "\n"
 	     << "title: " << temp.title << "\n"
-	     << "desciprtion: " << temp.description << "\n"
+	     << "description: " << temp.description << "\n"
 	     << "product: " << temp.product << "\n"
 	     << "component: " <<temp.component << "\n"
 	     << "version: " << temp.version << "\n"
