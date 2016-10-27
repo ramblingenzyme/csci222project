@@ -126,8 +126,11 @@ statistics backend::get_project_statistics(const std::string& project_id){
     //failed, return empty
     statistics result;
     return result;
-	
+}
 
+std::list<project> backend::get_projects(){
+    Search_Controller search;
+    return search.get_projects();
 }
 
 std::list<bug_overview> backend::get_normal_search(const std::string& query, const int page){

@@ -34,6 +34,9 @@ public:
     // *method: GET
     statistics get_project_statistics(const std::string& project_id);
 
+    // *method: GET
+    std::list<project> get_projects();
+
     // *method: POST
     std::list<bug_overview> get_normal_search(const std::string& query, const int page);
 

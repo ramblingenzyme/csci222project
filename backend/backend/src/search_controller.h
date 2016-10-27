@@ -19,6 +19,7 @@ class Search_Controller {
 		std::list<user> developer_search();
 		std::list<bug_overview> unassigned_bugs_search(const int);
 		std::list<bug_overview> get_assigned_bugs(const std::string&, int);
+		std::list<project> get_projects();
 };
 
 std::list<bug_overview> Search_Controller::bug_search(const std::string& query, int page) {
@@ -160,3 +161,27 @@ std::list<bug_overview> Search_Controller::get_assigned_bugs(const std::string& 
 	return result;
 
 }
+
+std::list<project> Search_Controller::get_projects(){
+	std::list<project> result;
+	DatabaseConnection database;
+	database.open_connection(CONNECTION_DETAILS);
+
+	std::string sqlQuery = "SELECT * FROM (SELECT project_id FROM PROJECTS"
+			");";
+	try {
+		pqxx::result r = database.query(sqlQuery);
+		database.close_connection();
+		for (pqxx::result::const_iterator c = r.begin(); c!= r.end(); c++){
+		    project_controller temp;
+		    temp.find_project_id(c[0].as<std::string>());
+		    result.push_back(temp.get_project());
+		}
+
+	} catch (std::exception &e) {
+	    return result;
+	}
+	return result;
+}
+
+
