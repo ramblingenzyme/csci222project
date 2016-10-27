@@ -30,20 +30,20 @@ void bug_xml::read_comment(ptree::value_type &v){
 		<< temp.body << std::endl;
 }
 void bug_xml::read_user(ptree::value_type &v){
-	user temp;
-	ptree bugtree = (ptree) v.second;
-	temp.username = bugtree.get<std::string>("assigned_to","");
-	std::cout << "USER - username = " << temp.username << std::endl;
-	temp.privilege_level = "developer";
-	
-	temp.privilege_level = "reporter";
-	temp.username = bugtree.get<std::string>("reporter","");
-	std::cout << "USER - username = " << temp.username << std::endl;
-	try { BOOST_FOREACH(ptree::value_type &f, bugtree.get_child("cc")){
-		std::cout << f.first.data() << std::endl;
-		temp.username = f.second.data();
-		std::cerr << "USER - username = " << temp.username << std::endl;
-	} } catch (...) { std::cout << "Thrown " << std::endl;} 
+    user temp;
+    ptree bugtree = (ptree) v.second;
+    temp.username = bugtree.get<std::string>("assigned_to","");
+    std::cout << "USER - username = " << temp.username << std::endl;
+    temp.privilege_level = "developer";
+    
+    temp.privilege_level = "reporter";
+    temp.username = bugtree.get<std::string>("reporter","");
+    std::cout << "USER - username = " << temp.username << std::endl;
+    try { BOOST_FOREACH(ptree::value_type &f, bugtree.get_child("cc")){
+        std::cout << f.first.data() << std::endl;
+        temp.username = f.second.data();
+        std::cerr << "USER - username = " << temp.username << std::endl;
+    } } catch (...) { std::cout << "Thrown " << std::endl;} 
 
 }
 void bug_xml::read_bug(ptree::value_type &v){
