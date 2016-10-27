@@ -175,7 +175,8 @@ bool backend::add_bug(const bug_input& bug){
     bug_info.project_id = bug.project;
     bug_info.component = bug.component;
     bug_info.operating_system = bug.operating_system;
-    bug_info.description = bug_info.description;
+    bug_info.description = bug.description;
+    bug_info.reporter = bug.reporter
 
     controller.new_bug(bug_info);
 
