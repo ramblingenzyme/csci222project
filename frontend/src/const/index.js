@@ -1,3 +1,4 @@
+export const LOGOUT = 'LOGOUT';
 export const REQUEST = 'REQUEST';
 export const RECEIVE_BUG_INFO = 'RECEIVE_BUG_INFO';
 export const RECEIVE_BUG_LIST = 'RECEIVE_BUG_LIST';

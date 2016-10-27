@@ -16,8 +16,10 @@ import { fetchSearchResults, fetchBugPage, fetchBugTable, fetchProfile } from '.
 
 export default function routes(store) {
     const getSearchResults = (nextState, replace, callback) => {
+        let searchTerm = '';
+
         store.dispatch(fetchSearchResults({
-            query: nextState.query.searchTerm,
+            query: nextState.location.state.body.search,
             page: nextState.params.page
         }, callback))
     };
@@ -82,7 +84,7 @@ export default function routes(store) {
                     {
                         path: 'page/:page',
                         component: BugTableContainer,
-                        onEnter: getBugTable
+                        onEnter: getSearchResults
                     }
                 ]
             },

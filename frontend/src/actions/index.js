@@ -1,4 +1,5 @@
 import {
+    LOGOUT,
     REQUEST,
     RECEIVE_BUG_INFO,
     RECEIVE_BUG_LIST,
@@ -96,7 +97,7 @@ export function fetchBugPage(id, cb) {
 
 export function fetchSearchResults(query, cb) {
     return function (dispatch) {
-        let endpoint = 'search';
+        let endpoint = 'get_normal_search';
         let params = {
             method: 'POST',
             headers: {
