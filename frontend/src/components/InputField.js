@@ -70,7 +70,7 @@ InputField.defaultProps = {
     placeholder: "",
     className: "text",
     auiClass: "aui field-group top-label",
-    require: false
+    need: false
 };
 
 export default InputField;
