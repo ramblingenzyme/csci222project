@@ -134,11 +134,16 @@ export function fetchBugTable(page, cb) {
     }
 }
 
-export function fetchProfile(username) {
+export function fetchProfile(username, cb) {
     return function (dispatch) {
-        let endpoint = `profile/${username}`
+        let endpoint = `profile?username=${username}`
 
-        return genericApiRequest(dispatch, receiveProfileInfo, endpoint);
+        return genericApiRequest(dispatch, receiveProfileInfo, endpoint)
+            .then(() => {
+                if (cb) {
+                    cb();
+                }
+            });
     }
 }
 

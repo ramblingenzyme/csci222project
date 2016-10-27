@@ -54,12 +54,14 @@ complete_bug_info backend::bug(const int& id) {
 
 user backend::profile(const std::string& username){
     user_controller controller;
+    user result;
 
     controller.find_username(username);
-    if (controller.find_username(username))
-        return controller.get_user_info();
+    if (controller.find_username(username)) {
+        result = controller.get_user_info();
+        result.password = "";
+    }
 
-    user result;
     return result;
 }
 
