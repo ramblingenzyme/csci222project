@@ -2,17 +2,17 @@ import App from '../components/App.js';
 import SidebarSearch from '../components/SidebarSearch.js';
 import SidebarAnalysis from '../components/SidebarAnalysis.js';
 import SidebarAssign from '../components/SidebarAssign.js';
-import ProfilePage from '../components/ProfilePage.js';
 import ReportPage from '../components/ReportPage.js';
 import SearchPage from '../components/SearchPage.js';
 
+import ProfilePageContainer from '../containers/ProfilePageContainer';
 import BugTableContainer from '../containers/BugTableContainer';
 import BugPageContainer from '../containers/BugPageContainer';
 
 import LoginContainer from '../containers/LoginContainer';
 import LoginPageContainer from '../containers/LoginPageContainer';
 
-import { fetchSearchResults, fetchBugPage, fetchBugTable } from '../actions/'
+import { fetchSearchResults, fetchBugPage, fetchBugTable, fetchProfile } from '../actions/'
 
 export default function routes(store) {
     const getSearchResults = (nextState, replace, callback) => {
@@ -27,7 +27,11 @@ export default function routes(store) {
     }
 
     const getBugTable = (nextState, replace, callback) => {
-        store.dispatch(fetchBugTable(nextState.params.page || 0, callback));
+        store.dispatch(fetchBugTable(nextState.params.page || 1, callback));
+    }
+
+    const getProfilePage = (nextState, replace, callback) => {
+        store.dispatch(fetchProfile(nextState.params.username, callback));
     }
 
     return {
@@ -85,12 +89,12 @@ export default function routes(store) {
             {
                 path: 'profile',
                 indexRoute: {
-                    component: ProfilePage
+                    component: ProfilePageContainer
                 },
                 childRoutes: [
-                    {
-                        path: 'id/:id',
-                        component: ProfilePage
+                    { path: 'user/:username',
+                        component: ProfilePageContainer,
+                        onEnter: getProfilePage
                     }
                 ]
 
