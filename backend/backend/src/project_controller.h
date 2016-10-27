@@ -237,6 +237,11 @@ bool project_controller::update_statistics(){
 void project_controller::calculate_statistics(){
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
+
+    if (this->statistic == NULL){
+	statistics temp;
+	this->set_statistics(temp);
+    }
     
     std::string sqlQuery = "Select count(*) from BUGS where project_id="
         + this->statistic->project_id + ";";
@@ -246,7 +251,7 @@ void project_controller::calculate_statistics(){
     this->statistic->num_of_bugs = c[0].as<std::string>(); 
 
     sqlQuery = "select count(*) from BUGS where project_id="
-        + this->statistic->project_id +" and status='RESOLVED';";
+        + this->statistic->project_id +" and bug_status='RESOLVED';";
     results = database.query(sqlQuery);
     c = results.begin();
 
@@ -260,7 +265,7 @@ void project_controller::calculate_statistics(){
 
     while (c != results.end()) {
 	sqlQuery = "select count(*) from (select bug_id from BUGS where"
-		  " project_id ="+this->statistic->project_id +" and status='RESOLVED'"
+		  " project_id ="+this->statistic->project_id +" and bug_status='RESOLVED'"
 		  " and assigned_to ='"+ c[0].as<std::string>() + "') ss;";
 	pqxx::result dev = database.query(sqlQuery);
 	pqxx::result::iterator devit = dev.begin();
