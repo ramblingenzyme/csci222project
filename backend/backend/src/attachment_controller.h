@@ -107,15 +107,15 @@ bool attachment_controller::update_attachment(){
 
 std::string attachment_controller::generate_update_attachment_query() {
     std::string query;
-    query = "UPDATE ATTACHMENT set attach_id ="
+    query = "UPDATE ATTACHMENT set attach_id="
         + this->data->attach_id + ", creation_ts='"
-        + this->data->creation_ts + "',delta_ts ='"
-        + this->data->delta_ts + ", description ='"
-        + this->data->description + "', filename ='"
+        + this->data->creation_ts + "', delta_ts='"
+        + this->data->delta_ts + "', description='"
+        + this->data->description + "', filename='"
         + this->data->filename + "', filesize="
         + this->data->filesize +", file='"
         + this->data->file +"', attacher="
-        + this->data->attacher + " where comment_id ="
+        + this->data->attacher + ", where comment_id="
         + this->data->attach_id + ";";
 
     return query;
