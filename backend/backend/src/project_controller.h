@@ -6,6 +6,10 @@
 #include <string>
 #include <list>
 #include <stdlib.h>
+//for sorting
+bool compareDevs(const top_developer& first, const top_developer& second){
+    return (std::atoi(first.resolved_bugs.c_str()) > std::atoi(second.resolved_bugs.c_str()));
+}
 
 class project_controller {
 private: 
@@ -177,6 +181,7 @@ bool project_controller::update_project(){
     return true;
 }
 
+   
 std::string project_controller::generate_update_project_query() {
     std::string query;
     query = "UPDATE PROJECT set project_name='"
@@ -247,6 +252,30 @@ void project_controller::calculate_statistics(){
 
     this->statistic->num_of_resolved_bugs = c[0].as<std::string>();
     this->statistic->total_wait_time = "0";
+    this->statistic->top_developers.clear();
+    //get top developers
+    sqlQuery = "select username from USERS;";
+    results = database.query(sqlQuery);
+    c = results.begin();
+
+    while (c != results.end()) {
+	sqlQuery = "select count(*) from (select bug_id from BUGS where"
+		  " project_id ="+this->statistic->project_id +" and status='RESOLVED'"
+		  " and assigned_to ='"+ c[0].as<std::string>() + "') ss;";
+	pqxx::result dev = database.query(sqlQuery);
+	pqxx::result::iterator devit = dev.begin();
+
+	top_developer temp;
+	temp.project_id = this->statistic->project_id;
+	temp.username = c[0].as<std::string>();
+	temp.resolved_bugs = devit[0].as<std::string>();
+	this->statistic->top_developers.push_back(temp);
+    }
+
+    this->statistic->top_developers.sort(compareDevs);
+    database.close_connection();
+    //TODO get top developers
+    //initialise default project
 }
 
 #endif

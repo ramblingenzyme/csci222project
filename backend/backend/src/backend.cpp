@@ -21,7 +21,7 @@
 
 
 std::string backend::get_current_time(){
-	time_t rawtime;
+    time_t rawtime;
     struct tm *timeinfo;
 
     time ( &rawtime );
@@ -320,10 +320,13 @@ bool backend::drop_database(const std::string password){
 bool backend::create_database(const std::string password){
     if (password != "satvik no") return false;
     Database_Utility util;
+    project_controller p;
+    project temp;
+    p.set_project(temp);
 
+    
     bool flag = util.create_database();
     project_controller a;
-    //flag = a.find_project_id("000000");
 
     return flag;
 }

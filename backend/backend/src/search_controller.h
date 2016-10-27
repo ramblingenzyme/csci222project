@@ -97,8 +97,8 @@ std::list<bug_overview> Search_Controller::project_search(const std::string &que
 
 	result.push_back(temp);
 
-	std::string sqlQuery = 	"SELECT * FROM (SELECT project_id FROM PROJECTS WHERE project_id ="
-				+ query + ") LIMIT " + std::to_string(PAGE_LIMIT) +
+	std::string sqlQuery = 	"SELECT * FROM (SELECT project_id FROM PROJECT WHERE project_id ="
+				+ query + ") ss LIMIT " + std::to_string(PAGE_LIMIT) +
 				" OFFSET " + std::to_string(PAGE_LIMIT * (page - 1)) + ";";
 	try {
 		pqxx::result r = database.query(sqlQuery);
@@ -186,8 +186,8 @@ std::list<project> Search_Controller::get_projects(){
 	DatabaseConnection database;
 	database.open_connection(CONNECTION_DETAILS);
 
-	std::string sqlQuery = "SELECT * FROM (SELECT project_id FROM PROJECTS"
-			");";
+	std::string sqlQuery = "SELECT * FROM (SELECT project_id FROM PROJECT"
+			") ss;";
 	try {
 		pqxx::result r = database.query(sqlQuery);
 		database.close_connection();
