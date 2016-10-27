@@ -47,44 +47,65 @@ void bug_xml::read_user(ptree::value_type &v){
 
 }
 void bug_xml::read_bug(ptree::value_type &v){
-	complete_bug_info temp;
-	std::cout << std::endl<< std::endl;
-	boost::property_tree::ptree bugtree = (boost::property_tree::ptree) v.second;
-	temp.bug_id = bugtree.get<std::string>("bug_id");
-	temp.creation_time = bugtree.get<std::string>("creation_ts");
-	temp.description = bugtree.get<std::string>("short_desc");
-	temp.delta_time = bugtree.get<std::string>("delta_ts");
-	temp.title = bugtree.get<std::string>("short_desc");
-	temp.version = bugtree.get<std::string>("version");
-	temp.operating_system = bugtree.get<std::string>("target_milestone");
-	temp.status = bugtree.get<std::string>("bug_status");
-	temp.duplicate_id = bugtree.get<std::string>("dup_id", "0");
-	temp.priority= bugtree.get<std::string>("priority");
-	temp.severity = bugtree.get<std::string>("bug_severity");
-	temp.reporter = bugtree.get<std::string>("reporter", "0");
-	temp.assigned_to = bugtree.get<std::string>("assigned_to", "0");
-	temp.project_id = "nil";
-	temp.votes = bugtree.get<std::string>("votes");
-	
-	std::cout << "bug id: " << temp.bug_id << "\n"
-	     << "creation_ts: " << temp.creation_time << "\n"
-	     << "delta_ts: "<< temp.delta_time << "\n"
-	     << "title: " << temp.title << "\n"
-	     << "description: " << temp.description << "\n"
-	     << "product: " << temp.product << "\n"
-	     << "component: " <<temp.component << "\n"
-	     << "version: " << temp.version << "\n"
-	     << "operating_system: " << temp.operating_system << "\n"
-	     << "target_milestone: " << temp.target_milestone << "\n"
-	     << "status: " << temp.status << "\n" 
-	     << "duplicate_id: " << temp.duplicate_id << "\n"
-	     << "priority: " << temp.priority << "\n"
-	     << "severity: " << temp.severity << "\n"
-	     << "assigned_to: " << temp.assigned_to << "\n"
-	     << "project_id: " << temp.project_id << "\n"
-	     << "votes: " << temp.votes << std::endl;
-	
+    std::cout << std::endl<< std::endl;
+
+    boost::property_tree::ptree bugtree = (boost::property_tree::ptree) v.second;
+
+    complete_bug_info temp;
+    temp.bug_id = bugtree.get<std::string>("bug_id");
+    temp.creation_time = bugtree.get<std::string>("creation_ts");
+    temp.description = bugtree.get<std::string>("short_desc");
+    temp.delta_time = bugtree.get<std::string>("delta_ts");
+    temp.title = bugtree.get<std::string>("short_desc");
+    temp.version = bugtree.get<std::string>("version");
+    temp.operating_system = bugtree.get<std::string>("target_milestone");
+    temp.status = bugtree.get<std::string>("bug_status");
+    temp.duplicate_id = bugtree.get<std::string>("dup_id", "0");
+    temp.priority= bugtree.get<std::string>("priority");
+    temp.severity = bugtree.get<std::string>("bug_severity");
+    temp.reporter = bugtree.get<std::string>("reporter", "0");
+    temp.assigned_to = bugtree.get<std::string>("assigned_to", "0");
+    temp.project_id = "000000"; 
+    temp.votes = bugtree.get<std::string>("votes");
+    temp.keywords.push_back(bugtree.get<std::string>("keywords"));
+
+    read_bug_cclist(v, temp);
+
+    print_bug(temp);
 }
+
+}
+
+void bug_xml::print_bug(complete_bug_info& bug) {
+    std::cout << "bug id: " << bug.bug_id << "\n"
+              << "creation_ts: " << bug.creation_time << "\n"
+              << "delta_ts: "<< bug.delta_time << "\n"
+              << "title: " << bug.title << "\n"
+              << "description: " << bug.description << "\n"
+              << "product: " << bug.product << "\n"
+              << "component: " <<bug.component << "\n"
+              << "version: " << bug.version << "\n"
+              << "operating_system: " << bug.operating_system << "\n"
+              << "target_milestone: " << bug.target_milestone << "\n"
+              << "status: " << bug.status << "\n" 
+              << "duplicate_id: " << bug.duplicate_id << "\n"
+              << "priority: " << bug.priority << "\n"
+              << "severity: " << bug.severity << "\n"
+              << "assigned_to: " << bug.assigned_to << "\n"
+              << "project_id: " << bug.project_id << "\n"
+              << "votes: " << bug.votes << std::endl;
+
+    std::cout << "keywords: ";
+    for(auto const& output : bug.keywords) {
+        std::cout << output << ' ';
+    }
+
+    std::cout << "\ncclist: ";
+    for(auto const& output : bug.cclist) {
+        std::cout << output << ' ';
+    }
+}
+
 void bug_xml::load(const std::string &filename)
 {
 	ptree pt;
