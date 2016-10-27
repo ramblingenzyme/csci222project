@@ -38,7 +38,7 @@ void project_test::test_get_and_set_project() {
 void project_test::test_update_project() {
     project p = create_test_project();
     
-    std::string query1 = "UPDATE PROJECT set project_name ='aProject', project_id='666' where project_id ='666';";
+    std::string query1 = "UPDATE PROJECT set project_name='aProject', project_id='666' where project_id='666';";
     std::string query2;
 
     CPPUNIT_ASSERT(!string_is_equal(query1, query2));

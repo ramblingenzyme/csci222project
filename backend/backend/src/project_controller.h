@@ -176,10 +176,10 @@ bool project_controller::update_project(){
 
 std::string project_controller::generate_update_project_query() {
     std::string query;
-    query = "UPDATE PROJECT set project_name ='"
-        + this->data->project_name + "', project_id="
-        + this->data->project_id + "' where project_id ="
-        + this->data->project_id + ";";
+    query = "UPDATE PROJECT set project_name='"
+        + this->data->project_name + "', project_id='"
+        + this->data->project_id + "' where project_id='"
+        + this->data->project_id + "';";
 
     return query;
 }

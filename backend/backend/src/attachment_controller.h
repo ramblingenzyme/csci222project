@@ -42,18 +42,7 @@ public:
     std::string generate_update_attachment_query();
     std::string generate_insert_attachment_query();
 
-
-
-    ////////////////////////
-    // unit testing only  //
-    ////////////////////////
-    
-    bool attachment_id_is_equal(std::string attach_id) {
-        return data->attach_id == attach_id;
-    }
 };
-
-#endif
 
 ///////////////////////////////////////
 // Definition of attachment_controller //
@@ -165,4 +154,4 @@ void attachment_controller::new_attachment(const attachment& partial) {
     
     this->data->attach_id = std::to_string(id);
 }
-
+#endif
