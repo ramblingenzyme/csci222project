@@ -1,10 +1,14 @@
 import {
+    REQUEST,
+    RECEIVE_BUG_INFO,
+    RECEIVE_BUG_LIST,
     RECEIVE_AUTH_STATUS,
-    REQUEST
+    RECEIVE_PROFILE_INFO
 } from '../const';
 
-import fetch from '../helpers/fetch';
+import genericApiRequest from './genericApiRequest';
 
+// PURE ACTIONS
 export function requestData(requesting) {
     return {
         type: REQUEST,
@@ -12,25 +16,108 @@ export function requestData(requesting) {
     };
 }
 
-export function recieveAuthStatus(authStatus) {
+export function receiveAuthStatus(authStatus) {
     return {
         type: RECEIVE_AUTH_STATUS,
         authStatus
     };
 }
 
-export function fetchAuthStatus(username, password, cb) {
-    return function(dispatch) {
-        dispatch(requestData(true));
-
-        fetch(dispatch, `/authenticate?username=${username}&password=${password}`)
-        .then(response => {
-            dispatch(recieveAuthStatus(response));
-            dispatch(requestData(false));
-
-            if (cb) {
-                cb();
-            }
-        });
+export function receiveBugInfo(bugInfo) {
+    return {
+        type: RECEIVE_BUG_INFO,
+        bugInfo
     };
+}
+
+export function receiveBugList(bugList) {
+    return {
+        type: RECEIVE_BUG_LIST,
+        bugList
+    };
+}
+
+export function receiveProfileInfo(profileInfo) {
+    return {
+        type: RECEIVE_PROFILE_INFO,
+        profileInfo
+    }
+}
+
+export function receiveProfileList(profileList) {
+    return {
+        type: RECEIVE_PROFILE_LIST,
+        profileList
+    }
+}
+
+// THUNKS
+export function fetchAuthStatus(username, password) {
+    return function(dispatch) {
+        let endpoint = 'authenticate';
+        let params = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Accept": 'application/json'
+            },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        };
+        return genericApiRequest(dispatch, receiveAuthStatus, endpoint, params);
+    }
+}
+
+export function fetchBugPage(id) {
+    return function(dispatch) {
+        let endpoint = `bugs/${id}`;
+        return genericApiRequest(dispatch, receiveBugInfo, endpoint);
+    }
+
+}
+
+export function fetchSearchResults(query, cb) {
+    return function (dispatch) {
+        let endpoint = 'search';
+        let params = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(query)
+        }
+
+        genericApiRequest(dispatch, receiveBugList, endpoint, params)
+            .then(() => {
+                if (cb) {
+                    cb();
+                }
+            });
+    }
+}
+
+export function fetchBugTable(page) {
+    return function (dispatch) {
+        let endpoint = `bugpage/${page}`;
+
+        return genericApiRequest(dispatch, receiveBugList, endpoint)
+    }
+}
+
+export function fetchProfile(username) {
+    return function (dispatch) {
+        let endpoint = `profile/${username}`
+
+        return genericApiRequest(dispatch, receiveProfileInfo, endpoint);
+    }
+}
+
+export function fetchProfileList() {
+    return function (dispatch) {
+        let endpoint = `profiles`
+
+        return genericApiRequest(dispatch, receiveProfileList, endpoint);
+    }
 }

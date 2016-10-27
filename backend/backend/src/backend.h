@@ -20,13 +20,13 @@ public:
     // *method: POST
     auth_response authenticate(const std::string& username, const std::string& password);
 
-    // *method: POST
-    complete_bug_info get_bug_page(const int& id);
+    // *method: GET
+    complete_bug_info bug(const int& id);
 
-    // *method: POST
-    user get_user_page(const std::string& username);
+    // *method: GET
+    user profile(const std::string& username);
 
-    // *method: POST
+    // *method: GET
     project get_project(const std::string& project_id);
 
     // *method: POST
@@ -35,11 +35,29 @@ public:
     // *method: POST
     std::list<user> get_user_search(const std::string& query, const int page);
 
-    // *method: POST
+    // *method: GET
     std::list<user> get_developers();
 
     // *method: POST
+    bool assign_developer(const std::string& bug_id, const std::string& developer_username, const std::string& triager_username);
+
+    // *method: POST
+    bool set_priority(const std::string& bug_id, const std::string& triager_username, const std::string& priority);
+
+    // *method: POST
+    bool set_status(const std::string& bug_id, const std::string& changer_username, const std::string& status);
+
+    // *method: POST
     bool add_bug(const complete_bug_info& bug);
+
+    // *method: POST
+    bool add_dependencies(const std::string& bug_id, const std::string& dependency_id, const std::string& username);
+
+    // *method: POST
+    bool subscribe(const std::string& bug_id, const std::string& username);
+
+    // *method: POST
+    bool add_attachment(const attachment& attachment_info);
 
     // *method: POST
     bool add_user(const user& user_info);
@@ -51,7 +69,7 @@ public:
     bool add_comment(const comment& comment_info);
 
     // *method: POST
-    bool add_project(const std::string project_name);
+    bool add_project(const project project_info);
 
     // *method: POST
     bool drop_database(const std::string password);

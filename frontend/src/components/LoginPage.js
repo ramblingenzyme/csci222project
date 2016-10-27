@@ -1,38 +1,88 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Control, Form, Errors } from 'react-redux-form';
 
 class LoginPage extends Component {
-    constructor() {
-        super();
-        this.state = {
-            username: '',
-            password: ''
-        }
+    _handleLogin(user) {
+        return this.props.fetchAuthStatus(user.username, user.password)
+            .then(response => {
+                if (response.authed === false) {
+                    return alert("Incorrect username/password");
+                } else {
+                    return Promise.resolve(true);
+                }
+            });
     }
 
     render() {
-        const handleSubmit = this.props.dispatch;
+        if (this.props.authenticateUser.authed) {
+            return (
+                <div>
+                    Logout here
+                </div>
+            )
+        }
 
-        return(
-            <form method="post" onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="username">
-                        Username
-                    </label>
-                    <Field name="username" component="input" type="text" />
+        const required = (val) => val && val.length;
+
+        return (
+            <div className="aui-group">
+                <div className="aui-item">
+                    <h3>Login</h3>
+                    <Form className="aui" model="forms.user" onSubmit={(user) => this._handleLogin(user)}>
+                        <div className="field-group">
+                            <label htmlFor="username">
+                                Username
+                            </label>
+                            <Control.text
+                                model="forms.user.username"
+                                id="username"
+                                validators={{
+                                    required
+                                }}
+                            />
+                            <Errors
+                                className="error"
+                                model="forms.user.username"
+                                show="touched"
+                                messages={{
+                                    required: 'Required'
+                                }}
+                            />
+                        </div>
+                        <div className="field-group">
+                            <label htmlFor="password">Password</label>
+                            <Control.text
+                                type="password"
+                                model="forms.user.password"
+                                id="password"
+                                validators={{
+                                    required
+                                }}
+                            />
+                            <Errors
+                                className="error"
+                                model="forms.user.password"
+                                show="touched"
+                                messages={{
+                                    required: 'Required'
+                                }}
+                            />
+                        </div>
+                        <div className="buttons-container">
+                            <div className="buttons">
+                                <button type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </Form>
                 </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <Field name="password" component="input" type="password" />
+                <div className="aui-item">
+                    <h3>Register User</h3>
+                    form for registering user
                 </div>
-                <button type="submit">Submit</button>
-            </form>
+
+            </div>
         )
     }
 }
-
-LoginPage = reduxForm({
-    form: 'login'
-})(LoginPage)
 
 export default LoginPage;

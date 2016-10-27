@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 
 class ProfilePage extends Component {
@@ -8,7 +8,7 @@ class ProfilePage extends Component {
             <div>
                 {content}
             </div>
-        )
+        );
     }
 
     _getContent() {
@@ -31,15 +31,14 @@ class ProfilePage extends Component {
                         <strong>Interests: </strong>
                         <span>{this.props.interests}</span>
                     </div>
-                    <div></div>
                 </section>
-            )
+            );
         } else {
             return (
                 <p>
                     You must <Link to="/login">login</Link> to view this page
                 </p>
-            )
+            );
         }
     }
 }

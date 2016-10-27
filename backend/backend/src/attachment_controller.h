@@ -16,7 +16,7 @@ public:
         if (!this->isEmpty())
             delete data;
     }
-
+    
     bool find_attach_id(std::string attach_id);
     std::string generate_find_attach_id_query(std::string attach_id);
 
@@ -27,17 +27,17 @@ public:
         return false;
     }
 
-    //returns the comment
+    //returns the attachment
     attachment get_attachment() { return *data; };
         
-    //sets the stored comment to a given comment struct
+    //sets the stored attachment to a given attachment struct
     void set_attachment(attachment a) {
         if (this->data != NULL) 
             delete data; 
         data = new attachment;
         *data = a; 
     }
-
+    void new_attachment(const attachment&);
     bool update_attachment();
     std::string generate_update_attachment_query();
     std::string generate_insert_attachment_query();
@@ -52,6 +52,8 @@ public:
         return data->attach_id == attach_id;
     }
 };
+
+#endif
 
 ///////////////////////////////////////
 // Definition of attachment_controller //
@@ -145,5 +147,22 @@ std::string attachment_controller::generate_insert_attachment_query() {
     return query;
 }
 
+void attachment_controller::new_attachment(const attachment& partial) {
+    this->set_attachment(partial);
+    
+    DatabaseConnection database;
+    database.open_connection(CONNECTION_DETAILS);
 
-#endif
+    std::string sqlQuery = "Select attach_id FROM ATTACHMENTS ORDER BY attach_id ASC;";
+    pqxx::result r = database.query(sqlQuery); 
+    database.close_connection();
+    pqxx::result::const_iterator c = r.end();
+    c--;
+
+    std::string id_string = c[0].as<std::string>();
+    double id = atof(id_string.c_str());
+    id++;
+    
+    this->data->attach_id = std::to_string(id);
+}
+

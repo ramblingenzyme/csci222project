@@ -8,22 +8,22 @@ class Login extends Component {
             <div>
                 {content}
             </div>
-        )
+        );
     }
 
     _getContent() {
-        if (this.props.loggedIn) {
+        if (this.props.authenticateUser.authed) {
             return (
-                <p>
-                    Hello {this.props.username}
-                </p>
-            )
+                <div>
+                    Hello {this.props.authenticateUser.username}
+                </div>
+            );
         } else {
             return (
-                <p>
+                <div>
                     <Link to="/login">Login</Link>
-                </p>
-            )
+                </div>
+            );
         }
     }
 }

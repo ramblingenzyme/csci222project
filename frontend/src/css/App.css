@@ -38,22 +38,9 @@
     padding: 10px;
 }
 
-.LoginContainer {
-    width: 30%;
-    height: 20px;
-    float: right;
-    background-color: #4A777A;
+.padField {
+    padding-left: 1rem;
     text-align: left;
-}
-
-.ProfileInfo div strong {
-    display: inline-block;
-    width: 80px;
-}
-
-.ProfileInfo div span {
-    display: inline-block;
-    width: 250px;
 }
 
 @keyframes App-bug-wiggle {
