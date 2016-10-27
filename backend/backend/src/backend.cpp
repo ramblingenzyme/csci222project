@@ -5,6 +5,7 @@
 #include <pqxx/pqxx>
 #include <cppunit/extensions/HelperMacros.h>
 #include <ostream>
+#include "return_types.h"
 #include "backend.h"
 #include "bug_controller.h"
 #include "user_controller.h"
@@ -86,7 +87,15 @@ bool backend::subscribe(const std::string& bug_id, const std::string& username) 
 
     return bug.update_bug();
 }
+bool backend::test(){
+	user_controller controller;
+	user temp;
+	temp.username = "JIM"; 
+	controller.set_user_info(temp);
 
+
+	return controller.update_user();
+}
 bool backend::vote(const std::string& bug_id, const std::string & username, const int positiveornegativeone) {
     Bug_Controller bug;
     user_controller user;
@@ -246,8 +255,8 @@ bool backend::add_project(const project project_info){
     bool succeeded = controller.update_project();
 
     if (succeeded) {
-    statistics statistic;
-    controller.set_statistics(statistic);
+        statistics statistic;
+        controller.set_statistics(statistic);
         controller.update_statistics();
     return true;
     }
