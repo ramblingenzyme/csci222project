@@ -6,18 +6,29 @@ import ProfilePage from '../components/ProfilePage.js';
 import ReportPage from '../components/ReportPage.js';
 import SearchPage from '../components/SearchPage.js';
 
-import BugTable from '../components/BugTable.js';
-import BugPage from '../components/BugPage.js'
+import BugTableContainer from '../containers/BugTableContainer';
+import BugPageContainer from '../containers/BugPageContainer';
 
-import LoginContainer from '../containers/LoginContainer'
+import LoginContainer from '../containers/LoginContainer';
 import LoginPageContainer from '../containers/LoginPageContainer';
 
-import { fetchSearchResults } from '../actions/'
+import { fetchSearchResults, fetchBugPage, fetchBugTable } from '../actions/'
 
 export default function routes(store) {
     const getSearchResults = (nextState, replace, callback) => {
-        store.dispatch(fetchSearchResults(nextState.params.search), callback)
+        store.dispatch(fetchSearchResults({
+            query: nextState.query.searchTerm,
+            page: nextState.params.page
+        }, callback))
     };
+
+    const getBugPage = (nextState, replace, callback) => {
+        store.dispatch(fetchBugPage(nextState.params.id, callback))
+    }
+
+    const getBugTable = (nextState, replace, callback) => {
+        store.dispatch(fetchBugTable(nextState.params.page))
+    }
 
     return {
         path: '/',
@@ -65,8 +76,9 @@ export default function routes(store) {
                 },
                 childRoutes: [
                     {
-                        path: 'page',
-                        component: BugTable
+                        path: 'page/:page',
+                        component: BugTableContainer,
+                        onEnter: getBugTable
                     }
                 ]
             },
@@ -86,12 +98,14 @@ export default function routes(store) {
             {
                 path: 'bugs',
                 indexRoute: {
-                    component: BugTable
+                    component: BugTableContainer,
+                    onEnter: getBugTable
                 },
                 childRoutes: [
                     {
                         path: 'id/:id',
-                        component: BugPage
+                        component: BugPageContainer,
+                        onEnter: getBugPage
                     }
                 ]
             }

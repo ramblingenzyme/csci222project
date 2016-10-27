@@ -3,7 +3,8 @@ import {
     RECEIVE_BUG_INFO,
     RECEIVE_BUG_LIST,
     RECEIVE_AUTH_STATUS,
-    RECEIVE_PROFILE_INFO
+    RECEIVE_PROFILE_INFO,
+    RECEIVE_PROFILE_LIST
 } from '../const';
 
 import genericApiRequest from './genericApiRequest';
@@ -70,10 +71,15 @@ export function fetchAuthStatus(username, password) {
     }
 }
 
-export function fetchBugPage(id) {
+export function fetchBugPage(id, cb) {
     return function(dispatch) {
-        let endpoint = `bugs/${id}`;
-        return genericApiRequest(dispatch, receiveBugInfo, endpoint);
+        let endpoint = `bug?id=${id}`;
+        return genericApiRequest(dispatch, receiveBugInfo, endpoint)
+            .then(() => {
+                if (cb) {
+                    cb();
+                }
+            })
     }
 
 }
@@ -100,7 +106,7 @@ export function fetchSearchResults(query, cb) {
 
 export function fetchBugTable(page) {
     return function (dispatch) {
-        let endpoint = `bugpage/${page}`;
+        let endpoint = `get_normal_search?page=${page}`;
 
         return genericApiRequest(dispatch, receiveBugList, endpoint)
     }

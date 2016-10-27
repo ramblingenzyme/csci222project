@@ -168,7 +168,7 @@ bool backend::add_user(const user& user_info){
 
     user_controller test;
     test.find_username(user_info.username);
-    if (test.isEmpty()) return false;
+    if (!test.isEmpty()) return false;
 
 
     return controller.update_user();

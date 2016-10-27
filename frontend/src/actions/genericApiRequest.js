@@ -6,6 +6,7 @@ export default function genericApiRequest(dispatch, action, endpoint, params = {
         .then(response => {
             dispatch(action(response));
             dispatch(requestData(false));
+
             return response;
         });
 }

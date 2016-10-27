@@ -15,6 +15,13 @@ const user = {
     password: '',
 };
 
+const register = {
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+}
+
 const searchPageSidebar = {
     keywording: '',
     osing: '',
@@ -38,7 +45,8 @@ const baseReducer = combineReducers({
     authenticateUser,
     form: formReducer,
     forms: combineForms({
-        user: user,
+        user,
+        register,
         searchPageSidebar,
         searchBox
     }, 'forms')
