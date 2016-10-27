@@ -46,22 +46,19 @@ void bug_xml::print_comment(comment& c) {
 }
 
 void bug_xml::read_user(ptree::value_type &v){
-    user temp;
+    user u;
     ptree bugtree = (ptree) v.second;
-    temp.username = bugtree.get<std::string>("assigned_to","");
-    std::cout << "USER - username = " << temp.username << std::endl;
-    temp.privilege_level = "developer";
-    
-    temp.privilege_level = "reporter";
-    temp.username = bugtree.get<std::string>("reporter","");
-    std::cout << "USER - username = " << temp.username << std::endl;
-    try { BOOST_FOREACH(ptree::value_type &f, bugtree.get_child("cc")){
-        std::cout << f.first.data() << std::endl;
-        temp.username = f.second.data();
-        std::cerr << "USER - username = " << temp.username << std::endl;
-    } } catch (...) { std::cout << "Thrown " << std::endl;} 
+    u.username = bugtree.get<std::string>("assigned_to","");
+    u.privilege_level = "developer";
 
+    //TODO: Push/queue above user to database
+
+    u.privilege_level = "reporter";
+    u.username = bugtree.get<std::string>("reporter","");
+
+    //TODO: Push/queue above user to database
 }
+
 void bug_xml::read_bug(ptree::value_type &v){
     std::cout << std::endl<< std::endl;
 
@@ -86,6 +83,8 @@ void bug_xml::read_bug(ptree::value_type &v){
     temp.keywords.push_back(bugtree.get<std::string>("keywords"));
 
     read_bug_cclist(v, temp);
+
+    read_comment(v, temp.bug_id);
 
     print_bug(temp);
 }
