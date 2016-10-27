@@ -35,22 +35,7 @@ void attachment_test::test_find_attach_id() {
     CPPUNIT_ASSERT_EQUAL(test_query, returned_query);
 }
 
-void attachment_test::test_get_attachment() {
-    //Set attachment to a test value, and add it to the object
-    attachment a1, a2;
-    a1.attach_id = 7;
-    ac.set_attachment(a1);
-
-    //Should not yet be equal
-    CPPUNIT_ASSERT(!attachment_is_equal(a1, a2));
-
-    a2 = ac.get_attachment();
-
-    //Now should be equal
-    CPPUNIT_ASSERT(attachment_is_equal(a1, a2));
-}
-
-void attachment_test::test_set_attachment() {
+void attachment_test::test_get_and_set_attachment() {
     attachment a1;
     a1.attach_id = "666";
     ac.set_attachment(a1);
