@@ -26,6 +26,7 @@ struct bug_input {
     std::string component;
     std::string operating_system;
     std::string description;
+    std::string reporter;
 };
 
 struct bug_overview {
@@ -64,7 +65,7 @@ struct complete_bug_info {
     std::list<std::string> dependencies;
     std::list<comment> comments;
 
-    complete_bug_info() : bug_id("000000"), creation_time("0"), delta_time("0"), title("NULL"), description("NULL"), product("NULL"), component("NULL"), version("NULL"), target_milestone("NULL"), status("UNCONFIRMED"), duplicate_id ("NULL"), priority("NULL"), severity("NULL"), reporter("NULL"), assigned_to("NULL"), project_id("000000"), votes("0") { }; 
+    complete_bug_info() : bug_id("000000"), creation_time("0"), delta_time("0"), title("NULL"), description("NULL"), product("NULL"), component("NULL"), version("NULL"), target_milestone("NULL"), status("UNCONFIRMED"), duplicate_id ("NULL"), priority("NULL"), severity("NULL"), reporter("NULL"), assigned_to("NULL"), project_id("000000"), votes("0") { };
 
 };
 
