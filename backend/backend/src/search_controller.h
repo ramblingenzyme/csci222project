@@ -18,6 +18,7 @@ class Search_Controller {
 		std::list<bug_overview> project_search(const std::string&, int);
 		std::list<user> developer_search();
 		std::list<bug_overview> unassigned_bugs_search(const int);
+		std::list<bug_overview> get_assigned_bugs(const std::string&, int);
 };
 
 std::list<bug_overview> Search_Controller::bug_search(const std::string& query, int page) {
@@ -135,4 +136,27 @@ std::list<bug_overview> Search_Controller::unassigned_bugs_search(const int page
 	    return result;
 	}
 	return result;
+}
+std::list<bug_overview> Search_Controller::get_assigned_bugs(const std::string& query, const int page){
+        std::list<bug_overview> result;
+	DatabaseConnection database;
+	database.open_connection(CONNECTION_DETAILS);
+
+	std::string sqlQuery = "SELECT * FROM (SELECT bug_id FROM BUGS"
+			"WHERE assigned_to='"+ query +"') LIMIT " + std::to_string(PAGE_LIMIT)
+			+ " OFFSET " + std::to_string(PAGE_LIMIT*page) + ";";
+	try {
+		pqxx::result r = database.query(sqlQuery);
+		database.close_connection();
+		for (pqxx::result::const_iterator c = r.begin(); c!= r.end(); c++){
+		    Bug_Controller temp;
+		    temp.find_bug_id(c[0].as<std::string>());
+		    result.push_back(temp.get_bug_overview());
+		}
+
+	} catch (std::exception &e) {
+	    return result;
+	}
+	return result;
+
 }

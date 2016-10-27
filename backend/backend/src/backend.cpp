@@ -132,6 +132,15 @@ bool backend::add_bug(const complete_bug_info& bug){
     return controller.update_bug();
 
 }
+
+std::list<bug_overview> backend::get_assigned_bugs(const std::string& query, const int page){
+    user_controller user;
+    std::list<bug_overview> result;
+    if (!user.find_username(query)) return result;
+
+    Search_Controller search;
+    return search.get_assigned_bugs(query, page);
+}
 std::list<user> backend::get_developers() {
     Search_Controller search;
     return search.developer_search();
