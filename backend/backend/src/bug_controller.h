@@ -275,25 +275,25 @@ bool Bug_Controller::update_bug(){
 
 std::string Bug_Controller::generate_update_bug_query() {
     std::string query;
-    query = "UPDATE bugs set bug_id ="
-        + this->data->bug_id + ", creation_ts ='"
+    query = "UPDATE bugs set bug_id = '"
+        + this->data->bug_id + "', creation_ts = '"
         + this->data->creation_time + "', delta_ts = '"
         + this->data->delta_time + "', title = '"
         + this->data->title + "', short_desc = '"
         + this->data->description + "', component = '"
         + this->data->component + "', version = '"
-        + this->data->version + "' , op_sys ='"
-        + this->data->operating_system + "', bug_status ='"
-        + this->data->status + "', dupl_id ='"
-        + this->data->duplicate_id + ", bug_file_loc ='"
-        + "NULL" + "', priority ="
-        + this->data->priority + ", severity ='"
-        + this->data->severity + "', reporter ='"
-        + this->data->reporter + "', assigned_to ="
-        + this->data->assigned_to + ", project_id ="
-        + this->data->project_id + ", votes ="
-        + this->data->votes + " where bug_id = "
-        + this->data->bug_id + ";";
+        + this->data->version + "', op_sys = '"
+        + this->data->operating_system + "', bug_status = '"
+        + this->data->status + "', dupl_id = '"
+        + this->data->duplicate_id + "', bug_file_loc = '"
+        + "NULL" + "', priority = '"
+        + this->data->priority + "', severity = '"
+        + this->data->severity + "', reporter = '"
+        + this->data->reporter + "', assigned_to = '"
+        + this->data->assigned_to + "', project_id = '"
+        + this->data->project_id + "', votes = '"
+        + this->data->votes + "' where bug_id = '"
+        + this->data->bug_id + "';";
 
     return query;
 }
