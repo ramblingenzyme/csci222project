@@ -17,7 +17,7 @@ class Search_Controller {
 		std::list<bug_overview> bug_search(const std::string&, int);
 		std::list<user> user_search(const std::string&, int);
 
-		std::list<bug_overview> project_search(const std::string&, int);
+		std::list<project> project_search(const std::string&);
 		std::list<user> developer_search();
 		std::list<bug_overview> unassigned_bugs_search(const int);
 		std::list<bug_overview> get_assigned_bugs(const std::string&, int);
@@ -88,26 +88,26 @@ std::list<user> Search_Controller::user_search(const std::string& query, int pag
 	return result;
 }
 
-std::list<bug_overview> Search_Controller::project_search(const std::string &query, int page) {
-	std::list<bug_overview> result;
+std::list<project> Search_Controller::project_search(const std::string &query) {
+	std::list<project> result;
 	DatabaseConnection database;
 	database.open_connection(CONNECTION_DETAILS);
 
-	bug_overview temp;
 
-	result.push_back(temp);
-
-	std::string sqlQuery = 	"SELECT * FROM (SELECT project_id FROM PROJECT WHERE project_id ="
-				+ query + ") ss LIMIT " + std::to_string(PAGE_LIMIT) +
-				" OFFSET " + std::to_string(PAGE_LIMIT * (page - 1)) + ";";
+	std::string sqlQuery = 	"SELECT * FROM (SELECT project_id FROM PROJECT WHERE project_name='"
+				+ query + "') ss;";
 	try {
 		pqxx::result r = database.query(sqlQuery);
 		database.close_connection();
+		
+		pqxx::result empty;
+
+		if (r == empty) return result;
 
 		for (pqxx::result::const_iterator c = r.begin(); c!= r.end(); c++){
-		    Bug_Controller temp;
-		    temp.find_bug_id(c[0].as<std::string>());
-		    result.push_back(temp.get_bug_overview());
+		    project_controller temp;
+		    temp.find_project_id(c[0].as<std::string>());
+		    result.push_back(temp.get_project());
 		}
 	} catch (std::exception &e) {
 	    return result;

@@ -166,7 +166,15 @@ bool backend::add_bug(const bug_input& bug){
     Bug_Controller controller;
     complete_bug_info bug_info;
     bug_info.title = bug.title;
-    bug_info.project_id = bug.project;
+    Search_Controller search;
+
+    std::list<project> result = search.project_search(bug.project);
+    if (!result.empty()) {
+        project temp = result.front();
+	bug_info.project_id = temp.project_id;
+    } else 
+        bug_info.project_id = "0";
+
     bug_info.component = bug.component;
     bug_info.operating_system = bug.operating_system;
     bug_info.description = bug.description;
