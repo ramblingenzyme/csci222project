@@ -42,18 +42,21 @@ public:
         this->data = new project ;
         *data = a; 
     }
-    void set_statistics(statistics a) {
-	if (this->statistic != NULL)
-	    delete statistic;
-	this->statistic = new statistics;
-	*statistic = a;
-    }
     void new_project(const std::string);
     bool update_project();
     std::string generate_update_project_query();
     std::string generate_insert_project_query();
 
+    void calculate_statistics(); 
     bool update_statistics();
+    void set_statistics(statistics a) {
+	if (this->statistic != NULL)
+	    delete statistic;
+	this->statistic = new statistics;
+	*statistic = a;
+	this->calculate_statistics();
+    }
+
 };
 
 #endif
@@ -73,8 +76,9 @@ bool project_controller::find_project_id(std::string project_id) {
         pqxx::result::const_iterator c = results.begin();
         
         database.close_connection();
-        
-        if (c == results.end())
+       	
+	pqxx::result empty;
+        if (results == empty)
             return false;
         
         if (this->isEmpty())
@@ -104,8 +108,9 @@ bool project_controller::find_statistics() {
         pqxx::result::const_iterator c = results.begin();
         
         database.close_connection();
-        
-        if (c == results.end())
+         
+	pqxx::result empty;
+        if (empty == results)
             return false;
         
         if (this->isEmpty())
@@ -120,16 +125,16 @@ bool project_controller::find_statistics() {
         sqlquery = "select * from TOPDEVELOPERS where project_id="+ this->statistic->project_id+";";
         results = database.query(sqlquery.c_str());
         c = results.begin();
+	if (results != empty ){
+            while ( c != results.end()) {
+                top_developer temp;
+                temp.project_id = c[0].as<std::string>();
+                temp.username = c[1].as<std::string>();
+                temp.resolved_bugs = c[2].as<std::string>();
 
-        while ( c != results.end()) {
-            top_developer temp;
-            temp.project_id = c[0].as<std::string>();
-            temp.username = c[1].as<std::string>();
-            temp.resolved_bugs = c[2].as<std::string>();
-
-            this->statistic->top_developers.push_back(temp);
-        }
-    
+                this->statistic->top_developers.push_back(temp);
+            }
+	}
         return true; 
     } catch (...) {
         return false;
@@ -162,12 +167,12 @@ bool project_controller::update_project(){
             
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
-    std::string sqlquery = generate_update_project_query();
+    std::string sqlquery = generate_insert_project_query();
 
     if (database.transaction(sqlquery))
         return true;
             
-    sqlquery = generate_insert_project_query();
+    sqlquery = generate_update_project_query();
         
     database.transaction(sqlquery);
     database.close_connection();
@@ -196,7 +201,7 @@ std::string project_controller::generate_insert_project_query() {
 bool project_controller::update_statistics(){
     if (this->isEmpty())
         return false;
-            
+    this->calculate_statistics();
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
     
@@ -226,3 +231,23 @@ bool project_controller::update_statistics(){
     return true;
 }
 
+void project_controller::calculate_statistics(){
+    DatabaseConnection database;
+    database.open_connection(CONNECTION_DETAILS);
+    
+    std::string sqlQuery = "Select count(*) from BUGS where project_id="
+	    + this->statistic->project_id + ";";
+    pqxx::result results= database.query(sqlQuery);
+    pqxx::result::const_iterator c = results.begin();
+
+    this->statistic->num_of_bugs = c[0].as<std::string>(); 
+
+    sqlQuery = "select count(*) from BUGS where project_id="
+	    + this->statistic->project_id +" and status='RESOLVED';";
+    results = database.query(sqlQuery);
+    c = results.begin();
+
+    this->statistic->num_of_resolved_bugs = c[0].as<std::string>();
+    this->statistic->total_wait_time = "0";
+}
+#endif
