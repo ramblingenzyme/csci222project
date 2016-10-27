@@ -81,15 +81,15 @@ bool Bug_Controller::find_bug_id(std::string bugID) {
         this->data->component = c[6].as<std::string>();
         this->data->version = c[7].as<std::string>();
         this->data->operating_system = c[8].as<std::string>();
-        this->data->target_milestone = c[9].as<std::string>();
-        this->data->status = c[10].as<std::string>();
-        this->data->duplicate_id = c[11].as<std::string>();
-        this->data->priority = c[12].as<std::string>();
-        this->data->severity = c[13].as<std::string>();
-        this->data->reporter = c[14].as<std::string>();
-        this->data->assigned_to = c[15].as<std::string>();
-        this->data->project_id = c[16].as<std::string>();
-        this->data->votes = c[17].as<std::string>();
+        //this->data->target_milestone = c[9].as<std::string>();
+        this->data->status = c[9].as<std::string>();
+        this->data->duplicate_id = c[10].as<std::string>();
+        this->data->priority = c[11].as<std::string>();
+        this->data->severity = c[12].as<std::string>();
+        this->data->reporter = c[13].as<std::string>();
+        this->data->assigned_to = c[14].as<std::string>();
+        this->data->project_id = c[15].as<std::string>();
+        this->data->votes = c[16].as<std::string>();
 
         sqlQuery = "SELECT * FROM CCLIST WHERE BUG_ID="+ bugID +";";
         results = database.query(sqlQuery.c_str());
@@ -118,7 +118,7 @@ bool Bug_Controller::find_bug_id(std::string bugID) {
             c++;
         }
 
-        sqlQuery = "SELECT comment_id FROM COMMENTS WHERE BUG_ID=" + bugID +";";
+        sqlQuery = "SELECT comment_id FROM COMMENT WHERE BUG_ID=" + bugID +";";
         results = database.query(sqlQuery.c_str());
         c = results.begin();
 

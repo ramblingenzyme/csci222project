@@ -136,6 +136,7 @@ statistics backend::get_project_statistics(const std::string& project_id){
     project_controller controller;
     if (controller.find_project_id(project_id)){
 	controller.find_statistics();
+	controller.calculate_statistics();
 	return controller.get_statistics();
     }
     //failed, return empty
