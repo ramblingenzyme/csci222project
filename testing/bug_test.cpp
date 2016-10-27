@@ -62,7 +62,7 @@ void bug_test::test_set_bug_info() {
     complete_bug_info bug1 = create_test_complete_bug();
     complete_bug_info bug2;
 
-    CPPUNIT_ASSERT(complete_bug_info_is_equal(bug1, bug2));
+    CPPUNIT_ASSERT(!complete_bug_info_is_equal(bug1, bug2));
 
     bc.set_bug_info(bug1);
     bug2 = bc.get_bug_info();
@@ -72,26 +72,17 @@ void bug_test::test_set_bug_info() {
 
 void bug_test::test_update_bug() {
     complete_bug_info bug1 = create_test_complete_bug();
-    complete_bug_info bug2;
-
     bc.set_bug_info(bug1);
 
-    std::string query = bc.generate_update_bug_query();
+    std::string query1 = "UPDATE bugs set bug_id = '666', creation_ts = '0', delta_ts = '0', title = 'aTitle', short_desc = 'aDescription', component = 'aComponent', version = 'aVersion', op_sys = 'gentoo', bug_status = 'normal', dupl_id = 'NULL', bug_file_loc = 'NULL', priority = 'normal', severity = 'normal', reporter = 'aReporter', assigned_to = 'billyBob', project_id = '555', votes = '0' where bug_id = '666';";
 
-    bug2.bug_id = "12345";
-    bc.set_bug_info(bug2);
+    std::string query2;
 
-    std::string query2 = bc.generate_update_bug_query();
+    CPPUNIT_ASSERT(!string_is_equal(query1, query2));
 
-    //The two queries should not be equal
-    CPPUNIT_ASSERT(!string_is_equal(query, query2));
-
-    bug2 = create_test_complete_bug();
-    bc.set_bug_info(bug2);
     query2 = bc.generate_update_bug_query();
 
-    //Now they should be equal
-    CPPUNIT_ASSERT(string_is_equal(query, query2));
+    CPPUNIT_ASSERT(string_is_equal(query1, query2));
 }
 
 complete_bug_info bug_test::create_test_complete_bug() {

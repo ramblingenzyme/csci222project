@@ -12,6 +12,9 @@ class bug_test : public CppUnit::TestFixture
     CPPUNIT_TEST(test_empty);
     CPPUNIT_TEST(test_find_bug_id);
     CPPUNIT_TEST(test_get_bug_overview);
+    CPPUNIT_TEST(test_get_complete_bug_info);
+    CPPUNIT_TEST(test_set_bug_info);
+    CPPUNIT_TEST(test_update_bug);
 
     CPPUNIT_TEST_SUITE_END();
 private:

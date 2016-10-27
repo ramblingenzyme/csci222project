@@ -35,22 +35,7 @@ void attachment_test::test_find_attach_id() {
     CPPUNIT_ASSERT_EQUAL(test_query, returned_query);
 }
 
-void attachment_test::test_get_attachment() {
-    //Set attachment to a test value, and add it to the object
-    attachment a1, a2;
-    a1.attach_id = 7;
-    ac.set_attachment(a1);
-
-    //Should not yet be equal
-    CPPUNIT_ASSERT(!attachment_is_equal(a1, a2));
-
-    a2 = ac.get_attachment();
-
-    //Now should be equal
-    CPPUNIT_ASSERT(attachment_is_equal(a1, a2));
-}
-
-void attachment_test::test_set_attachment() {
+void attachment_test::test_get_and_set_attachment() {
     attachment a1;
     a1.attach_id = "666";
     ac.set_attachment(a1);
@@ -71,22 +56,19 @@ void attachment_test::test_update_attachment() {
     attachment a2;
     ac.set_attachment(a1);
 
-    std::string query = ac.generate_update_attachment_query();
-
-    a2.attach_id = "12345";
-    ac.set_attachment(a2);
-
-    std::string query2 = ac.generate_update_attachment_query();
+    std::string query1  = "UPDATE ATTACHMENT set attach_id=666, creation_ts='0', delta_ts='0', description='none', filename='nothing.tar', filesize=0, file='55', attacher=0, where comment_id=666;";
+    std::string query2;
 
     //The two queries should not be equal
-    CPPUNIT_ASSERT(!string_is_equal(query, query2));
+    CPPUNIT_ASSERT(!string_is_equal(query1, query2));
 
     a2 = generate_test_attachment();
     ac.set_attachment(a2);
+
     query2 = ac.generate_update_attachment_query();
 
     //Now the should be equal
-    CPPUNIT_ASSERT(string_is_equal(query, query2));
+    CPPUNIT_ASSERT(string_is_equal(query1, query2));
 }
 
 bool attachment_test::attachment_is_equal(attachment& a1, attachment& a2) {
@@ -111,7 +93,7 @@ attachment attachment_test::generate_test_attachment() {
     a1.filename = "nothing.tar";
     a1.filesize = "0";
     a1.file = "55";
-    a1.attacher = "billy";
+    a1.attacher = "0";
 
     return a1;
 }
