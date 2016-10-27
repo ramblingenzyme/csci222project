@@ -1,10 +1,20 @@
 import React, { Component, PropTypes } from 'react';
-import { Control, Errors } from 'react-redux-form';
+import { Control, Form, Errors } from 'react-redux-form';
 
 class InputField extends Component {
+    _req() {
+        if (this.props.need) {
+            return (
+                <div id="required">
+                    <span className="aui-icon icon-required">(required)</span>
+                </div>
+            )
+        }
+    };
+
     render() {
         let input_field = this._getContent();
-        let req = this._required();
+        let req = this._req();
 
         return (
             <div className={this.props.auiClass}>
@@ -25,8 +35,8 @@ class InputField extends Component {
                     {this.props.description}
                 </div>
             </div>
-        );
-    }
+        )
+    };
 
     _getContent() {
         if (this.props.disabled) {
@@ -36,7 +46,7 @@ class InputField extends Component {
                        placeholder={this.props.placeholder} component="input" disabled />
             )
         } else {
-            if (this.props.require) {
+            if (this.props.need) {
                 return (
                     <Control.text className="text" model={this.props.model} type={this.props.type}
                                   id={this.props.id} name={this.props.id}
@@ -50,15 +60,7 @@ class InputField extends Component {
                 )
             }
         }
-    }
-
-    _required() {
-        if (this.props.require) {
-            return (
-                <span className="aui-icon icon-required">(required)</span>
-            )
-        }
-    }
+    };
 }
 
 InputField.defaultProps = {

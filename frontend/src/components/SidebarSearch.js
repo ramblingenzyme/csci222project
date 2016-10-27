@@ -41,7 +41,7 @@ class SidebarSearch extends Component {
                         <strong> </strong>
                         <Form className="aui top-label padField" method="post" model="forms.user" onSubmit={(user) => this._handleSubmit(user)}>
                             <InputField id="search-keywords" title="Keyword(s)" placeholder="keyword1, keyword2"
-                                model = "forms.searchPageSidebar.keyword" className="text" require/>
+                                model = "forms.searchPageSidebar.keyword" className="text" need={true} />
 
                             <InputField id="operating-system" title="Operating System(s)" placeholder="e.g. ios, mac"
                                 model= "forms.searchPageSidebar.os" />
