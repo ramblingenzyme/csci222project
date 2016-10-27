@@ -5,7 +5,14 @@
 #include <string>
 #include <exception>
 
-std::string get_current_time(){
+class timeUt{
+    public:
+	    timeUt(){};
+	    ~timeUt(){};
+	    std::string get_current_time();
+};
+
+std::string timeUt::get_current_time(){
     try {
     time_t rawtime;
     struct tm *timeinfo;

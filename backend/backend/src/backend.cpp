@@ -21,22 +21,9 @@
 
 
 std::string backend::get_current_time(){
-    time_t rawtime;
-    struct tm *timeinfo;
-
-    time ( &rawtime );
-    timeinfo = localtime ( &rawtime );
-    mktime ( timeinfo );
-
-    std::string result;
-
-    result = std::to_string(timeinfo->tm_year + 1900) + "-"
-	    + std::to_string(timeinfo->tm_mon + 1) + "-"
-	    + std::to_string(timeinfo->tm_mday) +" "
-	    + std::to_string(timeinfo->tm_hour) + ":"
-	    + std::to_string(timeinfo->tm_min) + ":"
-	    + std::to_string(timeinfo->tm_sec);
-    return result;
+    timeUt t;
+    std::string a= t.get_current_time();
+    return a;
 
 }
 

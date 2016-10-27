@@ -180,7 +180,8 @@ bool Bug_Controller::update_bug(){
     if (database.transaction(sqlquery)){
         //updating bug
         sqlquery = generate_update_bug_query();
-
+	timeUt t;
+	this->data->delta_time = t.get_current_time();
         database.transaction(sqlquery);
 
 
@@ -348,6 +349,9 @@ void Bug_Controller::new_bug(const complete_bug_info& partial){
     id++;
 
     this->data->bug_id = std::to_string(id);
+
+    timeUt t;
+    this->data->creation_time = t.get_current_time();
 }
 
 #endif

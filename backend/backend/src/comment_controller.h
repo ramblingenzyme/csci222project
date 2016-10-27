@@ -5,7 +5,7 @@
 #include "database_connection.h"
 #include <string>
 #include <list>
-
+#include "time_utility.h"
 class comment_controller {
 private: 
     comment *data;
@@ -99,7 +99,6 @@ bool comment_controller::update_comment(){
         return true;
             
     sqlquery = generate_update_comment_query();
-        
     database.transaction(sqlquery);
     database.close_connection();
     return true;
@@ -151,6 +150,9 @@ void comment_controller::new_comment(const comment& partial){
 	id++;
 
 	this->data->comment_id = std::to_string(id);
+
+	timeUt t;
+        this->data->creation_ts = t.get_current_time();
 }
 
 #endif
