@@ -87,6 +87,8 @@ void bug_xml::read_bug(ptree::value_type &v){
     read_comment(v, temp.bug_id);
 
     print_bug(temp);
+
+    //TODO: Insert push bug functionality
 }
 
 void bug_xml::read_bug_cclist(ptree::value_type& v, complete_bug_info& temp) {
@@ -135,15 +137,8 @@ void bug_xml::load(const std::string &filename)
         read_user(v);
         read_bug(v);
         ptree temp = (ptree) v.second;
-        //BOOST_FOREACH(ptree::value_type &f, pt.get_child("bug")
         std::cout << v.first << std::endl;
-    //  BOOST_FOREACH(ptree::value_type &f, temp.get_child("long_desc")) {
-
-    //      std::cout << f.first<< std::endl;
-    //      read_comment(f);
-    //  }
     }
-
 }
 
 
