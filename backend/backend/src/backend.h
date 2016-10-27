@@ -21,10 +21,10 @@ public:
     auth_response authenticate(const std::string& username, const std::string& password);
 
     // *method: GET
-    complete_bug_info get_bug_page(const int& id);
+    complete_bug_info bug(const int& id);
 
     // *method: GET
-    user get_user_page(const std::string& username);
+    user profile(const std::string& username);
 
     // *method: GET
     bool test();

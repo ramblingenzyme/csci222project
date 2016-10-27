@@ -1,27 +1,31 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router';
 
-import Login from "./Login.js";
-import Menubar from './Menubar.js';
 import '../css/App.css';
+
+import Search from './Search.js';
+import Menubar from './Menubar.js';
+import LoginContainer from "../containers/LoginContainer.js";
 
 // this is where the persistent UI will be defined. This will be wrapped in a Router to change the main page content shown
 class App extends Component {
     render() {
         return (
-            <div>
+            <div id="page">
                 <div className="aui-header">
                     <div className="aui-header-primary">
-                        <h2>Bug Management System</h2>
                         <Menubar />
                     </div>
                     <div className="aui-header-secondary">
                         <ul className="aui-nav">
-                            <Login />
+                            <li>
+                                <Search field="bug-search-static" />
+                            </li>
+                            <li>
+                                <LoginContainer />
+                            </li>
                         </ul>
                     </div>
                 </div>
-
                 <div className="aui-page-panel">
                     <div className="aui-page-panel-inner">
                         {this.props.sidebar}

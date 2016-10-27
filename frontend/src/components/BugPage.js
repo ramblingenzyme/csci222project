@@ -1,28 +1,79 @@
 import React, { Component, PropTypes } from 'react';
 
 class BugPage extends Component {
+    _getComments() {
+        return this.props.bugPage.comments.map(comment => (
+            <div className="comment">
+                {comment.content}
+            </div>
+        ))
+    }
+
+    _getCcList() {
+        return this.props.bugPage.cclist.map(email => (
+            <li>email</li>
+        ))
+    }
+
     render() {
+        let comments = this._getComments();
+        let cclist = this._getCcList();
+
         return (
-            <div class="bugPage">
+            <div className="bugPage">
+                <h1>{this.props.bugPage.id} - {this.props.bugPage.title}</h1>
+                <p>{this.props.bugPage.description}</p>
+                <div className="aui-group">
+                    <div className="aui-item">
+                        <table className="aui">
+                            <tr>
+                                <th>Status:</th>
+                                <td>{this.props.bugPage.status}</td>
+                            </tr>
+                            <tr>
+                                <th>Product:</th>
+                                <td>{this.props.bugPage.product}</td>
+                            </tr>
+                            <tr>
+                                <th>Version:</th>
+                                <td>{this.props.bugPage.version}</td>
+                            </tr>
+                            <tr>
+                                <th>Created at:</th>
+                                <td>{this.props.bugPage.createdAt}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div className="aui-item">
+                        <table>
+                            <tr>
+                                <th>Last Modified:</th>
+                                <td>{this.props.bugPage.lastModified}</td>
+                            </tr>
+                            <tr>
+                                <th>OS:</th>
+                                <td>{this.props.bugPage.os}</td>
+                            </tr>
+                            <tr>
+                                <th>Component:</th>
+                                <td>{this.props.bugPage.component}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <h2>CC List</h2>
+                <ul >
+                    {cclist}
+                </ul>
+                <h2>Comments</h2>
+                {comments}
             </div>
         );
     }
 }
 
 BugPage.propTypes = {
-    cclist:       PropTypes.array.isRequired,
-    comments:     PropTypes.array.isRequired,
-    component:    PropTypes.string.isRequired,
-    createdAt:    PropTypes.string.isRequired,
-    description:  PropTypes.string.isRequired,
-    lastModified: PropTypes.string.isRequired,
-    os:           PropTypes.string.isRequired,
-    product:      PropTypes.string.isRequired,
-    status:       PropTypes.string.isRequired,
-    title:        PropTypes.string.isRequired,
-    version:      PropTypes.string.isRequired,
-    id:           PropTypes.integer.isRequired,
-    priority:     PropTypes.integer.isRequired,
+    bugPage:    PropTypes.array.isRequired
 };
 
 export default BugPage;

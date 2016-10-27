@@ -1,64 +1,114 @@
 import App from '../components/App.js';
-import Login from '../components/Login.js';
-import LoginPage from '../components/LoginPage.js';
 import SidebarSearch from '../components/SidebarSearch.js';
 import SidebarAnalysis from '../components/SidebarAnalysis.js';
 import SidebarAssign from '../components/SidebarAssign.js';
 import ProfilePage from '../components/ProfilePage.js';
+import ReportPage from '../components/ReportPage.js';
+import SearchPage from '../components/SearchPage.js';
 
-export default {
-    path: '/',
-    component: App,
-    indexRoute: {
-        components: {
-            main: Login,
-            sidebar: SidebarSearch
-        }
-    },
-    childRoutes: [
-        {
-            path: 'login',
-            component: LoginPage
-        },
-        {
-            path: 'test/:username',
+import BugTableContainer from '../containers/BugTableContainer';
+import BugPageContainer from '../containers/BugPageContainer';
+
+import LoginContainer from '../containers/LoginContainer';
+import LoginPageContainer from '../containers/LoginPageContainer';
+
+import { fetchSearchResults, fetchBugPage, fetchBugTable } from '../actions/'
+
+export default function routes(store) {
+    const getSearchResults = (nextState, replace, callback) => {
+        store.dispatch(fetchSearchResults({
+            query: nextState.query.searchTerm,
+            page: nextState.params.page
+        }, callback))
+    };
+
+    const getBugPage = (nextState, replace, callback) => {
+        store.dispatch(fetchBugPage(nextState.params.id, callback))
+    }
+
+    const getBugTable = (nextState, replace, callback) => {
+        store.dispatch(fetchBugTable(nextState.params.page))
+    }
+
+    return {
+        path: '/',
+        component: App,
+        indexRoute: {
             components: {
-                main: Login,
+                main: LoginContainer,
                 sidebar: SidebarSearch
             }
         },
-        {
-            path: '/Report/',
-            component: Login,
-        },
-        {
-            path: '/Analysis/',
-            components: {
-                main: Login,
-                sidebar: SidebarAnalysis
+        childRoutes: [
+            {
+                path: 'login',
+                component: LoginPageContainer
+            },
+            {
+                path: 'report',
+                component: ReportPage,
+            },
+            {
+                path: 'analysis',
+                components: {
+                    main: LoginContainer,
+                    sidebar: SidebarAnalysis
+                }
+            },
+            {
+                path: 'assign',
+                components: {
+                    main: LoginContainer,
+                    sidebar: SidebarAssign
+                }
+            },
+            {
+                path: 'review',
+                component: LoginContainer,
+            },
+            {
+                path: 'search',
+                indexRoute: {
+                    components: {
+                        main: SearchPage,
+                        sidebar: SidebarSearch
+                    }
+                },
+                childRoutes: [
+                    {
+                        path: 'page/:page',
+                        component: BugTableContainer,
+                        onEnter: getBugTable
+                    }
+                ]
+            },
+            {
+                path: 'profile',
+                indexRoute: {
+                    component: ProfilePage
+                },
+                childRoutes: [
+                    {
+                        path: 'id/:id',
+                        component: ProfilePage
+                    }
+                ]
+
+            },
+            {
+                path: 'bugs',
+                indexRoute: {
+                    component: BugTableContainer,
+                    onEnter: getBugTable
+                },
+                childRoutes: [
+                    {
+                        path: 'id/:id',
+                        component: BugPageContainer,
+                        onEnter: getBugPage
+                    }
+                ]
             }
-        },
-        {
-            path: '/Assign/',
-            components: {
-                main: Login,
-                sidebar: SidebarAssign
-            }
-        },
-        {
-            path: '/Review/',
-            component: Login,
-        },
-        {
-            path: '/Search/',
-            components: {
-                main: Login,
-                sidebar: SidebarSearch
-            }
-        },
-        {
-            path: '/Profile/',
-            component: ProfilePage
-        }
-    ]
+        ]
+    }
 }

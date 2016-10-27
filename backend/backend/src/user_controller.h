@@ -91,7 +91,7 @@ bool user_controller::update_user(){
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
     
-    sqlquery = generate_insert_user_query();
+    std::string sqlquery = generate_insert_user_query();
     if (database.transaction(sqlquery))
         return true;
             

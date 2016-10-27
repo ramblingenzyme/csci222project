@@ -1,7 +1,7 @@
 #ifndef BUG_CONTROLLER_H
 #define BUG_CONTROLLER_H
 #include "return_types.h"
-#include "const.h" 
+#include "const.h"
 #include "database_connection.h"
 #include "comment_controller.h"
 #include <string>
@@ -11,7 +11,7 @@
 
 class Bug_Controller {
 private:
-    complete_bug_info *data;    //struct pointer; 
+    complete_bug_info *data;    //struct pointer;
 public:
     Bug_Controller(){
         data = NULL;
@@ -37,7 +37,7 @@ public:
 
     //return the all info on the bug
     complete_bug_info get_bug_info(){ return *data;};
-        
+
     // is it empty tho?
     void new_bug(const complete_bug_info&);
     bool isEmpty() { return data == NULL;};
@@ -51,54 +51,53 @@ public:
 bool Bug_Controller::find_bug_id(std::string bugID) {
     DatabaseConnection database;
     try {
-
         database.open_connection(CONNECTION_DETAILS);
-    
+
         //std::string sqlQuery = "SELECT * FROM BUGS WHERE BUG_ID="+ bugID +";";
         std::string sqlQuery = generate_find_bug_id_query(bugID);
         pqxx::result results = database.query(sqlQuery.c_str());
         pqxx::result::const_iterator c = results.begin();
-            
+
         //if the select statement didn't find anything, return false
         if (c == results.end()){
             database.close_connection();
-            return false; 
+            return false;
         }
-            
+
         //refreshing *data
         if (this->isEmpty())
             delete this->data;
         this->data = new complete_bug_info;
-            
-        //storing the bug and additional data (cclist, dependencies, keywords) 
+
+        //storing the bug and additional data (cclist, dependencies, keywords)
         this->data->bug_id = c[0].as<std::string>();
         this->data->creation_time = c[1].as<std::string>();
         this->data->delta_time = c[2].as<std::string>();
-        this->data->description = c[3].as<std::string>(); 
+        this->data->description = c[3].as<std::string>();
         this->data->product = c[4].as<std::string>();
-        this->data->component = c[5].as<std::string>(); 
-        this->data->version = c[6].as<std::string>(); 
-        this->data->operating_system = c[7].as<std::string>(); 
-        this->data->target_milestone = c[8].as<std::string>(); 
-        this->data->status = c[9].as<std::string>(); 
+        this->data->component = c[5].as<std::string>();
+        this->data->version = c[6].as<std::string>();
+        this->data->operating_system = c[7].as<std::string>();
+        this->data->target_milestone = c[8].as<std::string>();
+        this->data->status = c[9].as<std::string>();
         this->data->duplicate_id = c[10].as<std::string>();
-        this->data->priority = c[11].as<std::string>(); 
+        this->data->priority = c[11].as<std::string>();
         this->data->severity = c[12].as<std::string>();
-        this->data->reporter = c[13].as<std::string>(); 
-        this->data->assigned_to = c[14].as<std::string>(); 
+        this->data->reporter = c[13].as<std::string>();
+        this->data->assigned_to = c[14].as<std::string>();
         this->data->project_id = c[15].as<std::string>();
-        this->data->votes = c[16].as<std::string>(); 
-    
-        sqlQuery = "SELECT * FROM CCLIST WHERE BUG_ID="+ bugID +";"; 
+        this->data->votes = c[16].as<std::string>();
+
+        sqlQuery = "SELECT * FROM CCLIST WHERE BUG_ID="+ bugID +";";
         results = database.query(sqlQuery.c_str());
         c = results.begin();
-    
+
         while (c != results.end()){
             this->data->cclist.push_back(c[1].as<std::string>());
             c++;
         }
-            
-        sqlQuery = "SELECT * FROM KEYWORDS WHERE BUG_ID="+ bugID +";"; 
+
+        sqlQuery = "SELECT * FROM KEYWORDS WHERE BUG_ID="+ bugID +";";
         results = database.query(sqlQuery.c_str());
         c = results.begin();
 
@@ -107,7 +106,7 @@ bool Bug_Controller::find_bug_id(std::string bugID) {
             c++;
         }
 
-        sqlQuery = "SELECT * FROM DEPENDENCIES WHERE BUG_ID="+ bugID +";"; 
+        sqlQuery = "SELECT * FROM DEPENDENCIES WHERE BUG_ID="+ bugID +";";
         results = database.query(sqlQuery.c_str());
         c = results.begin();
 
@@ -116,23 +115,23 @@ bool Bug_Controller::find_bug_id(std::string bugID) {
             c++;
         }
 
-	sqlQuery = "SELECT comment_id FROM COMMENTS WHERE BUG_ID=" + bugID +";";
-	results = database.query(sqlQuery.c_str());
-	c = results.begin();
+        sqlQuery = "SELECT comment_id FROM COMMENTS WHERE BUG_ID=" + bugID +";";
+        results = database.query(sqlQuery.c_str());
+        c = results.begin();
 
-	database.close_connection();
-	while (c!= results.end()){
-	    comment_controller temp;
-	    temp.find_comment_id(c[0].as<std::string>());
-	    this->data->comments.push_back(temp.get_comment());
-	    c++;
-	}
+        database.close_connection();
+        while (c!= results.end()){
+            comment_controller temp;
+            temp.find_comment_id(c[0].as<std::string>());
+            this->data->comments.push_back(temp.get_comment());
+            c++;
+        }
 
-        return true; 
+        return true;
     } catch (...) {
-	database.close_connection();
+    database.close_connection();
         return false;
-    }   
+    }
 }
 
 std::string Bug_Controller::generate_find_bug_id_query(std::string bugID) {
@@ -141,7 +140,7 @@ std::string Bug_Controller::generate_find_bug_id_query(std::string bugID) {
 
 //return a summarised version of the info on the bug
 bug_overview Bug_Controller::get_bug_overview() {
-    bug_overview bug; 
+    bug_overview bug;
 
     bug.bug_id = this->data->bug_id;
     bug.title = this->data->title;
@@ -150,9 +149,9 @@ bug_overview Bug_Controller::get_bug_overview() {
     bug.version = this->data->version;
     bug.priority = this->data->priority;
     bug.severity = this->data->severity;
-    bug.status = this->data->status; 
-    
-    return bug; 
+    bug.status = this->data->status;
+
+    return bug;
 }
 
 //takes a struct of bug info, and stores it as a data member
@@ -160,14 +159,14 @@ void Bug_Controller::set_bug_info(complete_bug_info a) {
     if (!this->isEmpty())
         delete data;
     data = new complete_bug_info;
-    *data = a; 
+    *data = a;
 }
 
 //attempts to UPDATE the bug database entry, if it fails, it means it doesn't prexist in the database, so is inserted.
 bool Bug_Controller::update_bug(){
     if (this->isEmpty())
         return false;
-            
+
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
 
@@ -178,8 +177,8 @@ bool Bug_Controller::update_bug(){
     if (database.transaction(sqlquery)){
         sqlquery = "delete from cclist where bug_id="
             + this->data->bug_id + ";";
-        database.transaction(sqlquery); 
-            
+        database.transaction(sqlquery);
+
         sqlquery = "delete from dependencies where bug_id="
             + this->data->bug_id + ";";
         database.transaction(sqlquery);
@@ -194,17 +193,17 @@ bool Bug_Controller::update_bug(){
                 ") values ("
                 + this->data->bug_id + ",'"
                 + *i + "');";
-        
+
             database.transaction(sqlquery);
         }
-                    
+
         //inserting dependencies
         for (std::list<std::string>::iterator i= this->data->dependencies.begin(); i != this->data->dependencies.end(); i++) {
             sqlquery = "insert into cclist(bug_id, dependency"
                 ") values ("
                 + this->data->bug_id + ","
                 + *i + ");";
-        
+
             database.transaction(sqlquery);
         }
 
@@ -214,21 +213,23 @@ bool Bug_Controller::update_bug(){
                 ") values ("
                 + this->data->bug_id + ",'"
                 + *i + "');";
-        
+
             database.transaction(sqlquery);
         }
+
 	for (std::list<comment>::iterator i  = this->data->comments.begin(); i != this->data->comments.end();i++) {
 	    comment_controller controller;
 	    controller.set_comment(*i);
 	    controller.update_comment();
 	}
                 
+
         return true;
     }
 
     //inserting bug
     sqlquery = generate_insert_bug_query();
-        
+
     database.transaction(sqlquery);
 
     //inserting cclist
@@ -237,17 +238,17 @@ bool Bug_Controller::update_bug(){
             ") values ("
             + this->data->bug_id + ",'"
             + *i + "');";
-        
+
         database.transaction(sqlquery);
     }
-        
+
     //inserting dependencies
     for (std::list<std::string>::iterator i= this->data->dependencies.begin(); i != this->data->dependencies.end(); i++) {
         sqlquery = "insert into cclist(bug_id, dependency"
             ") values ("
             + this->data->bug_id + ","
             + *i + ");";
-        
+
         database.transaction(sqlquery);
     }
 
@@ -257,12 +258,13 @@ bool Bug_Controller::update_bug(){
             ") values ("
             + this->data->bug_id + ",'"
             + *i + "');";
-        
+
         database.transaction(sqlquery);
     }
-            
+
     //after a hard days work, closing the connection
     database.close_connection();
+
     for (std::list<comment>::iterator i  = this->data->comments.begin(); i != this->data->comments.end();i++) {
 	    comment_controller controller;
 	    controller.set_comment(*i);
@@ -329,7 +331,7 @@ std::string Bug_Controller::generate_insert_bug_query() {
 
 void Bug_Controller::new_bug(const complete_bug_info& partial){
     this->set_bug_info(partial);
-   
+
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
 

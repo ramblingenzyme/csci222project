@@ -1,38 +1,32 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+
+import LoginForm from '../containers/LoginFormContainer';
+import RegisterForm from './RegisterForm';
 
 class LoginPage extends Component {
-    constructor() {
-        super();
-        this.state = {
-            username: '',
-            password: ''
-        }
-    }
 
     render() {
-        const handleSubmit = this.props.dispatch;
+        if (this.props.authenticateUser.authed) {
+            return (
+                <div>
+                    Logout here
+                </div>
+            )
+        }
 
-        return(
-            <form method="post" onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="username">
-                        Username
-                    </label>
-                    <Field name="username" component="input" type="text" />
+        return (
+            <div className="aui-group">
+                <div className="aui-item">
+                    <h3>Login</h3>
+                    <LoginForm />
                 </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <Field name="password" component="input" type="password" />
+                <div className="aui-item">
+                    <h3>Register User</h3>
+                    <RegisterForm />
                 </div>
-                <button type="submit">Submit</button>
-            </form>
+            </div>
         )
     }
 }
-
-LoginPage = reduxForm({
-    form: 'login'
-})(LoginPage)
 
 export default LoginPage;
