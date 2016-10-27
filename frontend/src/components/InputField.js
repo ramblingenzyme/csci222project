@@ -4,11 +4,13 @@ import { Control } from 'react-redux-form';
 class InputField extends Component {
     render() {
         let input_field = this._getContent();
+        let req = this._required();
 
         return (
             <div className={this.props.auiClass}>
                 <label htmlFor={this.props.id}>
                     {this.props.title}
+                    {required}
                 </label>
                 <div className="field-group">
                     {input_field}
@@ -35,6 +37,14 @@ class InputField extends Component {
             )
         }
     }
+
+    _required() {
+        if (this.props.required) {
+            return (
+                <span className="aui-icon icon-required">(required)</span>
+            )
+        }
+    }
 }
 
 InputField.defaultProps = {
@@ -45,7 +55,8 @@ InputField.defaultProps = {
     id: "input-field" ,
     placeholder: "",
     className: "text",
-    auiClass: "aui field-group top-label"
+    auiClass: "aui field-group top-label",
+    required: false
 };
 
 export default InputField;
