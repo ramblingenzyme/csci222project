@@ -71,8 +71,9 @@ bool project_controller::find_project_id(std::string project_id) {
         pqxx::result::const_iterator c = results.begin();
         
         database.close_connection();
-        
-        if (c == results.end())
+       	
+	pqxx::result empty;
+        if (results == empty)
             return false;
         
         if (this->isEmpty())
@@ -160,12 +161,12 @@ bool project_controller::update_project(){
             
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
-    std::string sqlquery = generate_update_project_query();
+    std::string sqlquery = generate_insert_project_query();
 
     if (database.transaction(sqlquery))
         return true;
             
-    sqlquery = generate_insert_project_query();
+    sqlquery = generate_update_project_query();
         
     database.transaction(sqlquery);
     database.close_connection();

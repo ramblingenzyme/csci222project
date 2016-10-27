@@ -59,7 +59,8 @@ bool comment_controller::find_comment_id(std::string comment_id) {
         
         database.close_connection();
         
-        if (c == results.end())
+	pqxx::result empty;
+        if (results == empty)
             return false;
         
         if (this->isEmpty())
