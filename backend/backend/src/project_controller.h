@@ -258,7 +258,7 @@ void project_controller::calculate_statistics(){
     this->statistic->num_of_resolved_bugs = c[0].as<std::string>();
     this->statistic->total_wait_time = "0";
     this->statistic->top_developers.clear();
-    //get top developers
+   /* //get top developers
     sqlQuery = "select username from USERS;";
     results = database.query(sqlQuery);
     c = results.begin();
@@ -280,7 +280,7 @@ void project_controller::calculate_statistics(){
     this->statistic->top_developers.sort(compareDevs);
     database.close_connection();
     //TODO get top developers
-    //initialise default project
+    //initialise default project */
 }
 
 #endif
