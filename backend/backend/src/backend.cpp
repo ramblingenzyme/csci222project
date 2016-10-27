@@ -13,6 +13,32 @@
 #include "project_controller.h"
 #include "utilitycontrollers.h"
 #include "search_controller.h"
+#include "time_utility.h"
+#include <ctime>
+#include "parser.h"
+#include <exception>
+#include <fstream>
+
+
+std::string backend::get_current_time(){
+	time_t rawtime;
+    struct tm *timeinfo;
+
+    time ( &rawtime );
+    timeinfo = localtime ( &rawtime );
+    mktime ( timeinfo );
+
+    std::string result;
+
+    result = std::to_string(timeinfo->tm_year + 1900) + "-"
+	    + std::to_string(timeinfo->tm_mon + 1) + "-"
+	    + std::to_string(timeinfo->tm_mday) +" "
+	    + std::to_string(timeinfo->tm_hour) + ":"
+	    + std::to_string(timeinfo->tm_min) + ":"
+	    + std::to_string(timeinfo->tm_sec);
+    return result;
+
+}
 
 auth_response backend::authenticate(const std::string& username, const std::string& password) {
     //SELECT * FROM USER WHERE USERNAME =$USERNAME - generalising
@@ -90,20 +116,21 @@ bool backend::subscribe(const std::string& bug_id, const std::string& username) 
     return bug.update_bug();
 }
 bool backend::test(){
-	user_controller controller;
-	user temp;
-	temp.username = "JIM"; 
-	controller.set_user_info(temp);
+	project_controller controller;
+	project temp; 
+	controller.set_project(temp);
+	
 
-
-	return controller.update_user();
+	return controller.update_project();
 }
 bool backend::vote(const std::string& bug_id, const std::string & username, const int positiveornegativeone) {
     Bug_Controller bug;
     user_controller user;
     if (!bug.find_bug_id(bug_id) || !user.find_username(username)) return false;
     complete_bug_info temp = bug.get_bug_info();
-    temp.votes += positiveornegativeone;
+    int n = atoi(temp.votes.c_str());
+    n += positiveornegativeone;
+    temp.votes = std::to_string(n);
     bug.set_bug_info(temp);
 
     return bug.update_bug();
@@ -127,8 +154,11 @@ statistics backend::get_project_statistics(const std::string& project_id){
     //failed, return empty
     statistics result;
     return result;
-	
+}
 
+std::list<project> backend::get_projects(){
+    Search_Controller search;
+    return search.get_projects();
 }
 
 std::list<bug_overview> backend::get_normal_search(const std::string& query, const int page){
@@ -144,13 +174,16 @@ std::list<bug_overview> backend::get_unassigned_bugs(const int page){
     Search_Controller search;
     return search.unassigned_bugs_search(page);
 }
-bool backend::add_bug(const complete_bug_info& bug){
-    Bug_Controller controller;
-    if (bug.bug_id == ""){
+bool backend::add_bug(const bug_input& bug){
+    Bug_Controller controller;	
+    complete_bug_info bug_info;
+    bug_info.title = bug.title;
+    bug_info.project_id = bug.project;
+    bug_info.component = bug.component;
+    bug_info.operating_system = bug.operating_system;
+    bug_info.description = bug_info.description;
 
-    controller.new_bug(bug);
-    } else
-    controller.set_bug_info(bug);
+    controller.new_bug(bug_info);
 
     return controller.update_bug();
 
@@ -288,5 +321,9 @@ bool backend::create_database(const std::string password){
     if (password != "satvik no") return false;
     Database_Utility util;
 
-    return util.create_database();
+    bool flag = util.create_database();
+    project_controller a;
+    //flag = a.find_project_id("000000");
+
+    return flag;
 }

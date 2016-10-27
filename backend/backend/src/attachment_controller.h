@@ -59,8 +59,8 @@ bool attachment_controller::find_attach_id(std::string attach_id) {
         pqxx::result::const_iterator c = results.begin();
         
         database.close_connection();
-        
-        if (c == results.end())
+	pqxx::result empty;
+        if (results == empty)
             return false;
         
         if (this->isEmpty())
@@ -93,12 +93,12 @@ bool attachment_controller::update_attachment(){
             
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
-    std::string sqlquery = generate_update_attachment_query();
+    std::string sqlquery = generate_insert_attachment_query();
 
     if (database.transaction(sqlquery))
         return true;
             
-    sqlquery = generate_insert_attachment_query();
+    sqlquery = generate_update_attachment_query();
         
     database.transaction(sqlquery);
     database.close_connection();

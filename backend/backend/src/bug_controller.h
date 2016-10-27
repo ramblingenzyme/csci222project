@@ -6,6 +6,7 @@
 #include "comment_controller.h"
 #include <string>
 #include <list>
+#include "time_utility.h"
 
 //Bug_controller class
 
@@ -59,7 +60,8 @@ bool Bug_Controller::find_bug_id(std::string bugID) {
         pqxx::result::const_iterator c = results.begin();
 
         //if the select statement didn't find anything, return false
-        if (c == results.end()){
+        pqxx::result empty;
+        if (results == empty){
             database.close_connection();
             return false;
         }
@@ -171,11 +173,17 @@ bool Bug_Controller::update_bug(){
     database.open_connection(CONNECTION_DETAILS);
 
     //update bug
-    std::string sqlquery = generate_update_bug_query();
+    std::string sqlquery = generate_insert_bug_query();
 
-    //if update fails, then start inserting else, update the rest
+    //if insert fails, then start update else, update the rest
     if (database.transaction(sqlquery)){
-        sqlquery = "delete from cclist where bug_id="
+        //updating bug
+        sqlquery = generate_update_bug_query();
+
+        database.transaction(sqlquery);
+
+
+	sqlquery = "delete from cclist where bug_id="
             + this->data->bug_id + ";";
         database.transaction(sqlquery);
 
@@ -226,12 +234,7 @@ bool Bug_Controller::update_bug(){
         return true;
     }
 
-    //inserting bug
-    sqlquery = generate_insert_bug_query();
-
-    database.transaction(sqlquery);
-
-    //inserting cclist
+        //inserting cclist
     for (std::list<std::string>::iterator i= this->data->cclist.begin(); i != this->data->cclist.end(); i++) {
         sqlquery = "insert into cclist(bug_id, username"
             ") values ("
@@ -313,14 +316,14 @@ std::string Bug_Controller::generate_insert_bug_query() {
         + this->data->description + "','"
         + this->data->component + "','"
         + this->data->version + "','"
-        + this->data->operating_system + "',"
-        + this->data->status + ","
+        + this->data->operating_system + "','"
+        + this->data->status + "',"
         + this->data->duplicate_id + ","
         + "NULL" + ",'"
-        + this->data->priority + "',"
-        + this->data->reporter + ",'"
-        + this->data->severity + "',"
-        + this->data->assigned_to + ","
+        + this->data->priority + "','"
+        + this->data->reporter + "','"
+        + this->data->severity + "','"
+        + this->data->assigned_to + "',"
         + this->data->project_id + ","
         + this->data->votes + ");";
 

@@ -17,6 +17,9 @@ public:
     backend()  {}
     ~backend() {}
 
+    // *method: GET
+    std::string get_current_time();
+
     // *method: POST
     auth_response authenticate(const std::string& username, const std::string& password);
 
@@ -33,6 +36,9 @@ public:
 
     // *method: GET
     statistics get_project_statistics(const std::string& project_id);
+
+    // *method: GET
+    std::list<project> get_projects();
 
     // *method: POST
     std::list<bug_overview> get_normal_search(const std::string& query, const int page);
@@ -59,7 +65,7 @@ public:
     bool set_status(const std::string& bug_id, const std::string& changer_username, const std::string& status);
 
     // *method: POST
-    bool add_bug(const complete_bug_info& bug);
+    bool add_bug(const bug_input& bug);
 
     // *method: POST
     bool add_dependencies(const std::string& bug_id, const std::string& dependency_id, const std::string& username);

@@ -61,13 +61,13 @@ bool user_controller::find_username(std::string username) {
     
     std::string sqlquery = generate_find_username_query(username);
     pqxx::result results = database.query(sqlquery.c_str());
-    pqxx::result::const_iterator c = results.begin();
         
     database.close_connection();
-        
-    if (c == results.end())
+    pqxx::result empty; 
+    if (results == empty)
         return false;
-        
+     
+    pqxx::result::const_iterator c = results.begin();
     if (this->isEmpty())
         delete this->data;
     this->data = new user;
