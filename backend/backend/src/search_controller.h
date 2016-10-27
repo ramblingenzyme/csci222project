@@ -62,7 +62,7 @@ std::list<bug_overview> Search_Controller::bug_search(const std::string& query, 
 	    result.push_back(temp);
 	    return result;
 	}
-	return &result;
+	return result;
 }
 
 std::list<user> Search_Controller::user_search(const std::string& query, int page) {
