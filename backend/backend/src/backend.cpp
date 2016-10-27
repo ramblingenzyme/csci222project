@@ -18,12 +18,12 @@
 #include "parser.h"
 
 bool backend::import_database(){
-	try{ 
+	try{
 	bug_xml reader;
 	std::string filename = "BugReports.xml";
 	reader.load(filename);
 	return true;
-	} catch (...) { 
+	} catch (...) {
 	return false;
 	}
 }
@@ -124,10 +124,10 @@ bool backend::subscribe(const std::string& bug_id, const std::string& username) 
 bool backend::test(){
 	user_controller controller;
 	user temp;
-	if (controller.find_username("JIM")) 
-	temp.username = "JIM"; 
+	if (controller.find_username("JIM"))
+	temp.username = "JIM";
 	controller.set_user_info(temp);
-	
+
 
 	return controller.update_user();
 }
@@ -183,14 +183,14 @@ std::list<bug_overview> backend::get_unassigned_bugs(const int page){
     return search.unassigned_bugs_search(page);
 }
 bool backend::add_bug(const bug_input& bug){
-    Bug_Controller controller;	
+    Bug_Controller controller;
     complete_bug_info bug_info;
     bug_info.title = bug.title;
     bug_info.project_id = bug.project;
     bug_info.component = bug.component;
     bug_info.operating_system = bug.operating_system;
     bug_info.description = bug.description;
-    bug_info.reporter = bug.reporter
+    bug_info.reporter = bug.reporter;
 
     controller.new_bug(bug_info);
 
