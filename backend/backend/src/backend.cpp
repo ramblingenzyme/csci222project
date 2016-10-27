@@ -13,7 +13,27 @@
 #include "project_controller.h"
 #include "utilitycontrollers.h"
 #include "search_controller.h"
+#include "time_utility.h"
+#include <ctime>
+std::string backend::get_current_time(){
+	time_t rawtime;
+    struct tm *timeinfo;
 
+    time ( &rawtime );
+    timeinfo = localtime ( &rawtime );
+    mktime ( timeinfo );
+
+    std::string result;
+
+    result = std::to_string(timeinfo->tm_year + 1900) + "-"
+	    + std::to_string(timeinfo->tm_mon + 1) + "-"
+	    + std::to_string(timeinfo->tm_mday) +" "
+	    + std::to_string(timeinfo->tm_hour) + ":"
+	    + std::to_string(timeinfo->tm_min) + ":"
+	    + std::to_string(timeinfo->tm_sec);
+    return result;
+
+}
 auth_response backend::authenticate(const std::string& username, const std::string& password) {
     //SELECT * FROM USER WHERE USERNAME =$USERNAME - generalising
     user_controller temp;
@@ -102,7 +122,9 @@ bool backend::vote(const std::string& bug_id, const std::string & username, cons
     user_controller user;
     if (!bug.find_bug_id(bug_id) || !user.find_username(username)) return false;
     complete_bug_info temp = bug.get_bug_info();
-    temp.votes += positiveornegativeone;
+    int n = atoi(temp.votes.c_str());
+    n += positiveornegativeone;
+    temp.votes = std::to_string(n);
     bug.set_bug_info(temp);
 
     return bug.update_bug();

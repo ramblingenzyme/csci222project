@@ -17,6 +17,9 @@ public:
     backend()  {}
     ~backend() {}
 
+    // *method: GET
+    std::string get_current_time();
+
     // *method: POST
     auth_response authenticate(const std::string& username, const std::string& password);
 
