@@ -18,6 +18,7 @@ struct bug_xml
     void read_comment(ptree::value_type &v, std::string bug_id);
 
     void print_bug(complete_bug_info& bug);
+    void print_comment(comment& c);
 };
 
 void bug_xml::read_comment(ptree::value_type &v, std::string bug_id){
@@ -36,9 +37,14 @@ void bug_xml::read_comment(ptree::value_type &v, std::string bug_id){
     print_comment(temp);
 }
 
-    std::cout << "comment: " << temp.comment_id << " " << temp.username << "\n"
-        << temp.body << std::endl;
+void bug_xml::print_comment(comment& c) {
+    std::cout << "comment_id: " << c.comment_id << '\n'
+              << "username: " << c.username << '\n'
+              << "bug_id: " << c.bug_id << '\n'
+              << "creation_ts: " << c.creation_ts << '\n'
+              << "body: " << c.body << '\n';
 }
+
 void bug_xml::read_user(ptree::value_type &v){
     user temp;
     ptree bugtree = (ptree) v.second;
