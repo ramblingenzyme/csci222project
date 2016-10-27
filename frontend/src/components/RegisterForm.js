@@ -27,7 +27,15 @@ class RegisterForm extends Component {
             })
         }).then(response => {
             if (response) {
-                return alert("You have been registered");
+                 alert("You have been registered");
+                 return this.props.fetchAuthStatus(user.username, user.password)
+                     .then(response => {
+                         if (response.authed === false) {
+                             return alert ("Somehow we couldn't log you in, try again.")
+                         } else {
+                             return Promise.resolve(true);
+                         }
+                     });
             } else {
                 alert("Error, could not register, PEBKAC probably.")
                 return false;

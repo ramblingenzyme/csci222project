@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 
 import LoginForm from '../containers/LoginFormContainer';
-import RegisterForm from './RegisterForm';
+import RegisterForm from '../containers/RegisterFormContainer';
 
 class LoginPage extends Component {
+    _logout() {
+        this.props.logout();
+        return false;
+    }
 
     render() {
         if (this.props.authenticateUser.authed) {
             return (
                 <div>
-                    Logout here
+                    <form onSubmit={this._logout}>
+                        <div className="buttons-container">
+                            <div className="buttons">
+                                <button type="submit">Logout</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             )
         }

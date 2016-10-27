@@ -52,6 +52,16 @@ export function receiveProfileList(profileList) {
     }
 }
 
+export function logout() {
+    return {
+        type: LOGOUT,
+        authStatus: {
+            authed: false,
+            role: "guest"
+        }
+    }
+}
+
 // THUNKS
 export function fetchAuthStatus(username, password) {
     return function(dispatch) {
