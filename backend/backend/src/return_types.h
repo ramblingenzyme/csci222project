@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 
+struct comment;
 struct auth_response {
     bool authed;
     std::string role;
@@ -16,6 +17,8 @@ struct comment {
     std::string creation_ts;
     std::string body;
     std::string attach_id;
+
+    comment() : comment_id("0000000"), username("Default"), bug_id("000000") ,creation_ts("0"), body("NULL"), attach_id("0000000") { };
 };
 
 struct bug_overview {
@@ -53,6 +56,9 @@ struct complete_bug_info {
     std::list<std::string> keywords;
     std::list<std::string> dependencies;
     std::list<comment> comments;
+
+    complete_bug_info() : bug_id("000000"), creation_time("0"), delta_time("0"), title("NULL"), description("NULL"), product("NULL"), component("NULL"), version("NULL"), target_milestone("NULL"), status("UNCONFIRMED"), duplicate_id ("NULL"), priority("NULL"), severity("NULL"), reporter("NULL"), assigned_to("NULL"), project_id("000000"), votes("0") { }; 
+
 };
 
 struct user {
@@ -60,6 +66,8 @@ struct user {
     std::string password;
     std::string email;
     std::string privilege_level;
+
+    user() : username("Default"), password("password"), email("email"), privilege_level("Reporter") { };
 };
 
 struct top_developer {

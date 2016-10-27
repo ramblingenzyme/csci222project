@@ -90,12 +90,12 @@ bool user_controller::update_user(){
             
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
-    std::string sqlquery = generate_update_user_query();
     
+    std::string sqlquery = generate_insert_user_query();
     if (database.transaction(sqlquery))
         return true;
             
-    sqlquery = generate_insert_user_query();
+    sqlquery = generate_update_user_query();
         
     database.transaction(sqlquery);
     database.close_connection();
@@ -120,8 +120,8 @@ std::string user_controller::generate_insert_user_query() {
         "email, privilege_level) values ('"
         + this->data->username + "','"
         + this->data->password + "','"
-        + this->data->email + "',"
-        + this->data->privilege_level + ");";
+        + this->data->email + "','"
+        + this->data->privilege_level + "');";
 
     return query;
 }

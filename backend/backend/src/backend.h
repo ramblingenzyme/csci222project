@@ -27,13 +27,24 @@ public:
     user profile(const std::string& username);
 
     // *method: GET
+    bool test();
+    // *method: GET
     project get_project(const std::string& project_id);
+
+    // *method: GET
+    statistics get_project_statistics(const std::string& project_id);
 
     // *method: POST
     std::list<bug_overview> get_normal_search(const std::string& query, const int page);
 
     // *method: POST
     std::list<user> get_user_search(const std::string& query, const int page);
+    
+    // *method: POST
+    std::list<bug_overview> get_unassigned_bugs(const int page);
+
+    // *method: POST 
+    std::list<bug_overview> get_assigned_bugs(const std::string& query, const int page);
 
     // *method: GET
     std::list<user> get_developers();
@@ -55,6 +66,9 @@ public:
 
     // *method: POST
     bool subscribe(const std::string& bug_id, const std::string& username);
+
+    // *method: POST
+    bool vote(const std::string& bug_id, const std::string& username, const int positiveornegativeone);
 
     // *method: POST
     bool add_attachment(const attachment& attachment_info);

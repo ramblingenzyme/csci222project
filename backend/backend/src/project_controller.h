@@ -190,7 +190,6 @@ std::string project_controller::generate_insert_project_query() {
 
     return query;
 }
-
 //deletes then inserts statistics and top developers
 bool project_controller::update_statistics(){
     if (this->isEmpty())

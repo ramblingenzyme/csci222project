@@ -4,6 +4,7 @@
 #include <pqxx/pqxx>
 #include <cppunit/extensions/HelperMacros.h>
 #include <ostream>
+#include "return_types.h"
 #include "backend.h"
 #include "bug_controller.h"
 #include "user_controller.h"
@@ -86,6 +87,26 @@ bool backend::subscribe(const std::string& bug_id, const std::string& username) 
 
     return bug.update_bug();
 }
+bool backend::test(){
+	user_controller controller;
+	user temp;
+	temp.username = "JIM"; 
+	controller.set_user_info(temp);
+
+
+	return controller.update_user();
+}
+bool backend::vote(const std::string& bug_id, const std::string & username, const int positiveornegativeone) {
+    Bug_Controller bug;
+    user_controller user;
+    if (!bug.find_bug_id(bug_id) || !user.find_username(username)) return false;
+    complete_bug_info temp = bug.get_bug_info();
+    temp.votes += positiveornegativeone;
+    bug.set_bug_info(temp);
+
+    return bug.update_bug();
+
+}
 project backend::get_project(const std::string& project_id){
     project_controller controller;
 
@@ -95,6 +116,18 @@ project backend::get_project(const std::string& project_id){
     project result;
     return result;
 }
+statistics backend::get_project_statistics(const std::string& project_id){
+    project_controller controller;
+    if (controller.find_project_id(project_id)){
+	controller.find_statistics();
+	return controller.get_statistics();
+    }
+    //failed, return empty
+    statistics result;
+    return result;
+	
+
+}
 
 std::list<bug_overview> backend::get_normal_search(const std::string& query, const int page){
     Search_Controller search;
@@ -103,6 +136,11 @@ std::list<bug_overview> backend::get_normal_search(const std::string& query, con
 std::list<user> backend::get_user_search(const std::string& query, const int page) {
     Search_Controller search;
     return search.user_search(query, page);
+}
+
+std::list<bug_overview> backend::get_unassigned_bugs(const int page){
+    Search_Controller search;
+    return search.unassigned_bugs_search(page);
 }
 bool backend::add_bug(const complete_bug_info& bug){
     Bug_Controller controller;
@@ -114,6 +152,15 @@ bool backend::add_bug(const complete_bug_info& bug){
 
     return controller.update_bug();
 
+}
+
+std::list<bug_overview> backend::get_assigned_bugs(const std::string& query, const int page){
+    user_controller user;
+    std::list<bug_overview> result;
+    if (!user.find_username(query)) return result;
+
+    Search_Controller search;
+    return search.get_assigned_bugs(query, page);
 }
 std::list<user> backend::get_developers() {
     Search_Controller search;
