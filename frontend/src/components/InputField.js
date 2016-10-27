@@ -6,7 +6,7 @@ class InputField extends Component {
         let input_field = this._getContent();
 
         return (
-            <div className="aui field-group top-label">
+            <div className={this.props.auiClass}>
                 <label htmlFor={this.props.id}>
                     {this.props.title}
                 </label>
@@ -44,6 +44,8 @@ InputField.defaultProps = {
     description: "",
     id: "input-field" ,
     placeholder: "",
+    className: "text",
+    auiClass: "aui field-group top-label"
 };
 
 export default InputField;

@@ -32,6 +32,14 @@ const searchPageSidebar = {
     severity: ' ',
 };
 
+const reportWriter = {
+    title: ' ',
+    project: ' ',
+    component: ' ',
+    os: ' ',
+    description: ' ',
+};
+
 const searchBox = {
     searchTerm: ''
 };
@@ -48,6 +56,7 @@ const baseReducer = combineReducers({
         user,
         register,
         searchPageSidebar,
+        reportWriter,
         searchBox
     }, 'forms')
 });
