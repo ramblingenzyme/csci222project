@@ -107,7 +107,7 @@ std::string user_controller::generate_update_user_query() {
     query = "UPDATE users set username ='"
         + this->data->username + "', password ='"
         + this->data->password + "', email ='"
-        + this->data->email + "', privilege_level"
+        + this->data->email + "', privilege_level ="
         + this->data->privilege_level + " where username ='"
         + this->data->username + "';";
 
