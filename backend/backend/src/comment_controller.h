@@ -90,12 +90,12 @@ bool comment_controller::update_comment(){
             
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
-    std::string sqlquery = generate_update_comment_query();
+    std::string sqlquery = generate_insert_comment_query();
 
     if (database.transaction(sqlquery))
         return true;
             
-    sqlquery = generate_insert_comment_query();
+    sqlquery = generate_update_comment_query();
         
     database.transaction(sqlquery);
     database.close_connection();

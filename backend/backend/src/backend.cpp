@@ -90,9 +90,10 @@ bool backend::subscribe(const std::string& bug_id, const std::string& username) 
 bool backend::test(){
 	user_controller controller;
 	user temp;
+	if (controller.find_username("JIM")) return false;
 	temp.username = "JIM"; 
 	controller.set_user_info(temp);
-
+	
 
 	return controller.update_user();
 }
