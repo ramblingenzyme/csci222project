@@ -19,7 +19,7 @@ class LoginForm extends Component {
 
     render() {
         return (
-            <Form className="aui" model="forms.user" onSubmit={(user) => this._handleLogin(user)}>
+            <Form className="aui field-group" model="forms.user" onSubmit={(user) => this._handleLogin(user)}>
                 <div className="field-group">
                     <label htmlFor="username">
                         Username
@@ -30,6 +30,7 @@ class LoginForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -49,6 +50,7 @@ class LoginForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -60,9 +62,7 @@ class LoginForm extends Component {
                     />
                 </div>
                 <div className="buttons-container">
-                    <div className="buttons">
-                        <button type="submit">Submit</button>
-                    </div>
+                    <button type="submit">Submit</button>
                 </div>
             </Form>
         )

@@ -52,6 +52,7 @@ class RegisterForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -72,6 +73,7 @@ class RegisterForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -91,6 +93,7 @@ class RegisterForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -110,6 +113,7 @@ class RegisterForm extends Component {
                         validators={{
                             required: this._required
                         }}
+                        className="text"
                     />
                     <Errors
                         className="error"
@@ -121,9 +125,7 @@ class RegisterForm extends Component {
                     />
                 </div>
                 <div className="buttons-container">
-                    <div className="buttons">
-                        <button type="submit">Register</button>
-                    </div>
+                    <button type="submit">Register</button>
                 </div>
             </Form>
         )
