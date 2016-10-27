@@ -74,6 +74,12 @@ void bug_xml::read_bug(ptree::value_type &v){
     print_bug(temp);
 }
 
+void bug_xml::read_bug_cclist(ptree::value_type& v, complete_bug_info& temp) {
+    BOOST_FOREACH(ptree::value_type const& f, v.second) {
+        if(f.first == "cc") {
+            temp.cclist.push_back(f.second.data());
+        }
+    }
 }
 
 void bug_xml::print_bug(complete_bug_info& bug) {
