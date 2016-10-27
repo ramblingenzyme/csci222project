@@ -3,7 +3,6 @@
 #include <list>
 #include <string>
 
-struct comment;
 struct auth_response {
     bool authed;
     std::string role;
@@ -95,6 +94,8 @@ struct project {
     std::string project_name;
     std::string project_id;
     statistics statistic;
+
+    project() :project_name("general"), project_id("000000") {};
 };
 
 struct attachment {

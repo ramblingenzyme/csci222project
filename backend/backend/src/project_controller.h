@@ -42,18 +42,21 @@ public:
         this->data = new project ;
         *data = a; 
     }
-    void set_statistics(statistics a) {
-	if (this->statistic != NULL)
-	    delete statistic;
-	this->statistic = new statistics;
-	*statistic = a;
-    }
     void new_project(const std::string);
     bool update_project();
     std::string generate_update_project_query();
     std::string generate_insert_project_query();
 
+    void calculate_statistics(); 
     bool update_statistics();
+    void set_statistics(statistics a) {
+	if (this->statistic != NULL)
+	    delete statistic;
+	this->statistic = new statistics;
+	*statistic = a;
+	this->calculate_statistics();
+    }
+
 };
 
 ///////////////////////////////////////
@@ -128,7 +131,7 @@ bool project_controller::find_statistics() {
 
             this->statistic->top_developers.push_back(temp);
         }
-    
+        
         return true; 
     } catch (...) {
         return false;
@@ -195,7 +198,7 @@ std::string project_controller::generate_insert_project_query() {
 bool project_controller::update_statistics(){
     if (this->isEmpty())
         return false;
-            
+    this->calculate_statistics();
     DatabaseConnection database;
     database.open_connection(CONNECTION_DETAILS);
     
@@ -225,4 +228,23 @@ bool project_controller::update_statistics(){
     return true;
 }
 
+void project_controller::calculate_statistics(){
+    DatabaseConnection database;
+    database.open_connection(CONNECTION_DETAILS);
+    
+    std::string sqlQuery = "Select count(*) from BUGS where project_id="
+	    + this->statistic->project_id + ";";
+    pqxx::result results= database.query(sqlQuery);
+    pqxx::result::const_iterator c = results.begin();
+
+    this->statistic->num_of_bugs = c[0].as<std::string>(); 
+
+    sqlQuery = "select count(*) from BUGS where project_id="
+	    + this->statistic->project_id +" and status='RESOLVED';";
+    results = database.query(sqlQuery);
+    c = results.begin();
+
+    this->statistic->num_of_resolved_bugs = c[0].as<std::string>();
+    this->statistic->total_wait_time = "0";
+}
 #endif
