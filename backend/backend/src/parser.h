@@ -10,24 +10,27 @@ using boost::property_tree::ptree;
 
 struct bug_xml
 {
-	void load(const std::string &filename);
-	void save(const std::string &filename);
-	void read_bug(ptree::value_type &f);
-	void read_user(ptree::value_type &v);
-	void read_comment(ptree::value_type &v);
+    void load(const std::string &filename);
+    void save(const std::string &filename);
+    void read_bug(ptree::value_type &f);
+    void read_bug_cclist(ptree::value_type& v, complete_bug_info& temp);
+    void read_user(ptree::value_type &v);
+    void read_comment(ptree::value_type &v);
+
+    void print_bug(complete_bug_info& bug);
 };
 
 void bug_xml::read_comment(ptree::value_type &v){
-	comment temp;
-	ptree commenttree = (ptree) v.second;
+    comment temp;
+    ptree commenttree = (ptree) v.second;
 
-	temp.comment_id  = commenttree.get<std::string>("commentid");
-	temp.username = commenttree.get<std::string>("who");
-	temp.creation_ts = commenttree.get<std::string>("bug_when");
-	temp.body = commenttree.get<std::string>("thetext");
+    temp.comment_id  = commenttree.get<std::string>("commentid");
+    temp.username = commenttree.get<std::string>("who");
+    temp.creation_ts = commenttree.get<std::string>("bug_when");
+    temp.body = commenttree.get<std::string>("thetext");
 
-	std::cout << "comment: " << temp.comment_id << " " << temp.username << "\n"
-		<< temp.body << std::endl;
+    std::cout << "comment: " << temp.comment_id << " " << temp.username << "\n"
+        << temp.body << std::endl;
 }
 void bug_xml::read_user(ptree::value_type &v){
     user temp;
@@ -114,20 +117,20 @@ void bug_xml::print_bug(complete_bug_info& bug) {
 
 void bug_xml::load(const std::string &filename)
 {
-	ptree pt;
-	read_xml(filename, pt);
-	BOOST_FOREACH(ptree::value_type &v, pt.get_child("bugs")) {
-		read_user(v);
-		read_bug(v);
-		ptree temp = (ptree) v.second;
-		//BOOST_FOREACH(ptree::value_type &f, pt.get_child("bug")
-		std::cout << v.first << std::endl;
-	//	BOOST_FOREACH(ptree::value_type &f, temp.get_child("long_desc")) {
+    ptree pt;
+    read_xml(filename, pt);
+    BOOST_FOREACH(ptree::value_type &v, pt.get_child("bugs")) {
+        read_user(v);
+        read_bug(v);
+        ptree temp = (ptree) v.second;
+        //BOOST_FOREACH(ptree::value_type &f, pt.get_child("bug")
+        std::cout << v.first << std::endl;
+    //  BOOST_FOREACH(ptree::value_type &f, temp.get_child("long_desc")) {
 
-	//		std::cout << f.first<< std::endl;
-	//		read_comment(f);
-	//	}
-	}
+    //      std::cout << f.first<< std::endl;
+    //      read_comment(f);
+    //  }
+    }
 
 }
 
