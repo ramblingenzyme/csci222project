@@ -15,6 +15,19 @@
 #include "search_controller.h"
 #include "time_utility.h"
 #include <ctime>
+#include "parser.h"
+
+bool backend::import_database(){
+	try{ 
+	bug_xml reader;
+	std::string filename = "BugReports.xml";
+	reader.load(filename);
+	return true;
+	} catch (...) { 
+	return false;
+	}
+}
+
 std::string backend::get_current_time(){
 	time_t rawtime;
     struct tm *timeinfo;
@@ -34,6 +47,7 @@ std::string backend::get_current_time(){
     return result;
 
 }
+
 auth_response backend::authenticate(const std::string& username, const std::string& password) {
     //SELECT * FROM USER WHERE USERNAME =$USERNAME - generalising
     user_controller temp;
@@ -316,5 +330,9 @@ bool backend::create_database(const std::string password){
     if (password != "satvik no") return false;
     Database_Utility util;
 
-    return util.create_database();
+    bool flag = util.create_database();
+    project_controller a;
+    //flag = a.find_project_id("000000");
+
+    return flag;
 }

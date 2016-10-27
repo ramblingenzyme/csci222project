@@ -106,8 +106,9 @@ bool project_controller::find_statistics() {
         pqxx::result::const_iterator c = results.begin();
         
         database.close_connection();
-        
-        if (c == results.end())
+         
+	pqxx::result empty;
+        if (empty == results)
             return false;
         
         if (this->isEmpty())
@@ -122,16 +123,16 @@ bool project_controller::find_statistics() {
         sqlquery = "select * from TOPDEVELOPERS where project_id="+ this->statistic->project_id+";";
         results = database.query(sqlquery.c_str());
         c = results.begin();
+	if (results != empty ){
+            while ( c != results.end()) {
+                top_developer temp;
+                temp.project_id = c[0].as<std::string>();
+                temp.username = c[1].as<std::string>();
+                temp.resolved_bugs = c[2].as<std::string>();
 
-        while ( c != results.end()) {
-            top_developer temp;
-            temp.project_id = c[0].as<std::string>();
-            temp.username = c[1].as<std::string>();
-            temp.resolved_bugs = c[2].as<std::string>();
-
-            this->statistic->top_developers.push_back(temp);
-        }
-        
+                this->statistic->top_developers.push_back(temp);
+            }
+	}
         return true; 
     } catch (...) {
         return false;
@@ -178,9 +179,9 @@ bool project_controller::update_project(){
 
 std::string project_controller::generate_update_project_query() {
     std::string query;
-    query = "UPDATE PROJECT set project_name ='"
+    query = "UPDATE PROJECT set project_name='"
         + this->data->project_name + "', project_id="
-        + this->data->project_id + "' where project_id ="
+        + this->data->project_id + " where project_id="
         + this->data->project_id + ";";
 
     return query;

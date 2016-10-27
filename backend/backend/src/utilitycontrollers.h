@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "const.h"
+#include "project_controller.h"
 
 class Database_Utility {
  
@@ -28,7 +29,16 @@ bool Database_Utility::create_database() {
     }
     bool flag = database.transaction(CREATE_DATABASE);
     database.close_connection();
-    
+
+    project_controller initial;
+    project temp;
+    initial.set_project(temp);
+    statistics statistic;
+    initial.set_statistics(statistic);
+    flag = initial.update_project();
+    //initial.update_statistics();
+
+ 
     return flag? true : false;
 }
 bool Database_Utility::drop_database(){
@@ -37,6 +47,8 @@ bool Database_Utility::drop_database(){
 
     bool flag = database.transaction(DROP_TABLES);
     database.close_connection();
+
+    
 
     return flag? true : false;
 }

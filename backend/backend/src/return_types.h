@@ -17,7 +17,7 @@ struct comment {
     std::string body;
     std::string attach_id;
 
-    comment() : comment_id("0000000"), username("Default"), bug_id("000000") ,creation_ts("0"), body("NULL"), attach_id("0000000") { };
+    comment() : comment_id("0"), username("Default"), bug_id("0") ,creation_ts("0"), body("NULL"), attach_id("0") { };
 };
 
 struct bug_input {
@@ -90,13 +90,16 @@ struct statistics {
     std::string num_of_resolved_bugs;
     std::string total_wait_time;
     std::list<top_developer> top_developers;
+
+    statistics() : project_id("0"), num_of_bugs("0"), num_of_resolved_bugs("0"), total_wait_time("0") { };
+
 };
 struct project {
     std::string project_name;
     std::string project_id;
     statistics statistic;
 
-    project() :project_name("general"), project_id("000000") {};
+    project() :project_name("general"), project_id("0") {};
 };
 
 struct attachment {
