@@ -107,6 +107,18 @@ project backend::get_project(const std::string& project_id){
     project result;
     return result;
 }
+statistics backend::get_project_statistics(const std::string& project_id){
+    project_controller controller;
+    if (controller.find_project_id(project_id)){
+	controller.find_statistics();
+	return controller.get_statistics();
+    }
+    //failed, return empty
+    statistics result;
+    return result;
+	
+
+}
 
 std::list<bug_overview> backend::get_normal_search(const std::string& query, const int page){
     Search_Controller search;

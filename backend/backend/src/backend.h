@@ -29,12 +29,15 @@ public:
     // *method: GET
     project get_project(const std::string& project_id);
 
+    // *method: GET
+    statistics get_project_statistics(const std::string& project_id);
+
     // *method: POST
     std::list<bug_overview> get_normal_search(const std::string& query, const int page);
 
     // *method: POST
     std::list<user> get_user_search(const std::string& query, const int page);
-
+    
     // *method: POST
     std::list<bug_overview> get_unassigned_bugs(const int page);
 
