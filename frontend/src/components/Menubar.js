@@ -18,12 +18,6 @@ class Menubar extends Component {
                         <Link to={'/analysis/'}>Analysis</Link>
                     </li>
                     <li>
-                        <Link to={'/assign/'}>Assign</Link>
-                    </li>
-                    <li>
-                        <Link to={'/review/'}>Review</Link>
-                    </li>
-                    <li>
                         <Link to={'/search/'}>Search</Link>
                     </li>
                     <li>
@@ -34,5 +28,14 @@ class Menubar extends Component {
         );
     }
 }
+
+/* TODO: Stretch Goals
+ <li>
+ <Link to={'/assign/'}>Assign</Link>
+ </li>
+ <li>
+ <Link to={'/review/'}>Review</Link>
+ </li>
+ */
 
 export default Menubar;
