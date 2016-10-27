@@ -58,7 +58,7 @@ public:
             delete statistic;
         this->statistic = new statistics;
         *statistic = a;
-        this->calculate_statistics();
+	this->statistic->project_id = this->data->project_id; 
     }
 
 };

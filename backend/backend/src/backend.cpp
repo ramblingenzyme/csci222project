@@ -306,14 +306,26 @@ bool backend::drop_database(const std::string password){
 
 bool backend::create_database(const std::string password){
     if (password != "satvik no") return false;
-    Database_Utility util;
-    project_controller p;
-    project temp;
-    p.set_project(temp);
-
+    Database_Utility util; 
     
     bool flag = util.create_database();
-    project_controller a;
 
+    if (!flag) return false;
+    project_controller controller;
+    project temp;
+    controller.set_project(temp);
+    statistics stat;
+    controller.set_statistics(stat);
+    flag = controller.update_project();
+
+    if (!flag) return false;
+    user_controller u_controller;
+    user u;
+    u.username = "root";
+    u.password = "root";
+    u.email = "root";
+    u.privilege_level = "Superadmin";
+    u_controller.set_user_info(u);
+    flag = u_controller.update_user();
     return flag;
 }
