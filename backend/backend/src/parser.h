@@ -15,19 +15,26 @@ struct bug_xml
     void read_bug(ptree::value_type &f);
     void read_bug_cclist(ptree::value_type& v, complete_bug_info& temp);
     void read_user(ptree::value_type &v);
-    void read_comment(ptree::value_type &v);
+    void read_comment(ptree::value_type &v, std::string bug_id);
 
     void print_bug(complete_bug_info& bug);
 };
 
-void bug_xml::read_comment(ptree::value_type &v){
+void bug_xml::read_comment(ptree::value_type &v, std::string bug_id){
     comment temp;
-    ptree commenttree = (ptree) v.second;
 
-    temp.comment_id  = commenttree.get<std::string>("commentid");
-    temp.username = commenttree.get<std::string>("who");
-    temp.creation_ts = commenttree.get<std::string>("bug_when");
-    temp.body = commenttree.get<std::string>("thetext");
+    BOOST_FOREACH(ptree::value_type const& f, v.second) {
+        if(f.first == "long_desc") {
+            temp.comment_id  = f.second.get<std::string>("commentid");
+            temp.username = f.second.get<std::string>("who");
+            temp.bug_id = bug_id;
+            temp.creation_ts = f.second.get<std::string>("bug_when");
+            temp.body = f.second.get<std::string>("thetext");
+        }
+    }
+
+    print_comment(temp);
+}
 
     std::cout << "comment: " << temp.comment_id << " " << temp.username << "\n"
         << temp.body << std::endl;
